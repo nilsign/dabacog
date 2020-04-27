@@ -67,7 +67,7 @@ languages are planned to be supported.
 # ROADMAP
 
 The project has just started and I am working on it in my spare time, so do not expect a steady and
-strong progress. Generally here are the major milestones an appended progress status (DONE, DEV,
+strong progress. Anyhow, here are the major milestones with an appended progress status (DONE, DEV,
 PLANNED).
 
 1. Setup project. [DONE]
