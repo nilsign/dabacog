@@ -22,7 +22,7 @@ languages are planned to be supported.
 
 # SIMPLIFIED USAGE DEMONSTRATION 
 
-1. Create a XML file (also called DXD for Dabacog XML description):
+1. Create a XML file (also called DXD for <ins>D</ins>abacog <ins>X</ins>ML <ins>D</ins>escription):
 
         <meta>
             <output path="../generated"/>
@@ -46,11 +46,11 @@ languages are planned to be supported.
             <field name="name" type="string"/>
         </class>
 
-2. Execute the DABACOG CLI command in the same path where the DXD is located
+2. Execute the Dabacog CLI command in the same path where the DXD is located
 
         $ dabacog run
 
-3. DABACOG generates the following
+3. Dabacog generates automatically
 
     - A graph as png showing all database tables including their relations. Per flags fields and all
     kind of attributes can be also displayed in the graph.
@@ -60,8 +60,9 @@ languages are planned to be supported.
 
     - The database with all tables, fields and attributes.
 
-    - All entity java classes and with all required
-    [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations.
+    - All entity java classes with all required
+    [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations, as well as a
+    database connector class.
 
 # ROADMAP
 
