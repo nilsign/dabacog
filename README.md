@@ -79,6 +79,6 @@ PLANNED).
 6. Generate a JAVA and SQL code for database model changes and resulting database migrations by the
 use of [Flyway](https://flywaydb.org) and/or [Liquibase](https://www.liquibase.org/). [PLANNED]
 7. Generate DTO classes out of many entity classes. [PLANNED]
-8. Support for migrating to DABACOG for already existing projects. [PLANNED]
+8. Support to migrate to DABACOG for already existing projects. [PLANNED]
 8. Support for MySQL, MariaDB, Oracle, Microsoft SQL Server. [PLANNED]
 9. Support for C#, Kotlin, C++, C, Python, Dart, Go, and more. [PLANNED]
