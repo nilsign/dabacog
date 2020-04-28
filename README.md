@@ -22,7 +22,7 @@ languages are planned to be supported.
 
 # SIMPLIFIED USAGE DEMONSTRATION 
 
-1. Create a XML file (also called DXD for <ins>D</ins>abacog <ins>X</ins>ML <ins>D</ins>escription):
+1. Create an XML file (also called DXD for <ins>D</ins>abacog <ins>X</ins>ML <ins>D</ins>escription):
 
         <meta>
             <output path="../generated"/>
@@ -71,7 +71,7 @@ strong progress. Anyhow, here are the major milestones with an appended progress
 PLANNED).
 
 1. Setup project. [DONE]
-2. Create a XML Parser and read the code generation data model. [DEV]
+2. Create an XML Parser and read the code generation data model. [DEV]
 3. Generate a relational database diagram and an entity class diagram (code) with
 [Graphviz](https://www.graphviz.org/). [PLANNED]
 4. Generate a Postgres database from the data model. [PLANNED]
