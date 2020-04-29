@@ -22,31 +22,36 @@ languages are planned to be supported.
 
 # SIMPLIFIED USAGE DEMONSTRATION 
 
-1. Create a XML file (also called DXD for <ins>D</ins>abacog <ins>X</ins>ML <ins>D</ins>escription):
+1. Create an XML file (also called DXD for <ins>D</ins>abacog <ins>X</ins>ML <ins>D</ins>escription):
 
-        <meta>
-            <output path="../generated"/>
-            <sql language="postgres">
-            <code language="java">
-        <meta/>
+        <dxd-model>
 
-        <class name="Book">
-            <field refersTo="Author" pointsTo="many"/>
-            <field refersTo="Genre" pointsTo="one"/>
-            <field name="Name" type="string"/>
-        </class>
+            <meta>
+                <sql traget="postgres">
+                <code target="java">
+                <output target="./generated"/>
+            <meta/>
 
-        <class name="Author">
-            <field refersTo="Book" pointsTo="many"/>
-            <field name="Name" type="string"/>
-        </class>
+            <class name="Book">
+                <field refersTo="Author" pointsTo="many"/>
+                <field refersTo="Genre" pointsTo="one"/>
+                <field name="Name" type="string"/>
+            </class>
 
-        <class name="Genre">
-            <field refersTo="Book" pointsTo="many"/>
-            <field name="name" type="string"/>
-        </class>
+            <class name="Author">
+                <field refersTo="Book" pointsTo="many"/>
+                <field name="Name" type="string"/>
+            </class>
+
+            <class name="Genre">
+                <field refersTo="Book" pointsTo="many"/>
+                <field name="name" type="string"/>
+            </class>
+
+        </dxd-model>
 
 2. Execute the Dabacog CLI command in the same path where the DXD is located
+or append the path to the DXD file.
 
         $ dabacog run
 
@@ -60,9 +65,12 @@ languages are planned to be supported.
 
     - The database with all tables, fields and attributes.
 
-    - All entity java classes with all required
-    [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations, as well as a
-    database connector class.
+    - A database connector class
+
+    - All entity classes (each representing a SQL table and its fields)
+
+    - All functions for the [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)
+    operations for all entity classes
 
 # ROADMAP
 
@@ -71,7 +79,7 @@ strong progress. Anyhow, here are the major milestones with an appended progress
 PLANNED).
 
 1. Setup project. [DONE]
-2. Create a XML Parser and read the code generation data model. [DEV]
+2. Create an XML Parser and read the code generation data model. [DEV]
 3. Generate a relational database diagram and an entity class diagram (code) with
 [Graphviz](https://www.graphviz.org/). [PLANNED]
 4. Generate a Postgres database from the data model. [PLANNED]

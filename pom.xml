@@ -7,7 +7,8 @@
 
     <groupId>com.nilsign</groupId>
     <artifactId>dabacog</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <name>Dabacog</name>
+    <version>0.1.0-SNAPSHOT</version>
     <description>Database related code generation CLI</description>
 
     <properties>
@@ -18,12 +19,21 @@
     </properties>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.2.3</version>
-        </dependency>
+
+      <dependency>
+        <groupId>org.simpleframework</groupId>
+        <artifactId>simple-xml</artifactId>
+        <version>2.7.1</version>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.12</version>
+        <scope>provided</scope>
+      </dependency>
+
     </dependencies>
 
 </project>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dxd name="Dabacog - Book Library Demo">
+
+<!--  <meta>-->
+<!--    <sql target="postgres"/>-->
+<!--    <source-code target="java"/>-->
+<!--    <output target="./generated"/>-->
+<!--  </meta>-->
+
+<!--  <datastructure>-->
+<!--    <class name="Genre">-->
+<!--      <field name="name" type="string" unique="true"/>-->
+<!--      <field refersTo="Book" pointsTo="many"/>-->
+<!--    </class>-->
+
+<!--    <class name="Book">-->
+<!--      <field refersTo="Author" pointsTo="many"/>-->
+<!--      <field refersTo="Genre" pointsTo="many"/>-->
+<!--      <field refersTo="Loan" pointsTo="many"/>-->
+<!--      <field refersTo="Location" pointsTo="one" nullable="true"/>-->
+<!--      <field name="Name" type="string" fts="true"/>-->
+<!--      <field name="Isbn" type="string" fts="true"/>-->
+<!--      <field name="Price" type="double" nullable="true"/>-->
+<!--    </class>-->
+
+<!--    <class name="Loan">-->
+<!--      <field refersTo="Customer" pointsTo="one" />-->
+<!--      <field refersTo="Book" pointsTo="one"/>-->
+<!--      <field name="Start" type="date"/>-->
+<!--      <field name="End" type="date"/>-->
+<!--      <field name="Return" type="date" nullable="true"/>-->
+<!--      <field name="DunningLetter" type="boolean"/>-->
+<!--    </class>-->
+
+<!--    <class name="Customer">-->
+<!--      <field name="FirstName" type="string"/>-->
+<!--      <field name="LastName" type="string" fts="true"/>-->
+<!--      <field refersTo="Address" pointsTo="one"/>-->
+<!--      <field refersTo="Contact" pointsTo="one" nullable="true"/>-->
+<!--    </class>-->
+
+<!--    <class name="Contact">-->
+<!--      <field name="Mobile" type="string" nullable="true"/>-->
+<!--      <field name="Home" type="string" nullable="true"/>-->
+<!--      <field name="Email" type="string" nullable="true"/>-->
+<!--    </class>-->
+
+<!--    <class name="Location">-->
+<!--      <field name="Floor" type="string"/>-->
+<!--      <field name="Shelf" type="string"/>-->
+<!--      <field name="Position" type="integer" nullable='true'/>-->
+<!--    </class>-->
+
+<!--    <class name="Author">-->
+<!--      <field refersTo="Book" pointsTo="many"/>-->
+<!--      <field name="Name" type="string" fts="true"/>-->
+<!--    </class>-->
+
+<!--    <class name="Address">-->
+<!--      <field name="Street" type="string"/>-->
+<!--      <field name="Zipcode" type="string"/>-->
+<!--      <field name="City" type="string"/>-->
+<!--    </class>-->
+<!--  </datastructure>-->
+</dxd>
