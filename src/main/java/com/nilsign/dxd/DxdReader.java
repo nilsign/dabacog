@@ -21,12 +21,10 @@ public class DxdReader {
     Serializer serializer = new Persister();
     File source = new File(dxdFilePath);
 
-    System.out.println(new File(".").getAbsolutePath());;
-
     try {
       return serializer.read(DxdModel.class, source);
     } catch(Exception e) {
-      throw new DxdReaderException("Failed to read the Dxd file. ", e);
+      throw new DxdReaderException(e.getMessage(), e);
     }
   }
 }

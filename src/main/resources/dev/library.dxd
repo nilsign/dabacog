@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dxd name="Dabacog - Book Library Demo">
+  <meta>
+    <diagrams
+        outputPath="./doc"
+        outputFormat="png"/>
+    <database
+        system="postgres"
+        location="localhost:5434"/>
+    <codeGeneration
+        outputLanguage="java"
+        outputPath="./generated"/>
+  </meta>
 
-<!--  <meta>-->
-<!--    <sql target="postgres"/>-->
-<!--    <source-code target="java"/>-->
-<!--    <output target="./generated"/>-->
-<!--  </meta>-->
-
-<!--  <datastructure>-->
+<!--  <entities>-->
 <!--    <class name="Genre">-->
 <!--      <field name="name" type="string" unique="true"/>-->
 <!--      <field refersTo="Book" pointsTo="many"/>-->
 <!--    </class>-->
-
 <!--    <class name="Book">-->
 <!--      <field refersTo="Author" pointsTo="many"/>-->
 <!--      <field refersTo="Genre" pointsTo="many"/>-->
@@ -61,5 +65,5 @@
 <!--      <field name="Zipcode" type="string"/>-->
 <!--      <field name="City" type="string"/>-->
 <!--    </class>-->
-<!--  </datastructure>-->
+<!--  </entities>-->
 </dxd>
