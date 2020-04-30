@@ -1,4 +1,4 @@
-package com.nilsign.dxd.meta;
+package com.nilsign.dxd.elements.meta;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,16 +9,16 @@ import org.simpleframework.xml.Element;
 @Setter
 @ToString
 @Element(name="meta")
-public class DxdMetaElement {
+public class DxdMeta {
 
   @Element(name="diagrams")
-  private DxdMetaDiagramsElement dxdMetaDiagrams;
+  private DxdMetaDiagrams dxdMetaDiagrams;
 
   @Element(name="database")
-  private DxdMetaDatabaseElement dxdMetaDatabase;
+  private DxdMetaDatabase dxdMetaDatabase;
 
   @Element(name="codeGeneration")
-  private DxdMetaCodeGenerationElement dxdMetaCodeGeneration;
+  private DxdMetaCodeGeneration dxdMetaCodeGeneration;
 }
 
 

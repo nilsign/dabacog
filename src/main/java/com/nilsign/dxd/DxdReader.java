@@ -1,5 +1,6 @@
 package com.nilsign.dxd;
 
+import com.nilsign.dxd.elements.DxdModel;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 

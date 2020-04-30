@@ -1,4 +1,4 @@
-package com.nilsign.dxd.meta;
+package com.nilsign.dxd.elements.meta;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import org.simpleframework.xml.Element;
 @Setter
 @ToString
 @Element(name="diagrams")
-public class DxdMetaDiagramsElement {
+public class DxdMetaDiagrams {
 
   @Attribute
   private String outputPath;

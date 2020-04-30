@@ -1,21 +1,21 @@
 package com.nilsign;
 
-import com.nilsign.dxd.DxdModel;
+import com.nilsign.dxd.elements.DxdModel;
 import com.nilsign.dxd.DxdReader;
 import com.nilsign.dxd.DxdReaderException;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 public class Dabacog {
 
   private static final String DABACOG_VERSION = "0.0.1";
-
   private static final String DXD_FILE_PATH = "./src/main/resources/dev/library.dxd";
 
   private static boolean flagDebug = false;
   private static boolean flagShowVersion = false;
 
+  // TODO(nilsheumer): User picocli as framework to create the CLI.
+  // https://github.com/remkop/picocli
   public static void main(String[] arguments) throws Exception {
     Dabacog.printDabacog();
 
@@ -23,7 +23,7 @@ public class Dabacog {
       System.exit(0);;
     }
 
-    System.out.println(String.format("Parsing DXD file: (%s)", DXD_FILE_PATH));
+    System.out.println(String.format("Parsing DXD file: '%s'", DXD_FILE_PATH));
     System.out.println(Dabacog.readDxdModel().toString());
   }
 
@@ -39,7 +39,7 @@ public class Dabacog {
         || argument.equalsIgnoreCase(longArgument));
   }
 
-  private static void printDabacog() throws IOException {
+  private static void printDabacog() {
     System.out.println("    ____        __");
     System.out.println("   / __ \\____ _/ /_  ____ __________  ____ _");
     System.out.println("  / / / / __ `/ __ \\/ __ `/ ___/ __ \\/ __ `/");
