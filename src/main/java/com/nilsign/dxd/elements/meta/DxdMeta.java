@@ -20,6 +20,3 @@ public class DxdMeta {
   @Element(name="codeGeneration")
   private DxdMetaCodeGeneration dxdMetaCodeGeneration;
 }
-
-
-

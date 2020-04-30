@@ -10,7 +10,7 @@ import org.simpleframework.xml.Element;
 @Setter
 @ToString
 @Element(name="database")
-class DxdMetaDatabase {
+public class DxdMetaDatabase {
 
   @Attribute
   private String system;
