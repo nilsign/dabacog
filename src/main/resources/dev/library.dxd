@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dxd name="Dabacog - Book Library Demo">
+
+  <meta>
+    <diagrams
+        outputPath="./doc"
+        outputFormat="png"/>
+    <database
+        system="postgres"
+        location="localhost:5434"/>
+    <codeGeneration
+        outputLanguage="java"
+        outputPath="./generated"/>
+  </meta>
+
+  <entities>
+    <class name="Genre">
+      <field name="name" type="string" />
+      <field refersTo="Book" multiplicity="many"/>
+    </class>
+
+    <class name="Book">
+      <field refersTo="Author" multiplicity="many"/>
+      <field refersTo="Genre" multiplicity="many"/>
+      <field refersTo="Loan" multiplicity="many"/>
+      <field refersTo="Location" multiplicity="one"/>
+      <field name="Name" type="string"/>
+      <field name="Isbn" type="string"/>
+      <field name="Price" type="double"/>
+    </class>
+
+    <class name="Loan">
+      <field refersTo="Customer" multiplicity="one" />
+      <field refersTo="Book" multiplicity="one"/>
+      <field name="Start" type="date"/>
+      <field name="End" type="date"/>
+      <field name="Return" type="date"/>
+      <field name="DunningLetter" type="boolean"/>
+    </class>
+
+    <class name="Customer">
+      <field refersTo="Address" multiplicity="one"/>
+      <field refersTo="Contact" multiplicity="one"/>
+      <field name="FirstName" type="string"/>
+      <field name="LastName" type="string"/>
+    </class>
+
+    <class name="Contact">
+      <field name="Mobile" type="string"/>
+      <field name="Home" type="string"/>
+      <field name="Email" type="string"/>
+    </class>
+
+    <class name="Location">
+      <field name="Floor" type="string"/>
+      <field name="Shelf" type="string"/>
+      <field name="Position" type="integer"/>
+    </class>
+
+    <class name="Author">
+      <field refersTo="Book" multiplicity="many"/>
+      <field name="Name" type="string"/>
+    </class>
+
+    <class name="Address">
+      <field name="Street" type="string"/>
+      <field name="Zipcode" type="string"/>
+      <field name="City" type="string"/>
+    </class>
+  </entities>
+
+</dxd>
