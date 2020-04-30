@@ -24,7 +24,7 @@ languages are planned to be supported.
 
 1. Create an XML file (also called DXD for <ins>D</ins>abacog <ins>X</ins>ML <ins>D</ins>escription):
 
-        <dxd-model>
+        <dxd>
 
             <meta>
                 <sql traget="postgres">
@@ -48,7 +48,7 @@ languages are planned to be supported.
                 <field name="name" type="string"/>
             </class>
 
-        </dxd-model>
+        </dxd>
 
 2. Execute the Dabacog CLI command in the same path where the DXD is located
 or append the path to the DXD file.
