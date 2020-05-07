@@ -1,13 +1,9 @@
 package com.nilsign.dxd.elements.meta;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import org.simpleframework.xml.Element;
 
-@Getter
-@Setter
-@ToString
+@Data
 @Element(name="meta")
 public class DxdMeta {
 

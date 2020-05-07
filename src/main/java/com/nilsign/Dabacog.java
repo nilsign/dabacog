@@ -3,6 +3,7 @@ package com.nilsign;
 import com.nilsign.dxd.elements.DxdModel;
 import com.nilsign.dxd.DxdReader;
 import com.nilsign.dxd.DxdReaderException;
+import com.nilsign.generators.diagram.DatabaseGraphGenerator;
 
 import java.util.Arrays;
 
@@ -19,24 +20,21 @@ public class Dabacog {
   public static void main(String[] arguments) throws Exception {
     Dabacog.printDabacog();
 
+    extractFlagsFromArguments(arguments);
     if (arguments != null && arguments[0].equals("-v")) {
       System.exit(0);;
     }
 
-    System.out.println(String.format("Parsing DXD file: '%s'", DXD_FILE_PATH));
-    System.out.println(Dabacog.readDxdModel().toString());
-  }
+    System.out.print(String.format("Parsing DXD file: '%s'", DXD_FILE_PATH));
+    DxdModel dxdModel = Dabacog.readDxdModel();
+    System.out.println(" -> [DONE]");
+    if (flagDebug) {
+      System.out.println("Model: " + dxdModel.toString());
+    }
 
-  private static void extractFlagsFromArguments(String[] arguments) {
-    extractFlagFromArguments(arguments, "-v", "--version", flagShowVersion);
-    extractFlagFromArguments(arguments, "-d", "--debug", flagDebug);
-  }
-
-  private static void extractFlagFromArguments(
-      String[] arguments, String shortArgument, String longArgument, boolean flagToSet) {
-    flagToSet = Arrays.stream(arguments).anyMatch(argument
-        -> argument.equalsIgnoreCase(shortArgument)
-        || argument.equalsIgnoreCase(longArgument));
+    System.out.print(String.format("Generating database diagram."));
+    DatabaseGraphGenerator.run(dxdModel);
+    System.out.println(" -> [DONE]");
   }
 
   private static void printDabacog() {
@@ -62,5 +60,17 @@ public class Dabacog {
       System.exit(-1);
     }
     return null;
+  }
+
+  private static void extractFlagsFromArguments(String[] arguments) {
+    extractFlagFromArguments(arguments, "-v", "--version", flagShowVersion);
+    extractFlagFromArguments(arguments, "-d", "--debug", flagDebug);
+  }
+
+  private static void extractFlagFromArguments(
+      String[] arguments, String shortArgument, String longArgument, boolean flagToSet) {
+    flagToSet = Arrays.stream(arguments).anyMatch(argument
+        -> argument.equalsIgnoreCase(shortArgument)
+        || argument.equalsIgnoreCase(longArgument));
   }
 }
