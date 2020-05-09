@@ -21,15 +21,29 @@ public class Dabacog {
     Dabacog.printDabacog();
 
     extractFlagsFromArguments(arguments);
-    if (arguments != null && arguments[0].equals("-v")) {
+    if (arguments != null && arguments.length > 0 && arguments[0].equals("-v")) {
       System.exit(0);;
     }
 
-    System.out.print(String.format("Parsing DXD file: '%s'", DXD_FILE_PATH));
+    System.out.print(String.format("Parsing DXD file: '%s'.", DXD_FILE_PATH));
     DxdModel dxdModel = Dabacog.readDxdModel();
     System.out.println(" -> [DONE]");
     if (flagDebug) {
-      System.out.println("Model: " + dxdModel.toString());
+      System.out.println("Dxd Model\n" + dxdModel.toString());
+    }
+
+    System.out.print(String.format("Dxd Model preparations."));
+    dxdModel.getEntities().prepareModels();
+    System.out.println(" -> [DONE]");
+    if (flagDebug) {
+      System.out.println("Dxd Entity 'many-to-many' Relations");
+      System.out.println(dxdModel.getEntities().getManyToManyClassRelationsMap());
+      System.out.println("Dxd Entity 'many-to-one' Relations");
+      System.out.println(dxdModel.getEntities().getManyToOneClassRelationsMap());
+      System.out.println("Dxd Entity 'one-to-many' Relations");
+      System.out.println(dxdModel.getEntities().getOneToManyClassRelationsMap());
+      System.out.println("Dxd Entity 'one-to-one' Relations");
+      System.out.println(dxdModel.getEntities().getOneToOneClassRelationsMap());
     }
 
     System.out.print(String.format("Generating database diagram."));
@@ -63,13 +77,13 @@ public class Dabacog {
   }
 
   private static void extractFlagsFromArguments(String[] arguments) {
-    extractFlagFromArguments(arguments, "-v", "--version", flagShowVersion);
-    extractFlagFromArguments(arguments, "-d", "--debug", flagDebug);
+    flagShowVersion = extractFlagFromArguments(arguments, "-v", "--version");
+    flagDebug = extractFlagFromArguments(arguments, "-d", "--debug");
   }
 
-  private static void extractFlagFromArguments(
-      String[] arguments, String shortArgument, String longArgument, boolean flagToSet) {
-    flagToSet = Arrays.stream(arguments).anyMatch(argument
+  private static boolean extractFlagFromArguments(
+      String[] arguments, String shortArgument, String longArgument) {
+    return Arrays.stream(arguments).anyMatch(argument
         -> argument.equalsIgnoreCase(shortArgument)
         || argument.equalsIgnoreCase(longArgument));
   }

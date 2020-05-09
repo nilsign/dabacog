@@ -1,8 +1,10 @@
 package com.nilsign.dxd;
 
 import com.nilsign.dxd.elements.DxdModel;
+import com.nilsign.dxd.elements.entities.EnumTransformer;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.transform.Matcher;
 
 import java.io.File;
 
@@ -19,9 +21,13 @@ public class DxdReader {
   }
 
   public static DxdModel run(String dxdFilePath) throws DxdReaderException {
-    Serializer serializer = new Persister();
+    Serializer serializer = new Persister((Matcher) type -> {
+        if (type.isEnum()) {
+          return new EnumTransformer(type);
+        }
+        return null;
+    });
     File source = new File(dxdFilePath);
-
     try {
       return serializer.read(DxdModel.class, source);
     } catch(Exception e) {
