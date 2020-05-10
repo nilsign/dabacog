@@ -3,7 +3,7 @@ package com.nilsign;
 import com.nilsign.dxd.elements.DxdModel;
 import com.nilsign.dxd.DxdReader;
 import com.nilsign.dxd.DxdReaderException;
-import com.nilsign.generators.diagram.DatabaseGraphGenerator;
+import com.nilsign.generators.graphs.DatabaseGraphGenerator;
 
 import java.util.Arrays;
 

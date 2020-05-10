@@ -1,7 +1,7 @@
 package com.nilsign.generators;
 
 import com.nilsign.dxd.elements.DxdModel;
-import com.nilsign.generators.diagram.GraphGeneratorException;
+import com.nilsign.generators.graphs.GraphGeneratorException;
 import com.nilsign.helper.FileHelper;
 
 import java.io.File;
