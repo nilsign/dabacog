@@ -84,19 +84,6 @@ public class DatabaseGraphGenerator extends GraphGenerator  {
 
   private String addDatabaseManyToManyTable(Pair<DxdEntityClass, DxdEntityClass> relation) {
     String tableName = SqlSchemaGenerator.buildManyToManyTableName(relation);
-
-    System.out.println(new StringBuffer()
-        .append(openGraphmlNode(tableName))
-        .append(openGraphmlLabel())
-        .append(openGraphmlTable())
-        .append(addGraphmlTableName(tableName, 2))
-        .append(addGraphmlTableColumnNames(List.of("FK_1", "FK_2")))
-        .append(addGraphmlTableRows(getDatabaseManyToManyTableColumnValues(relation)))
-        .append(closeGraphmlTable())
-        .append(closeGraphmlLabel())
-        .append(closeGraphmlNode())
-        .toString());
-
     return new StringBuffer()
         .append(openGraphmlNode(tableName))
         .append(openGraphmlLabel())
@@ -115,7 +102,9 @@ public class DatabaseGraphGenerator extends GraphGenerator  {
     fields.forEach(field -> {
       tableValues.add(Lists.newArrayList(
             "todo",
-            field.getName(),
+            field.isRelation()
+                ? SqlSchemaGenerator.buildForeignKeyName(field.getRefersTo())
+                : field.getName(),
             field.getType(),
             "todo",
             "todo",
@@ -132,7 +121,11 @@ public class DatabaseGraphGenerator extends GraphGenerator  {
   }
 
   private String addDatabaseTableRelations() {
-    // Render many-to-many
+    super.dxdModel.getEntities().getDistinctManyToOneClassRelationsList().forEach(
+        relation -> {
+
+        }
+    );
     return "";
   }
 

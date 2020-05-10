@@ -13,7 +13,7 @@ public class SqlSchemaGenerator {
   }
 
   public static String buildManyToManyTableName(Pair<DxdEntityClass, DxdEntityClass> relation) {
-    return String.format("%s-%s",
+    return String.format("%s_%s",
         buildTableName(relation.getFirst()),
         buildTableName(relation.getSecond()));
   }
