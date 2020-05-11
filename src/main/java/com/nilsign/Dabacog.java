@@ -79,8 +79,7 @@ public class Dabacog {
   private static boolean extractFlagFromArguments(
       String[] arguments, String shortArgument, String longArgument) {
     return Arrays.stream(arguments).anyMatch(argument
-        -> argument.equalsIgnoreCase(shortArgument)
-        || argument.equalsIgnoreCase(longArgument));
+        -> argument.equalsIgnoreCase(shortArgument) || argument.equalsIgnoreCase(longArgument));
   }
 
   private static void printDistinctRelations(DxdModel model) {

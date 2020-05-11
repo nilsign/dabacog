@@ -3,7 +3,7 @@
 
   <meta>
     <diagrams
-        outputPath="./doc"
+        outputPath="./generated"
         outputFormat="png"/>
     <database
         system="postgres"

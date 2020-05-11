@@ -61,103 +61,98 @@ public class DxdEntities {
       classNameToFieldsMap.put(
           dxdClass.getName(),
           Sets.newHashSet(dxdClass.getFields()));
-      dxdClass.getFields().forEach(dxdField ->
-          fieldToClassMap.put(dxdField, dxdClass));
+      dxdClass.getFields().forEach(dxdField
+          -> fieldToClassMap.put(dxdField, dxdClass));
     });
   }
 
   public void createClassRelationMappings() {
-    dxdClasses.forEach(dxdClass -> {
-      dxdClass.getRelationFields().forEach(dxdField -> {
-        DxdEntityClass referredDxdClass = classNameToClassMap.get(dxdField.getRefersTo());
-        boolean hasBackReference = false;
-        for (DxdEntityClassField referredDxdField : referredDxdClass.getRelationFields()) {
-          if (dxdClass.getName().equalsIgnoreCase(referredDxdField.getRefersTo())) {
-            // Referenced class has a back referencing field.
-            if (dxdField.isToManyRelation() && referredDxdField.isToManyRelation()) {
-              hasBackReference = true;
-              addRelationToMap(manyToManyClassRelationsMap, dxdClass, referredDxdClass);
-            } else if (dxdField.isToManyRelation() && referredDxdField.isToOneRelation()) {
-              hasBackReference = true;
-              addRelationToMap(manyToOneClassRelationsMap, dxdClass, referredDxdClass);
-            } else if (dxdField.isToOneRelation() && referredDxdField.isToManyRelation()) {
-              hasBackReference = true;
-              addRelationToMap(oneToManyClassRelationsMap, dxdClass, referredDxdClass);
-            } else if (dxdField.isToOneRelation() && referredDxdField.isToOneRelation()) {
-              hasBackReference = true;
-              addRelationToMap(oneToOneClassRelationsMap, dxdClass, referredDxdClass);
+    dxdClasses.forEach(dxdClass
+        -> dxdClass.getRelationFields().forEach(dxdField -> {
+          DxdEntityClass referredDxdClass = classNameToClassMap.get(dxdField.getRefersTo());
+          boolean hasBackReference = false;
+          for (DxdEntityClassField referredDxdField : referredDxdClass.getRelationFields()) {
+            if (dxdClass.getName().equalsIgnoreCase(referredDxdField.getRefersTo())) {
+              // Referenced class has a back referencing field.
+              if (dxdField.isToManyRelation() && referredDxdField.isToManyRelation()) {
+                hasBackReference = true;
+                addRelationToMap(manyToManyClassRelationsMap, dxdClass, referredDxdClass);
+              } else if (dxdField.isToManyRelation() && referredDxdField.isToOneRelation()) {
+                hasBackReference = true;
+                addRelationToMap(manyToOneClassRelationsMap, dxdClass, referredDxdClass);
+              } else if (dxdField.isToOneRelation() && referredDxdField.isToManyRelation()) {
+                hasBackReference = true;
+                addRelationToMap(oneToManyClassRelationsMap, dxdClass, referredDxdClass);
+              } else if (dxdField.isToOneRelation() && referredDxdField.isToOneRelation()) {
+                hasBackReference = true;
+                addRelationToMap(oneToOneClassRelationsMap, dxdClass, referredDxdClass);
+              }
             }
           }
-        }
-        if (!hasBackReference) {
-          if (dxdField.isToManyRelation()) {
-            // If a multiplicity many field has no back reference field within the referenced class
-            // a many-to-many relation is assumed.
-            addRelationToMap(manyToManyClassRelationsMap, dxdClass, referredDxdClass);
-          } else if (dxdField.isToOneRelation()) {
-            // If a multiplicity many field has no back reference field within the referenced class
-            // a many-to-many relation is assumed.
-            addRelationToMap(oneToManyClassRelationsMap, dxdClass, referredDxdClass);
-            addRelationToMap(manyToOneClassRelationsMap, referredDxdClass, dxdClass);
+          if (!hasBackReference) {
+            if (dxdField.isToManyRelation()) {
+              // If a multiplicity many field has no back reference field within the referenced class
+              // a many-to-many relation is assumed.
+              addRelationToMap(manyToManyClassRelationsMap, dxdClass, referredDxdClass);
+            } else if (dxdField.isToOneRelation()) {
+              // If a multiplicity many field has no back reference field within the referenced class
+              // a many-to-many relation is assumed.
+              addRelationToMap(oneToManyClassRelationsMap, dxdClass, referredDxdClass);
+              addRelationToMap(manyToOneClassRelationsMap, referredDxdClass, dxdClass);
+            }
           }
-        }
-      });
-    });
+        }));
   }
 
   private void createDistinctClassRelationLists() {
     Set<Pair<DxdEntityClass, DxdEntityClass>> addedDxdClassRelations = new HashSet<>();
     manyToManyClassRelationsMap.entrySet()
-        .forEach((Map.Entry<DxdEntityClass, Set<DxdEntityClass>> entry) -> {
-          entry.getValue().forEach((DxdEntityClass referencedClass) -> {
-            Pair<DxdEntityClass, DxdEntityClass> relationToAdd
-                = Pair.of(entry.getKey(), referencedClass);
-            if (!addedDxdClassRelations.contains(relationToAdd)
-                && !addedDxdClassRelations.contains(relationToAdd.invert())) {
-              distinctManyToManyClassRelationsList.add(relationToAdd);
-              addedDxdClassRelations.add(relationToAdd.invert());
-            }
-          });
-    });
+        .forEach((Map.Entry<DxdEntityClass, Set<DxdEntityClass>> entry)
+            -> entry.getValue().forEach((DxdEntityClass referencedClass) -> {
+                  Pair<DxdEntityClass, DxdEntityClass> relationToAdd
+                      = Pair.of(entry.getKey(), referencedClass);
+                  if (!addedDxdClassRelations.contains(relationToAdd)
+                      && !addedDxdClassRelations.contains(relationToAdd.invert())) {
+                    distinctManyToManyClassRelationsList.add(relationToAdd);
+                    addedDxdClassRelations.add(relationToAdd.invert());
+                  }
+                }));
     addedDxdClassRelations.clear();
     manyToOneClassRelationsMap.entrySet()
-        .forEach((Map.Entry<DxdEntityClass, Set<DxdEntityClass>> entry) -> {
-          entry.getValue().forEach((DxdEntityClass referencedClass) -> {
-            Pair<DxdEntityClass, DxdEntityClass> relationToAdd
-                = Pair.of(entry.getKey(), referencedClass);
-            if (!addedDxdClassRelations.contains(relationToAdd)
-                && !addedDxdClassRelations.contains(relationToAdd.invert())) {
-              distinctManyToOneClassRelationsList.add(relationToAdd);
-              addedDxdClassRelations.add(relationToAdd.invert());
-            }
-          });
-        });
+        .forEach((Map.Entry<DxdEntityClass, Set<DxdEntityClass>> entry)
+            -> entry.getValue().forEach((DxdEntityClass referencedClass) -> {
+                Pair<DxdEntityClass, DxdEntityClass> relationToAdd
+                    = Pair.of(entry.getKey(), referencedClass);
+                if (!addedDxdClassRelations.contains(relationToAdd)
+                    && !addedDxdClassRelations.contains(relationToAdd.invert())) {
+                  distinctManyToOneClassRelationsList.add(relationToAdd);
+                  addedDxdClassRelations.add(relationToAdd.invert());
+                }
+              }));
     addedDxdClassRelations.clear();
     oneToManyClassRelationsMap.entrySet()
-        .forEach((Map.Entry<DxdEntityClass, Set<DxdEntityClass>> entry) -> {
-          entry.getValue().forEach((DxdEntityClass referencedClass) -> {
-            Pair<DxdEntityClass, DxdEntityClass> relationToAdd
-                = Pair.of(entry.getKey(), referencedClass);
-            if (!addedDxdClassRelations.contains(relationToAdd)
-                && !addedDxdClassRelations.contains(relationToAdd.invert())) {
-              distinctOneToManyClassRelationsList.add(relationToAdd);
-              addedDxdClassRelations.add(relationToAdd.invert());
-            }
-          });
-        });
+        .forEach((Map.Entry<DxdEntityClass, Set<DxdEntityClass>> entry)
+            -> entry.getValue().forEach((DxdEntityClass referencedClass) -> {
+              Pair<DxdEntityClass, DxdEntityClass> relationToAdd
+                  = Pair.of(entry.getKey(), referencedClass);
+              if (!addedDxdClassRelations.contains(relationToAdd)
+                  && !addedDxdClassRelations.contains(relationToAdd.invert())) {
+                distinctOneToManyClassRelationsList.add(relationToAdd);
+                addedDxdClassRelations.add(relationToAdd.invert());
+              }
+            }));
     addedDxdClassRelations.clear();
     oneToOneClassRelationsMap.entrySet()
-        .forEach((Map.Entry<DxdEntityClass, Set<DxdEntityClass>> entry) -> {
-          entry.getValue().forEach((DxdEntityClass referencedClass) -> {
-            Pair<DxdEntityClass, DxdEntityClass> relationToAdd
-                = Pair.of(entry.getKey(), referencedClass);
-            if (!addedDxdClassRelations.contains(relationToAdd)
-                && !addedDxdClassRelations.contains(relationToAdd.invert())) {
-              distinctOneToOneClassRelationsList.add(relationToAdd);
-              addedDxdClassRelations.add(relationToAdd.invert());
-            }
-          });
-        });
+        .forEach((Map.Entry<DxdEntityClass, Set<DxdEntityClass>> entry)
+            -> entry.getValue().forEach((DxdEntityClass referencedClass) -> {
+              Pair<DxdEntityClass, DxdEntityClass> relationToAdd
+                  = Pair.of(entry.getKey(), referencedClass);
+              if (!addedDxdClassRelations.contains(relationToAdd)
+                  && !addedDxdClassRelations.contains(relationToAdd.invert())) {
+                distinctOneToOneClassRelationsList.add(relationToAdd);
+                addedDxdClassRelations.add(relationToAdd.invert());
+              }
+            }));
   }
 
   private void addRelationToMap(
