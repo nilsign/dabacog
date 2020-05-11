@@ -126,36 +126,36 @@ public class DatabaseGraphGenerator extends GraphGenerator  {
     super.dxdModel.getEntities().getDistinctManyToManyClassRelationsList().forEach(relation
         -> output
             .append(String.format(
-                "\ttable_node_%s -> table_node_%s;\n",
+                "\tgml_node_%s -> gml_node_%s;\n",
                 SqlSchemaGenerator.buildManyToManyTableName(relation),
                 SqlSchemaGenerator.buildTableName(relation.getFirst())))
             .append(String.format(
-                "\ttable_node_%s -> table_node_%s;\n",
+                "\tgml_node_%s -> gml_node_%s;\n",
                 SqlSchemaGenerator.buildManyToManyTableName(relation),
                 SqlSchemaGenerator.buildTableName(relation.getSecond()))));
     // Many-to-one edges
     super.dxdModel.getEntities().getDistinctManyToOneClassRelationsList().forEach(relation
         -> output
         .append(String.format(
-            "\ttable_node_%s -> table_node_%s [style=\"dashed\"];\n",
+            "\tgml_node_%s -> gml_node_%s [style=\"dashed\"];\n",
             SqlSchemaGenerator.buildTableName(relation.getFirst()),
             SqlSchemaGenerator.buildTableName(relation.getSecond()))));
     // One-to-many edges
     super.dxdModel.getEntities().getDistinctOneToManyClassRelationsList().forEach(relation
         -> output
         .append(String.format(
-            "\ttable_node_%s -> table_node_%s [style=\"dashed\"];\n",
+            "\tgml_node_%s -> gml_node_%s [style=\"dashed\"];\n",
             SqlSchemaGenerator.buildTableName(relation.getSecond()),
             SqlSchemaGenerator.buildTableName(relation.getFirst()))));
     // One-to-one edges
     super.dxdModel.getEntities().getDistinctOneToOneClassRelationsList().forEach(relation
         -> output
         .append(String.format(
-            "\ttable_node_%s -> table_node_%s [style=\"dotted\"];\n",
+            "\tgml_node_%s -> gml_node_%s [style=\"dotted\"];\n",
             SqlSchemaGenerator.buildTableName(relation.getFirst()),
             SqlSchemaGenerator.buildTableName(relation.getSecond())))
         .append(String.format(
-            "\ttable_node_%s -> table_node_%s [style=\"dotted\"];\n",
+            "\tgml_node_%s -> gml_node_%s [style=\"dotted\"];\n",
             SqlSchemaGenerator.buildTableName(relation.getSecond()),
             SqlSchemaGenerator.buildTableName(relation.getFirst()))));
     return output.toString();

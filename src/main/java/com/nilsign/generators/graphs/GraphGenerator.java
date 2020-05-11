@@ -24,7 +24,7 @@ public abstract class GraphGenerator extends Generator {
   }
 
   protected String openGraphmlNode(String nodeName) {
-    return String.format("\ttable_node_%s [\n", nodeName);
+    return String.format("\tgml_node_%s [\n", nodeName);
   }
 
   protected String openGraphmlLabel() {
