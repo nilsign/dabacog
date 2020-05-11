@@ -56,13 +56,12 @@ public abstract class GraphGenerator extends Generator {
 
   protected String addGraphmlTableRows(List<List<String>> rowValues) {
     StringBuffer output = new StringBuffer();
-    rowValues.forEach(row
-        -> {
-          output.append("\t\t\t\t<tr>\n");
-          row.forEach(value
-              -> output.append(String.format("\t\t\t\t\t<td>%s</td>\n", value)));
-          output.append("\t\t\t\t</tr>\n");
-        });
+    rowValues.forEach(row -> {
+      output.append("\t\t\t\t<tr>\n");
+      row.forEach(value
+          -> output.append(String.format("\t\t\t\t\t<td>%s</td>\n", value)));
+      output.append("\t\t\t\t</tr>\n");
+    });
     return output.toString();
   }
 

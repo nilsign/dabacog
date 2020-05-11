@@ -66,8 +66,8 @@ public class DatabaseGraphGenerator extends GraphGenerator  {
         .append(openGraphmlNode(SqlSchemaGenerator.buildTableName(dxdClass)))
         .append(openGraphmlLabel())
         .append(openGraphmlTable())
-        .append(addGraphmlTableName(SqlSchemaGenerator.buildTableName(dxdClass), 6))
-        .append(addGraphmlTableColumnNames(List.of("FK", "NAME", "TYPE", "INDEX", "UNIQUE", "NULLABLE")))
+        .append(addGraphmlTableName(SqlSchemaGenerator.buildTableName(dxdClass), 5))
+        .append(addGraphmlTableColumnNames(List.of("NAME", "TYPE", "INDEX", "UNIQUE", "NULLABLE")))
         .append(addGraphmlTableRows(getDatabaseTableColumnValues(dxdClass.getFields())))
         .append(closeGraphmlTable())
         .append(closeGraphmlLabel())
@@ -101,7 +101,6 @@ public class DatabaseGraphGenerator extends GraphGenerator  {
     List<List<String>> tableValues = new ArrayList<>();
     fields.forEach(field -> {
       tableValues.add(Lists.newArrayList(
-            "todo",
             field.isRelation()
                 ? SqlSchemaGenerator.buildForeignKeyName(field.getRefersTo())
                 : field.getName(),
@@ -136,28 +135,28 @@ public class DatabaseGraphGenerator extends GraphGenerator  {
     // Many-to-one edges
     super.dxdModel.getEntities().getDistinctManyToOneClassRelationsList().forEach(relation
         -> output
-        .append(String.format(
-            "\tgml_node_%s -> gml_node_%s [style=\"dashed\"];\n",
-            SqlSchemaGenerator.buildTableName(relation.getFirst()),
-            SqlSchemaGenerator.buildTableName(relation.getSecond()))));
+            .append(String.format(
+                "\tgml_node_%s -> gml_node_%s [style=\"dashed\"];\n",
+                SqlSchemaGenerator.buildTableName(relation.getFirst()),
+                SqlSchemaGenerator.buildTableName(relation.getSecond()))));
     // One-to-many edges
     super.dxdModel.getEntities().getDistinctOneToManyClassRelationsList().forEach(relation
         -> output
-        .append(String.format(
-            "\tgml_node_%s -> gml_node_%s [style=\"dashed\"];\n",
-            SqlSchemaGenerator.buildTableName(relation.getSecond()),
-            SqlSchemaGenerator.buildTableName(relation.getFirst()))));
+            .append(String.format(
+                "\tgml_node_%s -> gml_node_%s [style=\"dashed\"];\n",
+                SqlSchemaGenerator.buildTableName(relation.getSecond()),
+                SqlSchemaGenerator.buildTableName(relation.getFirst()))));
     // One-to-one edges
     super.dxdModel.getEntities().getDistinctOneToOneClassRelationsList().forEach(relation
         -> output
-        .append(String.format(
-            "\tgml_node_%s -> gml_node_%s [style=\"dotted\"];\n",
-            SqlSchemaGenerator.buildTableName(relation.getFirst()),
-            SqlSchemaGenerator.buildTableName(relation.getSecond())))
-        .append(String.format(
-            "\tgml_node_%s -> gml_node_%s [style=\"dotted\"];\n",
-            SqlSchemaGenerator.buildTableName(relation.getSecond()),
-            SqlSchemaGenerator.buildTableName(relation.getFirst()))));
+            .append(String.format(
+                "\tgml_node_%s -> gml_node_%s [style=\"dotted\"];\n",
+                SqlSchemaGenerator.buildTableName(relation.getFirst()),
+                SqlSchemaGenerator.buildTableName(relation.getSecond())))
+            .append(String.format(
+                "\tgml_node_%s -> gml_node_%s [style=\"dotted\"];\n",
+                SqlSchemaGenerator.buildTableName(relation.getSecond()),
+                SqlSchemaGenerator.buildTableName(relation.getFirst()))));
     return output.toString();
   }
 }
