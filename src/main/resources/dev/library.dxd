@@ -46,6 +46,7 @@
     </class>
 
     <class name="Contact">
+      <field refersTo="Customer" multiplicity="one"/>
       <field name="Mobile" type="string"/>
       <field name="Home" type="string"/>
       <field name="Email" type="string"/>

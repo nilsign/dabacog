@@ -70,7 +70,7 @@ public abstract class GraphGenerator extends Generator {
   }
 
   protected String closeGraphmlNode() {
-    return "\t]\n\n";
+    return "\t];\n\n";
   }
 
   protected String closeGraphmlGraph() {
