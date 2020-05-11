@@ -2,16 +2,12 @@ package com.nilsign.dxd.elements;
 
 import com.nilsign.dxd.elements.entities.DxdEntities;
 import com.nilsign.dxd.elements.meta.DxdMeta;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
-@Getter
-@Setter
-@ToString
+@Data
 @Root(name="dxd")
 public class DxdModel {
 
