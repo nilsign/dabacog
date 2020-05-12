@@ -1,4 +1,4 @@
-package com.nilsign.generators.graphs;
+package com.nilsign.generators.diagrams;
 
 public class GraphGeneratorException extends Exception {
 

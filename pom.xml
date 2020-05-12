@@ -40,15 +40,9 @@
       </dependency>
 
       <dependency>
-        <groupId>com.squareup</groupId>
-        <artifactId>javapoet</artifactId>
-        <version>1.12.1</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>29.0-jre</version>
+        <groupId>guru.nidi</groupId>
+        <artifactId>graphviz-java</artifactId>
+        <version>0.16.0</version>
       </dependency>
 
     </dependencies>
@@ -64,14 +58,16 @@
           <configuration>
             <annotationProcessorPaths>
               <path>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.12</version>
+              </path>
+              <path>
                 <groupId>info.picocli</groupId>
                 <artifactId>picocli-codegen</artifactId>
                 <version>4.2.0</version>
               </path>
             </annotationProcessorPaths>
-            <compilerArgs>
-              <arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
-            </compilerArgs>
           </configuration>
         </plugin>
 

@@ -10,7 +10,4 @@ public class DxdMetaDiagrams {
 
   @Attribute
   private String outputPath;
-
-  @Attribute
-  private String outputFormat;
 }

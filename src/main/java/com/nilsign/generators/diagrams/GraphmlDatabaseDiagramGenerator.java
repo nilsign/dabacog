@@ -1,6 +1,5 @@
-package com.nilsign.generators.graphs;
+package com.nilsign.generators.diagrams;
 
-import com.google.common.collect.Lists;
 import com.nilsign.dxd.elements.DxdModel;
 import com.nilsign.dxd.elements.entities.DxdEntityClass;
 import com.nilsign.dxd.elements.entities.DxdEntityClassField;
@@ -11,17 +10,18 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class DatabaseGraphGenerator extends GraphGenerator  {
+public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
 
-  private static final String GRAPHVIZ_DOT_FILE_NAME = "database-entity-relation-diagram.pot";
+  public static final String TARGET_FILE_NAME = "dabacog-db-diagram.pot";
 
   public static void run(DxdModel model) throws GraphGeneratorException {
-    new DatabaseGraphGenerator(model).generate();
+    new GraphmlDatabaseDiagramGenerator(model).generate();
   }
 
-  private DatabaseGraphGenerator(DxdModel dxdModel) {
+  private GraphmlDatabaseDiagramGenerator(DxdModel dxdModel) {
     super(dxdModel);
   }
 
@@ -32,12 +32,11 @@ public class DatabaseGraphGenerator extends GraphGenerator  {
 
   @Override
   protected String getTargetFileName() {
-    return GRAPHVIZ_DOT_FILE_NAME;
+    return TARGET_FILE_NAME;
   }
 
-  @Override
   public void generate() throws GraphGeneratorException {
-    File outputFile = super.createTargetFile();
+    File outputFile = super.createGenerationTargetFile();
     try (FileWriter writer = new FileWriter(outputFile)) {
       writer.write(new StringBuffer()
           .append(openGraphml())
@@ -67,7 +66,8 @@ public class DatabaseGraphGenerator extends GraphGenerator  {
         .append(openGraphmlLabel())
         .append(openGraphmlTable())
         .append(addGraphmlTableName(SqlSchemaGenerator.buildTableName(dxdClass), 5))
-        .append(addGraphmlTableColumnNames(List.of("NAME", "TYPE", "INDEX", "UNIQUE", "NULLABLE")))
+        .append(addGraphmlTableColumnNames(Arrays.asList(
+            "NAME", "TYPE", "INDEX", "UNIQUE", "NULLABLE")))
         .append(addGraphmlTableRows(getDatabaseTableColumnValues(dxdClass.getFields())))
         .append(closeGraphmlTable())
         .append(closeGraphmlLabel())
@@ -89,7 +89,7 @@ public class DatabaseGraphGenerator extends GraphGenerator  {
         .append(openGraphmlLabel())
         .append(openGraphmlTable())
         .append(addGraphmlTableName(tableName, 2))
-        .append(addGraphmlTableColumnNames(List.of("FK_1", "FK_2")))
+        .append(addGraphmlTableColumnNames(Arrays.asList("FK_1", "FK_2")))
         .append(addGraphmlTableRows(getDatabaseManyToManyTableColumnValues(relation)))
         .append(closeGraphmlTable())
         .append(closeGraphmlLabel())
@@ -100,7 +100,7 @@ public class DatabaseGraphGenerator extends GraphGenerator  {
   private List<List<String>> getDatabaseTableColumnValues(List<DxdEntityClassField> fields) {
     List<List<String>> tableValues = new ArrayList<>();
     fields.forEach(field -> {
-      tableValues.add(Lists.newArrayList(
+      tableValues.add(Arrays.asList(
             field.isRelation()
                 ? SqlSchemaGenerator.buildForeignKeyName(field.getRefersTo())
                 : field.getName(),
@@ -114,9 +114,11 @@ public class DatabaseGraphGenerator extends GraphGenerator  {
 
   private List<List<String>> getDatabaseManyToManyTableColumnValues(
       Pair<DxdEntityClass, DxdEntityClass> relation) {
-    return List.of(List.of(
-        SqlSchemaGenerator.buildForeignKeyName(relation.getFirst().getName()),
-        SqlSchemaGenerator.buildForeignKeyName(relation.getSecond().getName())));
+    return Arrays.asList(
+        Arrays.asList(
+            SqlSchemaGenerator.buildForeignKeyName(relation.getFirst().getName()),
+            SqlSchemaGenerator.buildForeignKeyName(relation.getSecond().getName()))
+    );
   }
 
   private String addDatabaseTableRelations() {

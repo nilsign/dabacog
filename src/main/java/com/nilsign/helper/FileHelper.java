@@ -12,7 +12,7 @@ public final class FileHelper {
     String normalizedPath = path.trim().replaceAll("[/\\\\]", "\\" + File.separator);
     if (normalizedPath.charAt(normalizedPath.length() - 1) != File.separatorChar
         && new File(path).isDirectory()) {
-      normalizedPath += "\\" + File.separator;
+      normalizedPath += File.separator;
     }
     return normalizedPath;
   }

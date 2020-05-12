@@ -1,6 +1,5 @@
 package com.nilsign.dxd.elements.entities;
 
-import com.google.common.collect.Sets;
 import com.nilsign.misc.Pair;
 import lombok.Data;
 import org.simpleframework.xml.Element;
@@ -57,10 +56,10 @@ public class DxdEntities {
       classNameToClassMap.put(dxdClass.getName(), dxdClass);
       classToFieldsMap.put(
           dxdClass,
-          Sets.newHashSet(dxdClass.getFields()));
+          new HashSet<>(dxdClass.getFields()));
       classNameToFieldsMap.put(
           dxdClass.getName(),
-          Sets.newHashSet(dxdClass.getFields()));
+          new HashSet<>(dxdClass.getFields()));
       dxdClass.getFields().forEach(dxdField
           -> fieldToClassMap.put(dxdField, dxdClass));
     });
