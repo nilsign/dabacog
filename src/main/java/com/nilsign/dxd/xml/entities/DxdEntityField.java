@@ -7,7 +7,7 @@ import org.simpleframework.xml.Element;
 
 @Data
 @Element(name="field")
-public class DxdEntityClassField {
+public class DxdEntityField {
 
   public static final String ATTRIBUTE_NAME_MULTIPLICITY = "multiplicity";
 

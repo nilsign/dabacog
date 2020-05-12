@@ -2,7 +2,7 @@ package com.nilsign.generators.diagrams;
 
 import com.nilsign.dxd.xml.DxdModel;
 import com.nilsign.dxd.xml.entities.DxdEntityClass;
-import com.nilsign.dxd.xml.entities.DxdEntityClassField;
+import com.nilsign.dxd.xml.entities.DxdEntityField;
 import com.nilsign.generators.sql.SqlSchemaGenerator;
 import com.nilsign.misc.Pair;
 
@@ -97,7 +97,7 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
         .toString();
   }
 
-  private List<List<String>> getDatabaseTableColumnValues(List<DxdEntityClassField> fields) {
+  private List<List<String>> getDatabaseTableColumnValues(List<DxdEntityField> fields) {
     List<List<String>> tableValues = new ArrayList<>();
     fields.forEach(field -> {
       tableValues.add(Arrays.asList(
