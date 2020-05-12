@@ -3,8 +3,8 @@
 
   <meta>
     <diagrams
-        outputPath="./generated"
-        outputFormat="png"/>
+        outputPath="./generated">
+    </diagrams>
     <database
         system="postgres"
         location="localhost:5434"/>

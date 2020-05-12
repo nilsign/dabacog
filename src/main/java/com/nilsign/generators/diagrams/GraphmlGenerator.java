@@ -1,13 +1,13 @@
-package com.nilsign.generators.graphs;
+package com.nilsign.generators.diagrams;
 
 import com.nilsign.dxd.elements.DxdModel;
 import com.nilsign.generators.Generator;
 
 import java.util.List;
 
-public abstract class GraphGenerator extends Generator {
+public abstract class GraphmlGenerator extends Generator {
 
-  protected GraphGenerator(DxdModel dxdModel) {
+  protected GraphmlGenerator(DxdModel dxdModel) {
     super(dxdModel);
   }
 

@@ -1,7 +1,7 @@
 package com.nilsign.generators;
 
 import com.nilsign.dxd.elements.DxdModel;
-import com.nilsign.generators.graphs.GraphGeneratorException;
+import com.nilsign.generators.diagrams.GraphGeneratorException;
 import com.nilsign.helper.FileHelper;
 
 import java.io.File;
@@ -17,18 +17,21 @@ public abstract class Generator {
 
   protected abstract String getOutputDirectory();
   protected abstract String getTargetFileName();
-  protected abstract void generate() throws GraphGeneratorException;
 
-  public File createTargetFile() throws GraphGeneratorException {
+  public String getTargetFilePath() {
     String filePath = FileHelper.createDirectoriesIfNotExist(getOutputDirectory());
-    filePath = FileHelper.normalizePath(filePath) + getTargetFileName().trim();
+    return FileHelper.normalizePath(filePath) + getTargetFileName().trim();
+  }
+
+  public File createGenerationTargetFile() throws GraphGeneratorException {
+    String filePath = getTargetFilePath();
     FileHelper.deleteFileIfExists(filePath);
     try {
       return FileHelper.createFileIfNotExists(filePath);
     } catch (IOException e) {
       throw new GraphGeneratorException(
           String.format(
-              "Couldn't create graph description file at '%s'",
+              "Couldn't create new generation target file at '%s'",
               filePath),
           e);
     }

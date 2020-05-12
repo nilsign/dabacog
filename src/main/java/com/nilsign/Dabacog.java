@@ -3,7 +3,8 @@ package com.nilsign;
 import com.nilsign.dxd.DxdReader;
 import com.nilsign.dxd.DxdReaderException;
 import com.nilsign.dxd.elements.DxdModel;
-import com.nilsign.generators.graphs.DatabaseGraphGenerator;
+import com.nilsign.generators.diagrams.GraphmlDatabaseDiagramGenerator;
+import com.nilsign.generators.diagrams.GraphmlRenderer;
 
 import java.util.Arrays;
 
@@ -15,37 +16,6 @@ public class Dabacog {
   private static boolean flagDebug = false;
   private static boolean flagShowVersion = false;
 
-  // TODO(nilsheumer): User picocli as framework to create the CLI.
-  // https://github.com/remkop/picocli
-  public static void main(String[] arguments) throws Exception {
-    Dabacog.printDabacog();
-
-    extractFlagsFromArguments(arguments);
-    if (arguments != null && arguments.length > 0 && arguments[0].equals("-v")) {
-      System.exit(0);;
-    }
-
-    System.out.print(String.format("Parsing DXD file: '%s'", DXD_FILE_PATH));
-    DxdModel dxdModel = Dabacog.readDxdModel();
-    System.out.println(" -> [DONE]");
-    if (flagDebug) {
-      System.out.println(String.format("\nDXD MODEL\n%s\n", dxdModel.toString()));
-    }
-
-    System.out.print(String.format("Preparing Dxd Model"));
-    dxdModel.getEntities().prepareModels();
-    System.out.println(" -> [DONE]");
-    if (flagDebug) {
-     printDistinctRelations(dxdModel);
-     printAllRelations(dxdModel);
-     System.out.println();
-    }
-
-    System.out.print(String.format("Generating database diagram"));
-    DatabaseGraphGenerator.run(dxdModel);
-    System.out.println(" -> [DONE]");
-  }
-
   private static void printDabacog() {
     System.out.println("    ____        __");
     System.out.println("   / __ \\____ _/ /_  ____ __________  ____ _");
@@ -55,6 +25,58 @@ public class Dabacog {
     System.out.println("                                   /____/");
     System.out.println(String.format("Version %s - development", DABACOG_VERSION));
     System.out.println();
+  }
+
+  // TODO(nilsheumer): User picocli as framework to create the CLI.
+  // https://github.com/remkop/picocli
+  public static void main(String[] arguments) throws Exception {
+    try {
+      Dabacog.printDabacog();
+
+      extractFlagsFromArguments(arguments);
+      if (arguments != null && arguments.length > 0 && arguments[0].equals("-v")) {
+        System.exit(0);;
+      }
+
+      System.out.println(String.format("Parsing DXD file '%s'...", DXD_FILE_PATH));
+      DxdModel dxdModel = Dabacog.readDxdModel();
+      if (flagDebug) {
+        System.out.println(String.format("DXD MODEL\n%s\n", dxdModel.toString()));
+      }
+      System.out.println(String.format("Parsing DXD file -> [DONE]", DXD_FILE_PATH)) ;
+
+      System.out.println(String.format("Preparing Dxd Model..."));
+      dxdModel.getEntities().prepareModels();
+      if (flagDebug) {
+       printDistinctRelations(dxdModel);
+       printAllRelations(dxdModel);
+       System.out.println();
+      }
+      System.out.println(String.format("Preparing Dxd Model -> [DONE]"));
+
+      System.out.println(String.format("Generating database diagram description..."));
+      GraphmlDatabaseDiagramGenerator.run(dxdModel);
+      System.out.println(String.format("Generating database diagram description -> [DONE]"));
+
+      System.out.println(String.format("Rendering database diagram..."));
+      GraphmlRenderer.run(dxdModel);
+      System.out.println(String.format("Rendering database diagram -> [DONE]"));
+
+    } catch (Exception e) {
+      System.out.println(e);
+      System.exit(-1);
+    }
+  }
+
+  private static void extractFlagsFromArguments(String[] arguments) {
+    flagShowVersion = extractFlagFromArguments(arguments, "-v", "--version");
+    flagDebug = extractFlagFromArguments(arguments, "-d", "--debug");
+  }
+
+  private static boolean extractFlagFromArguments(
+      String[] arguments, String shortArgument, String longArgument) {
+    return Arrays.stream(arguments).anyMatch(argument
+        -> argument.equalsIgnoreCase(shortArgument) || argument.equalsIgnoreCase(longArgument));
   }
 
   private static DxdModel readDxdModel() {
@@ -69,17 +91,6 @@ public class Dabacog {
       System.exit(-1);
     }
     return null;
-  }
-
-  private static void extractFlagsFromArguments(String[] arguments) {
-    flagShowVersion = extractFlagFromArguments(arguments, "-v", "--version");
-    flagDebug = extractFlagFromArguments(arguments, "-d", "--debug");
-  }
-
-  private static boolean extractFlagFromArguments(
-      String[] arguments, String shortArgument, String longArgument) {
-    return Arrays.stream(arguments).anyMatch(argument
-        -> argument.equalsIgnoreCase(shortArgument) || argument.equalsIgnoreCase(longArgument));
   }
 
   private static void printDistinctRelations(DxdModel model) {
