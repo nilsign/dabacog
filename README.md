@@ -50,8 +50,8 @@ languages are planned to be supported.
 
         </dxd>
 
-2. Execute the Dabacog CLI command in the same path where the DXD is located
-or append the path to the DXD file.
+2. Execute the corresponding Dabacog CLI generation command from the directory that contains the DXD
+file or just append the DXD file path as CLI argument.
 
         $ dabacog run
 
