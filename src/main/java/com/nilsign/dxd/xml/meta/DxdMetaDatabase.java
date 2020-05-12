@@ -1,4 +1,4 @@
-package com.nilsign.dxd.elements.meta;
+package com.nilsign.dxd.xml.meta;
 
 import lombok.Data;
 import org.simpleframework.xml.Attribute;

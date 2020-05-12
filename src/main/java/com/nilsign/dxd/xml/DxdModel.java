@@ -1,7 +1,7 @@
-package com.nilsign.dxd.elements;
+package com.nilsign.dxd.xml;
 
-import com.nilsign.dxd.elements.entities.DxdEntities;
-import com.nilsign.dxd.elements.meta.DxdMeta;
+import com.nilsign.dxd.xml.entities.DxdEntities;
+import com.nilsign.dxd.xml.meta.DxdMeta;
 import lombok.Data;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;

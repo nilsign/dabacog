@@ -1,7 +1,7 @@
 package com.nilsign.dxd;
 
-import com.nilsign.dxd.elements.DxdModel;
-import com.nilsign.dxd.elements.entities.EnumTransformer;
+import com.nilsign.dxd.xml.DxdModel;
+import com.nilsign.dxd.enums.EnumTransformer;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.transform.Matcher;

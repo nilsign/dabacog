@@ -1,6 +1,6 @@
 package com.nilsign.generators.sql;
 
-import com.nilsign.dxd.elements.entities.DxdEntityClass;
+import com.nilsign.dxd.xml.entities.DxdEntityClass;
 import com.nilsign.misc.Pair;
 
 public class SqlSchemaGenerator {

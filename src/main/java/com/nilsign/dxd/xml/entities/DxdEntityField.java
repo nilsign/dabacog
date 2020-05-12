@@ -1,12 +1,13 @@
-package com.nilsign.dxd.elements.entities;
+package com.nilsign.dxd.xml.entities;
 
+import com.nilsign.dxd.enums.Multiplicity;
 import lombok.Data;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 
 @Data
 @Element(name="field")
-public class DxdEntityClassField {
+public class DxdEntityField {
 
   public static final String ATTRIBUTE_NAME_MULTIPLICITY = "multiplicity";
 

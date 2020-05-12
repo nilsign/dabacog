@@ -1,4 +1,4 @@
-package com.nilsign.dxd.elements.entities;
+package com.nilsign.dxd.xml.entities;
 
 import lombok.Data;
 import org.simpleframework.xml.Attribute;
@@ -17,26 +17,26 @@ public class DxdEntityClass {
   private String name;
 
   @ElementList(inline=true, entry="field")
-  private List<DxdEntityClassField> fields;
+  private List<DxdEntityField> fields;
 
-  public Set<DxdEntityClassField> getRelationFields() {
+  public Set<DxdEntityField> getRelationFields() {
     return fields
         .stream()
-        .filter(DxdEntityClassField::isRelation)
+        .filter(DxdEntityField::isRelation)
         .collect(Collectors.toSet());
   }
 
-  public Set<DxdEntityClassField> getToManyRelationFields() {
+  public Set<DxdEntityField> getToManyRelationFields() {
    return fields
        .stream()
-       .filter(DxdEntityClassField::isToManyRelation)
+       .filter(DxdEntityField::isToManyRelation)
        .collect(Collectors.toSet());
   }
 
-  public Set<DxdEntityClassField> getToOneRelationFields() {
+  public Set<DxdEntityField> getToOneRelationFields() {
     return fields
         .stream()
-        .filter(DxdEntityClassField::isToOneRelation)
+        .filter(DxdEntityField::isToOneRelation)
         .collect(Collectors.toSet());
   }
 

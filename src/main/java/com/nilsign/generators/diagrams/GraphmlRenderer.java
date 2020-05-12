@@ -1,6 +1,6 @@
 package com.nilsign.generators.diagrams;
 
-import com.nilsign.dxd.elements.DxdModel;
+import com.nilsign.dxd.xml.DxdModel;
 import com.nilsign.generators.Generator;
 import com.nilsign.helper.FileHelper;
 import guru.nidi.graphviz.engine.Format;
@@ -16,16 +16,16 @@ public class GraphmlRenderer extends Generator {
     super(dxdModel);
   }
 
-  public static void run(DxdModel dxdModel) throws GraphGeneratorException {
+  public static void run(DxdModel dxdModel) throws GraphmlRendererException {
     new GraphmlRenderer(dxdModel).render();
   }
 
-  private void render() throws GraphGeneratorException {
+  private void render() throws GraphmlRendererException {
     File targetFile;
     try {
       targetFile = super.createGenerationTargetFile();
     } catch (Exception e) {
-      throw new GraphGeneratorException(
+      throw new GraphmlRendererException(
           String.format("Graphviz failed to create target file '%s'.", getTargetFilePath()), e);
     }
     try {
@@ -36,7 +36,7 @@ public class GraphmlRenderer extends Generator {
           .render(Format.PNG)
           .toFile(targetFile);
     } catch (Exception e) {
-      throw new GraphGeneratorException(
+      throw new GraphmlRendererException(
           String.format(
               "Graphviz failed to render diagram into target file '%s'.",
               getTargetFilePath()),

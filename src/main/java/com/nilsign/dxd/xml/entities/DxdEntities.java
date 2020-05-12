@@ -1,5 +1,6 @@
-package com.nilsign.dxd.elements.entities;
+package com.nilsign.dxd.xml.entities;
 
+import com.nilsign.dxd.xml.DxdModelException;
 import com.nilsign.misc.Pair;
 import lombok.Data;
 import org.simpleframework.xml.Element;
@@ -18,9 +19,9 @@ public class DxdEntities {
 
   // Class mappings
   private final Map<String, DxdEntityClass> classNameToClassMap = new HashMap();
-  private final Map<DxdEntityClassField, DxdEntityClass> fieldToClassMap = new HashMap<>();
-  private final Map<DxdEntityClass, Set<DxdEntityClassField>> classToFieldsMap = new HashMap<>();
-  private final Map<String, Set<DxdEntityClassField>> classNameToFieldsMap = new HashMap<>();
+  private final Map<DxdEntityField, DxdEntityClass> fieldToClassMap = new HashMap<>();
+  private final Map<DxdEntityClass, Set<DxdEntityField>> classToFieldsMap = new HashMap<>();
+  private final Map<String, Set<DxdEntityField>> classNameToFieldsMap = new HashMap<>();
 
   // Class relation mappings
   private final Map<DxdEntityClass, Set<DxdEntityClass>> manyToManyClassRelationsMap
@@ -45,10 +46,14 @@ public class DxdEntities {
   @ElementList(inline=true, entry="class")
   private List<DxdEntityClass> dxdClasses;
 
-  public void prepareModels() {
-    createClassMappings();
-    createClassRelationMappings();
-    createDistinctClassRelationLists();
+  public void prepareModels() throws DxdModelException {
+    try {
+      createClassMappings();
+      createClassRelationMappings();
+      createDistinctClassRelationLists();
+    } catch (Exception e) {
+      throw new DxdModelException("The Dxd model preparation failed.", e);
+    }
   }
 
   private void createClassMappings() {
@@ -70,7 +75,7 @@ public class DxdEntities {
         -> dxdClass.getRelationFields().forEach(dxdField -> {
           DxdEntityClass referredDxdClass = classNameToClassMap.get(dxdField.getRefersTo());
           boolean hasBackReference = false;
-          for (DxdEntityClassField referredDxdField : referredDxdClass.getRelationFields()) {
+          for (DxdEntityField referredDxdField : referredDxdClass.getRelationFields()) {
             if (dxdClass.getName().equalsIgnoreCase(referredDxdField.getRefersTo())) {
               // Referenced class has a back referencing field.
               if (dxdField.isToManyRelation() && referredDxdField.isToManyRelation()) {

@@ -2,11 +2,19 @@ package com.nilsign;
 
 import com.nilsign.dxd.DxdReader;
 import com.nilsign.dxd.DxdReaderException;
-import com.nilsign.dxd.elements.DxdModel;
+import com.nilsign.dxd.xml.DxdModel;
+import com.nilsign.dxd.xml.DxdModelException;
+import com.nilsign.dxd.xml.entities.DxdEntityClass;
 import com.nilsign.generators.diagrams.GraphmlDatabaseDiagramGenerator;
+import com.nilsign.generators.diagrams.GraphmlGeneratorException;
 import com.nilsign.generators.diagrams.GraphmlRenderer;
+import com.nilsign.generators.diagrams.GraphmlRendererException;
+import com.nilsign.misc.Pair;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Dabacog {
 
@@ -15,6 +23,31 @@ public class Dabacog {
 
   private static boolean flagDebug = false;
   private static boolean flagShowVersion = false;
+
+  private static DxdModel dxdModel;
+
+  // TODO(nilsheumer): User picocli as framework to create the CLI.
+  // https://github.com/remkop/picocli
+  public static void main(String[] arguments) throws Exception {
+    try {
+      Dabacog.printDabacog();
+      extractFlagsFromArguments(arguments);
+      if (arguments != null && arguments.length > 0 && arguments[0].equals("-v")) {
+        System.exit(0);;
+      }
+      Dabacog.readDxdModel();
+      Dabacog.prepareDxdModel();
+      Dabacog.generateGraphmlDatabaseDiagram();
+      Dabacog.renderGraphmlDatabaseDiagram();
+    } catch (Exception e) {
+      if (flagDebug) {
+        e.printStackTrace();
+      } else {
+        System.out.println(e.getMessage());
+      };
+      System.exit(-1);
+    }
+  }
 
   private static void printDabacog() {
     System.out.println("    ____        __");
@@ -25,47 +58,6 @@ public class Dabacog {
     System.out.println("                                   /____/");
     System.out.println(String.format("Version %s - development", DABACOG_VERSION));
     System.out.println();
-  }
-
-  // TODO(nilsheumer): User picocli as framework to create the CLI.
-  // https://github.com/remkop/picocli
-  public static void main(String[] arguments) throws Exception {
-    try {
-      Dabacog.printDabacog();
-
-      extractFlagsFromArguments(arguments);
-      if (arguments != null && arguments.length > 0 && arguments[0].equals("-v")) {
-        System.exit(0);;
-      }
-
-      System.out.println(String.format("Parsing DXD file '%s'...", DXD_FILE_PATH));
-      DxdModel dxdModel = Dabacog.readDxdModel();
-      if (flagDebug) {
-        System.out.println(String.format("DXD MODEL\n%s\n", dxdModel.toString()));
-      }
-      System.out.println(String.format("Parsing DXD file -> [DONE]", DXD_FILE_PATH)) ;
-
-      System.out.println(String.format("Preparing Dxd Model..."));
-      dxdModel.getEntities().prepareModels();
-      if (flagDebug) {
-       printDistinctRelations(dxdModel);
-       printAllRelations(dxdModel);
-       System.out.println();
-      }
-      System.out.println(String.format("Preparing Dxd Model -> [DONE]"));
-
-      System.out.println(String.format("Generating database diagram description..."));
-      GraphmlDatabaseDiagramGenerator.run(dxdModel);
-      System.out.println(String.format("Generating database diagram description -> [DONE]"));
-
-      System.out.println(String.format("Rendering database diagram..."));
-      GraphmlRenderer.run(dxdModel);
-      System.out.println(String.format("Rendering database diagram -> [DONE]"));
-
-    } catch (Exception e) {
-      System.out.println(e);
-      System.exit(-1);
-    }
   }
 
   private static void extractFlagsFromArguments(String[] arguments) {
@@ -79,79 +71,83 @@ public class Dabacog {
         -> argument.equalsIgnoreCase(shortArgument) || argument.equalsIgnoreCase(longArgument));
   }
 
-  private static DxdModel readDxdModel() {
-    try {
-      return DxdReader.run(Dabacog.DXD_FILE_PATH);
-    } catch (DxdReaderException e) {
-      if (!flagDebug) {
-        e.printStackTrace();
-      } else {
-        System.out.println(e.getMessage());
-      };
-      System.exit(-1);
+  private static void readDxdModel() throws DxdReaderException {
+    System.out.println(String.format("Parsing DXD file '%s'...", DXD_FILE_PATH));
+    dxdModel = DxdReader.run(Dabacog.DXD_FILE_PATH);
+    if (flagDebug) {
+      System.out.println(String.format("DXD MODEL\n%s", dxdModel.toString()));
     }
-    return null;
+    System.out.println(String.format("Parsing DXD file -> [DONE]", DXD_FILE_PATH)) ;
   }
 
-  private static void printDistinctRelations(DxdModel model) {
-    System.out.println("\nDISTINCT MANY-TO-MANY-RELATIONS");
-    model.getEntities().getDistinctManyToManyClassRelationsList().forEach(relation
-        -> System.out.println(String.format(
-            "+ %s -> %s",
-            relation.getFirst().getName(),
-            relation.getSecond().getName())));
-    System.out.println("\nDISTINCT MANY-TO-ONE-RELATIONS");
-    model.getEntities().getDistinctManyToOneClassRelationsList().forEach(relation
-        -> System.out.println(String.format(
-          "+ %s -> %s",
-          relation.getFirst().getName(),
-          relation.getSecond().getName())));
-    System.out.println("\nDISTINCT ONE-TO-MANY-RELATIONS");
-    model.getEntities().getDistinctOneToManyClassRelationsList().forEach(relation
-        -> System.out.println(String.format(
-          "+ %s -> %s",
-          relation.getFirst().getName(),
-          relation.getSecond().getName())));
-    System.out.println("\nDISTINCT ONE-TO-ONE-RELATIONS");
-    model.getEntities().getDistinctOneToOneClassRelationsList().forEach(relation
-        -> System.out.println(String.format(
-          "+ %s -> %s",
-          relation.getFirst().getName(),
-          relation.getSecond().getName())));
+  private static void prepareDxdModel() throws DxdModelException {
+    System.out.println(String.format("Preparing Dxd Model..."));
+    dxdModel.getEntities().prepareModels();
+    if (flagDebug) {
+      printAllDistinctRelations(dxdModel);
+      printAllRelations(dxdModel);
+    }
+    System.out.println(String.format("Preparing Dxd Model -> [DONE]"));
+  }
+
+  private static void generateGraphmlDatabaseDiagram() throws GraphmlGeneratorException {
+    System.out.println(String.format("Generating database diagram description..."));
+    GraphmlDatabaseDiagramGenerator.run(dxdModel);
+    System.out.println(String.format("Generating database diagram description -> [DONE]"));
+  }
+
+  public static void renderGraphmlDatabaseDiagram() throws GraphmlRendererException {
+    System.out.println(String.format("Rendering database diagram..."));
+    GraphmlRenderer.run(dxdModel);
+    System.out.println(String.format("Rendering database diagram -> [DONE]"));
+  }
+
+  private static void printAllDistinctRelations(DxdModel model) {
+    printDistinctRelation(
+        "DISTINCT MANY-TO-MANY-RELATIONS",
+        model.getEntities().getDistinctManyToManyClassRelationsList());
+    printDistinctRelation(
+        "DISTINCT MANY-TO-ONE-RELATIONS",
+        model.getEntities().getDistinctManyToOneClassRelationsList());
+    printDistinctRelation(
+        "DISTINCT ONE-TO-MANY-RELATIONS",
+        model.getEntities().getDistinctOneToManyClassRelationsList());
+    printDistinctRelation(
+        "DISTINCT ONE-TO-ONE-RELATIONS",
+        model.getEntities().getDistinctOneToOneClassRelationsList());
+  }
+
+  private static void printDistinctRelation(
+      String headline, List<Pair<DxdEntityClass, DxdEntityClass>> relations) {
+    System.out.println(headline);
+    relations.forEach(relation -> System.out.println(String.format(
+        "+ %s -> %s",
+        relation.getFirst().getName(),
+        relation.getSecond().getName())));
   }
 
   private static void printAllRelations(DxdModel model) {
-    System.out.println("\nALL MANY-TO-MANY-RELATIONS");
-    model.getEntities().getManyToManyClassRelationsMap()
-        .forEach((dxdClass, referredDxdClasses)
-            -> referredDxdClasses.forEach(referredDxdClass
-                -> System.out.println(String.format(
-                    "+ %s -> %s",
-                    dxdClass.getName(),
-                    referredDxdClass.getName()))));
-    System.out.println("\nALL MANY-TO-ONE-RELATIONS");
-    model.getEntities().getManyToOneClassRelationsMap()
-        .forEach((dxdClass, referredDxdClasses)
-            -> referredDxdClasses.forEach(referredDxdClass
-                -> System.out.println(String.format(
-                    "+ %s -> %s",
-                    dxdClass.getName(),
-                    referredDxdClass.getName()))));
-    System.out.println("\nALL ONE-TO-MANY-RELATIONS");
-    model.getEntities().getOneToManyClassRelationsMap()
-        .forEach((dxdClass, referredDxdClasses)
-            -> referredDxdClasses.forEach(referredDxdClass
-                -> System.out.println(String.format(
-                    "+ %s -> %s",
-                    dxdClass.getName(),
-                    referredDxdClass.getName()))));
-    System.out.println("\nALL ONE-TO-ONE-RELATIONS");
-    model.getEntities().getOneToOneClassRelationsMap()
-        .forEach((dxdClass, referredDxdClasses)
-            -> referredDxdClasses.forEach(referredDxdClass
-               -> System.out.println(String.format(
-                    "+ %s -> %s",
-                    dxdClass.getName(),
-                    referredDxdClass.getName()))));
+    printRelation(
+        "ALL MANY-TO-MANY-RELATIONS",
+        model.getEntities().getManyToManyClassRelationsMap());
+    printRelation(
+        "ALL MANY-TO-ONE-RELATIONS",
+        model.getEntities().getManyToOneClassRelationsMap());
+    printRelation(
+        "ALL ONE-TO-MANY-RELATIONS",
+        model.getEntities().getOneToManyClassRelationsMap());
+    printRelation(
+        "ALL ONE-TO-ONE-RELATIONS",
+        model.getEntities().getOneToOneClassRelationsMap());
+  }
+
+  private static void printRelation(
+      String headline, Map<DxdEntityClass, Set<DxdEntityClass>> relations) {
+    System.out.println(headline);
+    relations.forEach((dxdClass, referredDxdClasses) -> referredDxdClasses.forEach(referredDxdClass
+        -> System.out.println(String.format(
+            "+ %s -> %s",
+            dxdClass.getName(),
+            referredDxdClass.getName()))));
   }
 }
