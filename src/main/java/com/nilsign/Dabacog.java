@@ -4,12 +4,17 @@ import com.nilsign.dxd.DxdReader;
 import com.nilsign.dxd.DxdReaderException;
 import com.nilsign.dxd.xml.DxdModel;
 import com.nilsign.dxd.xml.DxdModelException;
+import com.nilsign.dxd.xml.entities.DxdEntityClass;
 import com.nilsign.generators.diagrams.GraphmlDatabaseDiagramGenerator;
 import com.nilsign.generators.diagrams.GraphmlGeneratorException;
 import com.nilsign.generators.diagrams.GraphmlRenderer;
 import com.nilsign.generators.diagrams.GraphmlRendererException;
+import com.nilsign.misc.Pair;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Dabacog {
 
@@ -79,7 +84,7 @@ public class Dabacog {
     System.out.println(String.format("Preparing Dxd Model..."));
     dxdModel.getEntities().prepareModels();
     if (flagDebug) {
-      printDistinctRelations(dxdModel);
+      printAllDistinctRelations(dxdModel);
       printAllRelations(dxdModel);
     }
     System.out.println(String.format("Preparing Dxd Model -> [DONE]"));
@@ -97,65 +102,52 @@ public class Dabacog {
     System.out.println(String.format("Rendering database diagram -> [DONE]"));
   }
 
-  private static void printDistinctRelations(DxdModel model) {
-    System.out.println("DISTINCT MANY-TO-MANY-RELATIONS");
-    model.getEntities().getDistinctManyToManyClassRelationsList().forEach(relation
-        -> System.out.println(String.format(
-            "+ %s -> %s",
-            relation.getFirst().getName(),
-            relation.getSecond().getName())));
-    System.out.println("DISTINCT MANY-TO-ONE-RELATIONS");
-    model.getEntities().getDistinctManyToOneClassRelationsList().forEach(relation
-        -> System.out.println(String.format(
-          "+ %s -> %s",
-          relation.getFirst().getName(),
-          relation.getSecond().getName())));
-    System.out.println("DISTINCT ONE-TO-MANY-RELATIONS");
-    model.getEntities().getDistinctOneToManyClassRelationsList().forEach(relation
-        -> System.out.println(String.format(
-          "+ %s -> %s",
-          relation.getFirst().getName(),
-          relation.getSecond().getName())));
-    System.out.println("DISTINCT ONE-TO-ONE-RELATIONS");
-    model.getEntities().getDistinctOneToOneClassRelationsList().forEach(relation
-        -> System.out.println(String.format(
-          "+ %s -> %s",
-          relation.getFirst().getName(),
-          relation.getSecond().getName())));
+  private static void printAllDistinctRelations(DxdModel model) {
+    printDistinctRelation(
+        "DISTINCT MANY-TO-MANY-RELATIONS",
+        model.getEntities().getDistinctManyToManyClassRelationsList());
+    printDistinctRelation(
+        "DISTINCT MANY-TO-ONE-RELATIONS",
+        model.getEntities().getDistinctManyToOneClassRelationsList());
+    printDistinctRelation(
+        "DISTINCT ONE-TO-MANY-RELATIONS",
+        model.getEntities().getDistinctOneToManyClassRelationsList());
+    printDistinctRelation(
+        "DISTINCT ONE-TO-ONE-RELATIONS",
+        model.getEntities().getDistinctOneToOneClassRelationsList());
+  }
+
+  private static void printDistinctRelation(
+      String headline, List<Pair<DxdEntityClass, DxdEntityClass>> relations) {
+    System.out.println(headline);
+    relations.forEach(relation -> System.out.println(String.format(
+        "+ %s -> %s",
+        relation.getFirst().getName(),
+        relation.getSecond().getName())));
   }
 
   private static void printAllRelations(DxdModel model) {
-    System.out.println("ALL MANY-TO-MANY-RELATIONS");
-    model.getEntities().getManyToManyClassRelationsMap()
-        .forEach((dxdClass, referredDxdClasses)
-            -> referredDxdClasses.forEach(referredDxdClass
-                -> System.out.println(String.format(
-                    "+ %s -> %s",
-                    dxdClass.getName(),
-                    referredDxdClass.getName()))));
-    System.out.println("ALL MANY-TO-ONE-RELATIONS");
-    model.getEntities().getManyToOneClassRelationsMap()
-        .forEach((dxdClass, referredDxdClasses)
-            -> referredDxdClasses.forEach(referredDxdClass
-                -> System.out.println(String.format(
-                    "+ %s -> %s",
-                    dxdClass.getName(),
-                    referredDxdClass.getName()))));
-    System.out.println("ALL ONE-TO-MANY-RELATIONS");
-    model.getEntities().getOneToManyClassRelationsMap()
-        .forEach((dxdClass, referredDxdClasses)
-            -> referredDxdClasses.forEach(referredDxdClass
-                -> System.out.println(String.format(
-                    "+ %s -> %s",
-                    dxdClass.getName(),
-                    referredDxdClass.getName()))));
-    System.out.println("ALL ONE-TO-ONE-RELATIONS");
-    model.getEntities().getOneToOneClassRelationsMap()
-        .forEach((dxdClass, referredDxdClasses)
-            -> referredDxdClasses.forEach(referredDxdClass
-               -> System.out.println(String.format(
-                    "+ %s -> %s",
-                    dxdClass.getName(),
-                    referredDxdClass.getName()))));
+    printRelation(
+        "ALL MANY-TO-MANY-RELATIONS",
+        model.getEntities().getManyToManyClassRelationsMap());
+    printRelation(
+        "ALL MANY-TO-ONE-RELATIONS",
+        model.getEntities().getManyToOneClassRelationsMap());
+    printRelation(
+        "ALL ONE-TO-MANY-RELATIONS",
+        model.getEntities().getOneToManyClassRelationsMap());
+    printRelation(
+        "ALL ONE-TO-ONE-RELATIONS",
+        model.getEntities().getOneToOneClassRelationsMap());
+  }
+
+  private static void printRelation(
+      String headline, Map<DxdEntityClass, Set<DxdEntityClass>> relations) {
+    System.out.println(headline);
+    relations.forEach((dxdClass, referredDxdClasses) -> referredDxdClasses.forEach(referredDxdClass
+        -> System.out.println(String.format(
+            "+ %s -> %s",
+            dxdClass.getName(),
+            referredDxdClass.getName()))));
   }
 }
