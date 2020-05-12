@@ -1,5 +1,6 @@
-package com.nilsign.dxd.elements.entities;
+package com.nilsign.dxd.xml.entities;
 
+import com.nilsign.dxd.xml.DxdModelException;
 import com.nilsign.misc.Pair;
 import lombok.Data;
 import org.simpleframework.xml.Element;
@@ -45,10 +46,14 @@ public class DxdEntities {
   @ElementList(inline=true, entry="class")
   private List<DxdEntityClass> dxdClasses;
 
-  public void prepareModels() {
-    createClassMappings();
-    createClassRelationMappings();
-    createDistinctClassRelationLists();
+  public void prepareModels() throws DxdModelException {
+    try {
+      createClassMappings();
+      createClassRelationMappings();
+      createDistinctClassRelationLists();
+    } catch (Exception e) {
+      throw new DxdModelException("The Dxd model preparation failed.", e);
+    }
   }
 
   private void createClassMappings() {

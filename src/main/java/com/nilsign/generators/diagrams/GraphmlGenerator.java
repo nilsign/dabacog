@@ -1,6 +1,6 @@
 package com.nilsign.generators.diagrams;
 
-import com.nilsign.dxd.elements.DxdModel;
+import com.nilsign.dxd.xml.DxdModel;
 import com.nilsign.generators.Generator;
 
 import java.util.List;

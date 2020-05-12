@@ -12,8 +12,8 @@ Software developers often spend up to 30% and more of their time in a project wi
 testing, setting up the database, mapping database tables to entities or DTOs, and more... 
 
 All this makes the described problem an optimal candidate to be solved by code generation. And
-exactly that is what DABACOG is intending to achieve. To stay flexible, as not all problems are generic
-enough for a static code generation approach, there will be an easy option to hook into the
+exactly that is what DABACOG is intending to achieve. To stay flexible, as not all problems are
+generic enough for a static code generation approach, there will be an easy option to hook into the
 generated code and inject custom code, or to even override generated code, both in order to use
 custom code for custom problems.
 

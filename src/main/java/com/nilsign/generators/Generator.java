@@ -1,7 +1,7 @@
 package com.nilsign.generators;
 
-import com.nilsign.dxd.elements.DxdModel;
-import com.nilsign.generators.diagrams.GraphGeneratorException;
+import com.nilsign.dxd.xml.DxdModel;
+import com.nilsign.generators.diagrams.GraphmlGeneratorException;
 import com.nilsign.helper.FileHelper;
 
 import java.io.File;
@@ -23,13 +23,13 @@ public abstract class Generator {
     return FileHelper.normalizePath(filePath) + getTargetFileName().trim();
   }
 
-  public File createGenerationTargetFile() throws GraphGeneratorException {
+  public File createGenerationTargetFile() throws GraphmlGeneratorException {
     String filePath = getTargetFilePath();
     FileHelper.deleteFileIfExists(filePath);
     try {
       return FileHelper.createFileIfNotExists(filePath);
     } catch (IOException e) {
-      throw new GraphGeneratorException(
+      throw new GraphmlGeneratorException(
           String.format(
               "Couldn't create new generation target file at '%s'",
               filePath),

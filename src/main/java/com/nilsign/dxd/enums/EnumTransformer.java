@@ -1,4 +1,4 @@
-package com.nilsign.dxd.elements.entities;
+package com.nilsign.dxd.enums;
 
 import org.simpleframework.xml.transform.Transform;
 
