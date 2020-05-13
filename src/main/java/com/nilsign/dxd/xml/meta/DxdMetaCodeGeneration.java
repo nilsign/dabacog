@@ -9,8 +9,8 @@ import org.simpleframework.xml.Element;
 public class DxdMetaCodeGeneration {
 
   @Attribute
-  String outputLanguage;
+  private String outputLanguage;
 
   @Attribute
-  String outputPath;
+  private String outputPath;
 }

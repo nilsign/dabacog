@@ -1,7 +1,8 @@
 package com.nilsign.dxd;
 
 import com.nilsign.dxd.xml.DxdModel;
-import com.nilsign.dxd.enums.EnumTransformer;
+import com.nilsign.dxd.xmlvaluetypes.EnumTransformer;
+import lombok.NonNull;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.transform.Matcher;
@@ -16,11 +17,11 @@ public class DxdReader {
 
   private final String dxdFilePath;
 
-  private DxdReader(String dxdFilePath) {
+  private DxdReader(@NonNull String dxdFilePath) {
     this.dxdFilePath = dxdFilePath;
   }
 
-  public static DxdModel run(String dxdFilePath) throws DxdReaderException {
+  public static DxdModel run(@NonNull String dxdFilePath) throws DxdReaderException {
     Serializer serializer = new Persister((Matcher) type -> {
         if (type.isEnum()) {
           return new EnumTransformer(type);

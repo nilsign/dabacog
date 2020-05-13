@@ -3,6 +3,7 @@ package com.nilsign.generators;
 import com.nilsign.dxd.xml.DxdModel;
 import com.nilsign.generators.diagrams.GraphmlGeneratorException;
 import com.nilsign.helper.FileHelper;
+import lombok.NonNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +12,7 @@ public abstract class Generator {
 
   protected final DxdModel dxdModel;
 
-  protected Generator(DxdModel dxdModel) {
+  protected Generator(@NonNull DxdModel dxdModel) {
     this.dxdModel = dxdModel;
   }
 

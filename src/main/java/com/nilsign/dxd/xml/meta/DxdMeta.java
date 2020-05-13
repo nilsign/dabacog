@@ -7,12 +7,13 @@ import org.simpleframework.xml.Element;
 @Element(name="meta")
 public class DxdMeta {
 
+
   @Element(name="diagrams")
-  private DxdMetaDiagrams dxdMetaDiagrams;
+  private DxdMetaDiagrams metaDiagrams;
 
   @Element(name="database")
-  private DxdMetaDatabase dxdMetaDatabase;
+  private DxdMetaDatabase metaDatabase;
 
   @Element(name="codeGeneration")
-  private DxdMetaCodeGeneration dxdMetaCodeGeneration;
+  private DxdMetaCodeGeneration metaCodeGeneration;
 }
