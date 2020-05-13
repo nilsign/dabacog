@@ -44,11 +44,11 @@ public class DxdEntityRelation {
     if (referencingField.isToManyRelation()) {
       return backReferencingField == null || backReferencingField.isToManyRelation()
           ? DxdEntityRelationType.MANY_TO_MANY
-          : DxdEntityRelationType.MANY_TO_ONE;
+          : DxdEntityRelationType.ONE_TO_MANY;
     }
     if (referencingField.isToOneRelation()) {
       return backReferencingField == null || backReferencingField.isToManyRelation()
-          ? DxdEntityRelationType.ONE_TO_MANY
+          ? DxdEntityRelationType.MANY_TO_ONE
           : DxdEntityRelationType.ONE_TO_ONE;
     }
     return null;
