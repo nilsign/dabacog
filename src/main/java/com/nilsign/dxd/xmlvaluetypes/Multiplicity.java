@@ -1,4 +1,6 @@
-package com.nilsign.dxd.enums;
+package com.nilsign.dxd.xmlvaluetypes;
+
+import lombok.NonNull;
 
 public enum Multiplicity {
   ONE("one"),
@@ -6,7 +8,7 @@ public enum Multiplicity {
 
   private final String value;
 
-  Multiplicity(String value) {
+  Multiplicity(@NonNull String value) {
     this.value = value;
   }
 

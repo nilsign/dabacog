@@ -5,6 +5,7 @@ import com.nilsign.generators.Generator;
 import com.nilsign.helper.FileHelper;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
+import lombok.NonNull;
 
 import java.io.File;
 
@@ -12,11 +13,11 @@ public class GraphmlRenderer extends Generator {
 
   private static final String TARGET_FILE_NAME = "dabacog-db-diagram.png";
 
-  protected GraphmlRenderer(DxdModel dxdModel) {
+  protected GraphmlRenderer(@NonNull DxdModel dxdModel) {
     super(dxdModel);
   }
 
-  public static void run(DxdModel dxdModel) throws GraphmlRendererException {
+  public static void run(@NonNull DxdModel dxdModel) throws GraphmlRendererException {
     new GraphmlRenderer(dxdModel).render();
   }
 
@@ -46,7 +47,7 @@ public class GraphmlRenderer extends Generator {
 
   @Override
   protected String getOutputDirectory() {
-    return super.dxdModel.getDxdMeta().getDxdMetaDiagrams().getOutputPath();
+    return super.dxdModel.getMeta().getMetaDiagrams().getOutputPath();
   }
 
   @Override

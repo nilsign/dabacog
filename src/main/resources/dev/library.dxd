@@ -16,7 +16,6 @@
   <entities>
     <class name="Genre">
       <field name="name" type="string" />
-      <field refersTo="Book" multiplicity="many"/>
     </class>
 
     <class name="Book">

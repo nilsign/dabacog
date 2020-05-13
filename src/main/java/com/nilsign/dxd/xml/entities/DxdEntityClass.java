@@ -1,10 +1,14 @@
 package com.nilsign.dxd.xml.entities;
 
+import com.nilsign.dxd.noxml.DxdEntityRelation;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,6 +23,9 @@ public class DxdEntityClass {
   @ElementList(inline=true, entry="field")
   private List<DxdEntityField> fields;
 
+  @EqualsAndHashCode.Exclude
+  private final Set<DxdEntityRelation> relations = new HashSet<>();
+
   public Set<DxdEntityField> getRelationFields() {
     return fields
         .stream()
@@ -26,19 +33,18 @@ public class DxdEntityClass {
         .collect(Collectors.toSet());
   }
 
-  public Set<DxdEntityField> getToManyRelationFields() {
-   return fields
-       .stream()
-       .filter(DxdEntityField::isToManyRelation)
-       .collect(Collectors.toSet());
+  public DxdEntityField findReferenceFieldTo(@NonNull DxdEntityClass aClass) {
+    return getRelationFields().size() == 0
+        ? null
+        : getRelationFields()
+          .stream()
+          .filter((DxdEntityField field)
+              -> aClass.getName().equalsIgnoreCase(field.getRefersTo()))
+          .findFirst()
+          .orElse(null);
   }
 
-  public Set<DxdEntityField> getToOneRelationFields() {
-    return fields
-        .stream()
-        .filter(DxdEntityField::isToOneRelation)
-        .collect(Collectors.toSet());
+  public void addRelation(@NonNull DxdEntityRelation relation) {
+   relations. add(relation);
   }
-
-
 }

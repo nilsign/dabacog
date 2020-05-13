@@ -15,7 +15,7 @@ public class DxdModel {
   private String name;
 
   @Element(name="meta")
-  private DxdMeta dxdMeta;
+  private DxdMeta meta;
 
   @Element(name="entities")
   private DxdEntities entities;
