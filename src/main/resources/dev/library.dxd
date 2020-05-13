@@ -52,6 +52,7 @@
     </class>
 
     <class name="Location">
+      <field refersTo="Book" multiplicity="many"/>
       <field name="Floor" type="string"/>
       <field name="Shelf" type="string"/>
       <field name="Position" type="integer"/>
@@ -63,6 +64,7 @@
     </class>
 
     <class name="Address">
+      <field refersTo="Customer" multiplicity="one"/>
       <field name="Street" type="string"/>
       <field name="Zipcode" type="string"/>
       <field name="City" type="string"/>

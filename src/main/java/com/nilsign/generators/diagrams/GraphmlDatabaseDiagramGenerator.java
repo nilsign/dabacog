@@ -4,6 +4,7 @@ import com.nilsign.dxd.noxml.DxdEntityRelation;
 import com.nilsign.dxd.xml.DxdModel;
 import com.nilsign.dxd.xml.entities.DxdEntityClass;
 import com.nilsign.dxd.xml.entities.DxdEntityField;
+import com.nilsign.dxd.xmlvaluetypes.DxdAttributeType;
 import com.nilsign.generators.sql.SqlSchemaGenerator;
 import lombok.NonNull;
 
@@ -17,6 +18,9 @@ import java.util.List;
 public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
 
   public static final String TARGET_FILE_NAME = "dabacog-db-diagram.pot";
+
+  private static final String YES = "YES";
+  private static final String NO = "NO";
 
   public static void run(@NonNull DxdModel model) throws GraphmlGeneratorException {
     new GraphmlDatabaseDiagramGenerator(model).generate();
@@ -78,16 +82,25 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
 
   private List<List<String>> getDatabaseTableColumnValues(@NonNull List<DxdEntityField> fields) {
     List<List<String>> tableValues = new ArrayList<>();
-    fields.forEach(field -> {
-      tableValues.add(Arrays.asList(
-          field.isRelation()
-              ? SqlSchemaGenerator.buildForeignKeyName(field.getRefersTo())
-              : field.getName(),
-          field.getType(),
-          "todo",
-          "todo",
-          "todo"));
-    });
+    tableValues.add(Arrays.asList(
+        SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME,
+        DxdAttributeType.LONG.toString(),
+        YES, YES, NO));
+    fields
+        .stream()
+        .filter(field
+            -> !field.isRelation()
+            || !field.getRelation().isManyToMany()
+            && !(field.getRelation().isOneToMany() && field.isToManyRelation()))
+        .forEach(field
+            -> tableValues.add(Arrays.asList(
+                field.isRelation()
+                    ? SqlSchemaGenerator.buildForeignKeyName(field.getRefersTo())
+                    : field.getName(),
+                field.getType(),
+                "todo",
+                "todo",
+                "todo")));
     return tableValues;
   }
 
@@ -132,13 +145,13 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
           break;
         case MANY_TO_ONE:
           output.append(String.format("\tgml_node_%s -> gml_node_%s [style=\"dashed\"];\n",
-              SqlSchemaGenerator.buildTableName(relation.getReferencedClass()),
-              SqlSchemaGenerator.buildTableName(relation.getReferencingClass())));
+              SqlSchemaGenerator.buildTableName(relation.getReferencingClass()),
+              SqlSchemaGenerator.buildTableName(relation.getReferencedClass())));
           break;
         case ONE_TO_MANY:
           output.append(String.format("\tgml_node_%s -> gml_node_%s [style=\"dashed\"];\n",
-              SqlSchemaGenerator.buildTableName(relation.getReferencingClass()),
-              SqlSchemaGenerator.buildTableName(relation.getReferencedClass())));
+              SqlSchemaGenerator.buildTableName(relation.getReferencedClass()),
+              SqlSchemaGenerator.buildTableName(relation.getReferencingClass())));
           break;
         case ONE_TO_ONE:
           output.append(String.format("\tgml_node_%s -> gml_node_%s [style=\"dotted\"];\n",

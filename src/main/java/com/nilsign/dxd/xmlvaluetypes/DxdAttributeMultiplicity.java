@@ -2,13 +2,13 @@ package com.nilsign.dxd.xmlvaluetypes;
 
 import lombok.NonNull;
 
-public enum Multiplicity {
+public enum DxdAttributeMultiplicity {
   ONE("one"),
   MANY("many");
 
   private final String value;
 
-  Multiplicity(@NonNull String value) {
+  DxdAttributeMultiplicity(@NonNull String value) {
     this.value = value;
   }
 

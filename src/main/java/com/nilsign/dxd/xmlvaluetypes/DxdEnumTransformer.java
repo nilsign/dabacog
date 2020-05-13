@@ -3,11 +3,11 @@ package com.nilsign.dxd.xmlvaluetypes;
 import lombok.NonNull;
 import org.simpleframework.xml.transform.Transform;
 
-public class EnumTransformer implements Transform<Enum> {
+public class DxdEnumTransformer implements Transform<Enum> {
 
   private final Class type;
 
-  public EnumTransformer(@NonNull Class type) {
+  public DxdEnumTransformer(@NonNull Class type) {
     this.type = type;
   }
 

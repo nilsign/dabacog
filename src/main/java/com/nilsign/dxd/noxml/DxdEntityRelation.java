@@ -44,11 +44,11 @@ public class DxdEntityRelation {
     if (referencingField.isToManyRelation()) {
       return backReferencingField == null || backReferencingField.isToManyRelation()
           ? DxdEntityRelationType.MANY_TO_MANY
-          : DxdEntityRelationType.MANY_TO_ONE;
+          : DxdEntityRelationType.ONE_TO_MANY;
     }
     if (referencingField.isToOneRelation()) {
       return backReferencingField == null || backReferencingField.isToManyRelation()
-          ? DxdEntityRelationType.ONE_TO_MANY
+          ? DxdEntityRelationType.MANY_TO_ONE
           : DxdEntityRelationType.ONE_TO_ONE;
     }
     return null;
@@ -56,6 +56,22 @@ public class DxdEntityRelation {
 
   public boolean hasBackReferencingField() {
     return backReferencingField != null;
+  }
+
+  public boolean isManyToMany() {
+    return type == DxdEntityRelationType.MANY_TO_MANY;
+  }
+
+  public boolean isManyToOne() {
+    return type == DxdEntityRelationType.MANY_TO_ONE;
+  }
+
+  public boolean isOneToMany() {
+    return type == DxdEntityRelationType.ONE_TO_MANY;
+  }
+
+  public boolean isOneToOne() {
+    return type == DxdEntityRelationType.ONE_TO_ONE;
   }
 
   @Override
