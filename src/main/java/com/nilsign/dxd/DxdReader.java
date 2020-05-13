@@ -1,7 +1,7 @@
 package com.nilsign.dxd;
 
 import com.nilsign.dxd.xml.DxdModel;
-import com.nilsign.dxd.xmlvaluetypes.EnumTransformer;
+import com.nilsign.dxd.xmlvaluetypes.DxdEnumTransformer;
 import lombok.NonNull;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -24,7 +24,7 @@ public class DxdReader {
   public static DxdModel run(@NonNull String dxdFilePath) throws DxdReaderException {
     Serializer serializer = new Persister((Matcher) type -> {
         if (type.isEnum()) {
-          return new EnumTransformer(type);
+          return new DxdEnumTransformer(type);
         }
         return null;
     });

@@ -58,6 +58,22 @@ public class DxdEntityRelation {
     return backReferencingField != null;
   }
 
+  public boolean isManyToMany() {
+    return type == DxdEntityRelationType.MANY_TO_MANY;
+  }
+
+  public boolean isManyToOne() {
+    return type == DxdEntityRelationType.MANY_TO_ONE;
+  }
+
+  public boolean isOneToMany() {
+    return type == DxdEntityRelationType.ONE_TO_MANY;
+  }
+
+  public boolean isOneToOne() {
+    return type == DxdEntityRelationType.ONE_TO_ONE;
+  }
+
   @Override
   public String toString() {
     return String.format("%s -> %s [%s]%s",

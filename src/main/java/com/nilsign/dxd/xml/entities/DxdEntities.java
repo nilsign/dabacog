@@ -52,8 +52,10 @@ public class DxdEntities {
       classNameToFieldsMap.put(
           dxdClass.getName(),
           new HashSet<>(dxdClass.getFields()));
-      dxdClass.getFields().forEach(dxdField
-          -> fieldToClassMap.put(dxdField, dxdClass));
+      dxdClass.getFields().forEach(dxdField -> {
+        fieldToClassMap.put(dxdField, dxdClass);
+        dxdField.setParentClass(dxdClass);
+      });
     });
   }
 
@@ -74,6 +76,10 @@ public class DxdEntities {
             }
             dxdClass.addRelation(relation);
             referencedDxdClass.addRelation(relation);
+            dxdField.setRelation(relation);
+            if (relation.hasBackReferencingField()) {
+              relation.getBackReferencingField().setRelation(relation);
+            }
             addedDxdClassRelations.add(
                 Pair.of(relation.getReferencingClass(), relation.getReferencedClass()));
           }

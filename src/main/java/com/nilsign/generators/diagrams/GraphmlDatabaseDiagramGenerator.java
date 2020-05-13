@@ -4,7 +4,7 @@ import com.nilsign.dxd.noxml.DxdEntityRelation;
 import com.nilsign.dxd.xml.DxdModel;
 import com.nilsign.dxd.xml.entities.DxdEntityClass;
 import com.nilsign.dxd.xml.entities.DxdEntityField;
-import com.nilsign.dxd.xmlvaluetypes.FieldValueType;
+import com.nilsign.dxd.xmlvaluetypes.DxdAttributeType;
 import com.nilsign.generators.sql.SqlSchemaGenerator;
 import lombok.NonNull;
 
@@ -81,19 +81,23 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
     List<List<String>> tableValues = new ArrayList<>();
     tableValues.add(Arrays.asList(
         SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME,
-        FieldValueType.LONG.toString(),
+        DxdAttributeType.LONG.toString(),
         "YES",
         "YES",
         "NO"));
     fields.forEach(field -> {
-      tableValues.add(Arrays.asList(
-          field.isRelation()
-              ? SqlSchemaGenerator.buildForeignKeyName(field.getRefersTo())
-              : field.getName(),
-          field.getType(),
-          "todo",
-          "todo",
-          "todo"));
+      if (!field.isRelation()
+          || !field.getRelation().isManyToMany()
+          && !(field.isToManyRelation() && field.getRelation().isManyToOne())) {
+        tableValues.add(Arrays.asList(
+            field.isRelation()
+                ? SqlSchemaGenerator.buildForeignKeyName(field.getRefersTo())
+                : field.getName(),
+            field.getType(),
+            "todo",
+            "todo",
+            "todo"));
+        }
     });
     return tableValues;
   }
