@@ -143,13 +143,13 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
           break;
         case MANY_TO_ONE:
           output.append(String.format("\tgml_node_%s -> gml_node_%s [style=\"dashed\"];\n",
-              SqlSchemaGenerator.buildTableName(relation.getReferencedClass()),
-              SqlSchemaGenerator.buildTableName(relation.getReferencingClass())));
+              SqlSchemaGenerator.buildTableName(relation.getReferencingClass()),
+              SqlSchemaGenerator.buildTableName(relation.getReferencedClass())));
           break;
         case ONE_TO_MANY:
           output.append(String.format("\tgml_node_%s -> gml_node_%s [style=\"dashed\"];\n",
-              SqlSchemaGenerator.buildTableName(relation.getReferencingClass()),
-              SqlSchemaGenerator.buildTableName(relation.getReferencedClass())));
+              SqlSchemaGenerator.buildTableName(relation.getReferencedClass()),
+              SqlSchemaGenerator.buildTableName(relation.getReferencingClass())));
           break;
         case ONE_TO_ONE:
           output.append(String.format("\tgml_node_%s -> gml_node_%s [style=\"dotted\"];\n",
