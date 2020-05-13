@@ -7,7 +7,6 @@ import org.simpleframework.xml.Element;
 @Element(name="meta")
 public class DxdMeta {
 
-
   @Element(name="diagrams")
   private DxdMetaDiagrams metaDiagrams;
 

@@ -18,6 +18,9 @@ import java.util.Set;
 @Element(name="entities")
 public class DxdEntities {
 
+  @ElementList(inline=true, entry="class")
+  private List<DxdEntityClass> dxdClasses;
+
   // Class mappings
   private final Map<String, DxdEntityClass> classNameToClassMap = new HashMap();
   private final Map<DxdEntityField, DxdEntityClass> fieldToClassMap = new HashMap<>();
@@ -30,9 +33,6 @@ public class DxdEntities {
   private final List<DxdEntityRelation> manyToOneRelations = new ArrayList<>();
   private final List<DxdEntityRelation> oneToManyRelations = new ArrayList<>();
   private final List<DxdEntityRelation> oneToOneRelations = new ArrayList<>();
-
-  @ElementList(inline=true, entry="class")
-  private List<DxdEntityClass> dxdClasses;
 
   public void prepareModels() throws DxdModelException {
     try {
