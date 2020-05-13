@@ -4,6 +4,7 @@ import com.nilsign.dxd.noxml.DxdEntityRelation;
 import com.nilsign.dxd.xml.DxdModel;
 import com.nilsign.dxd.xml.entities.DxdEntityClass;
 import com.nilsign.dxd.xml.entities.DxdEntityField;
+import com.nilsign.dxd.xmlvaluetypes.FieldValueType;
 import com.nilsign.generators.sql.SqlSchemaGenerator;
 import lombok.NonNull;
 
@@ -78,6 +79,12 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
 
   private List<List<String>> getDatabaseTableColumnValues(@NonNull List<DxdEntityField> fields) {
     List<List<String>> tableValues = new ArrayList<>();
+    tableValues.add(Arrays.asList(
+        SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME,
+        FieldValueType.LONG.toString(),
+        "YES",
+        "YES",
+        "NO"));
     fields.forEach(field -> {
       tableValues.add(Arrays.asList(
           field.isRelation()

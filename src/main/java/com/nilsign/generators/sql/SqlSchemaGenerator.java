@@ -6,8 +6,8 @@ import lombok.NonNull;
 
 public class SqlSchemaGenerator {
 
+  public static final String SQL_PRIMARY_KEY_NAME = "id";
   private static final String SQL_TABLE_PREFIX = "tbl";
-  private static final String SQL_PRIMARY_KEY_NAME = "id";
 
   public static String buildTableName(@NonNull DxdEntityClass entityClass) {
     return String.format("%s_%s", SQL_TABLE_PREFIX, entityClass.getName());
