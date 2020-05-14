@@ -2,7 +2,7 @@ package com.nilsign.dxd.xmlvaluetypes;
 
 import lombok.NonNull;
 
-public enum DxdAttributeType {
+public enum DxdFieldType {
   LONG("long"),
   DOUBLE("double"),
   INT("int"),
@@ -14,7 +14,7 @@ public enum DxdAttributeType {
 
   private final String value;
 
-  DxdAttributeType(@NonNull String value) {
+  DxdFieldType(@NonNull String value) {
     this.value = value;
   }
 

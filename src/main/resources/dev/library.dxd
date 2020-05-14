@@ -21,24 +21,24 @@
     <class name="Book">
       <field refersTo="Author" multiplicity="many"/>
       <field refersTo="Genre" multiplicity="many"/>
-      <field refersTo="Loan" multiplicity="many"/>
+      <field refersTo="Loan" multiplicity="many" hidden="true"/>
       <field refersTo="Location" multiplicity="one"/>
-      <field name="Name" type="string"/>
-      <field name="Isbn" type="string"/>
-      <field name="Price" type="double"/>
+      <field name="Name" type="string" fts="true"/>
+      <field name="Isbn" type="string" unique="true"/>
+      <field name="Price" type="double" nullable="true"/>
     </class>
 
     <class name="Loan">
-      <field refersTo="Customer" multiplicity="one" />
+      <field refersTo="Customer" multiplicity="one"/>
       <field refersTo="Book" multiplicity="one"/>
-      <field name="Start" type="date"/>
-      <field name="End" type="date"/>
-      <field name="Return" type="date"/>
-      <field name="DunningLetter" type="boolean"/>
+      <field name="Start" type="date" />
+      <field name="End" type="date" indexed="true"/>
+      <field name="Return" type="date" nullable="true"/>
+      <field name="DunningLetter" type="boolean" default="false"/>
     </class>
 
     <class name="Customer">
-      <field refersTo="Address" multiplicity="one"/>
+      <field refersTo="Address" multiplicity="one" nullable="true"/>
       <field refersTo="Contact" multiplicity="one"/>
       <field name="FirstName" type="string"/>
       <field name="LastName" type="string"/>
@@ -46,25 +46,25 @@
 
     <class name="Contact">
       <field refersTo="Customer" multiplicity="one"/>
-      <field name="Mobile" type="string"/>
-      <field name="Home" type="string"/>
+      <field name="Mobile" type="string" nullable="true"/>
+      <field name="Home" type="string" nullable="true"/>
       <field name="Email" type="string"/>
     </class>
 
     <class name="Location">
       <field refersTo="Book" multiplicity="many"/>
-      <field name="Floor" type="string"/>
-      <field name="Shelf" type="string"/>
-      <field name="Position" type="integer"/>
+      <field name="Floor" type="string" default=""/>
+      <field name="Shelf" type="string" default=""/>
+      <field name="Position" type="int" default="-1"/>
     </class>
 
     <class name="Author">
       <field refersTo="Book" multiplicity="many"/>
-      <field name="Name" type="string"/>
+      <field name="Name" type="string" fts="true"/>
     </class>
 
     <class name="Address">
-      <field refersTo="Customer" multiplicity="one"/>
+      <field refersTo="Customer" multiplicity="one" hidden="true"/>
       <field name="Street" type="string"/>
       <field name="Zipcode" type="string"/>
       <field name="City" type="string"/>
