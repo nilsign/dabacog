@@ -15,7 +15,7 @@
 
   <entities>
     <class name="Genre">
-      <field name="name" type="string" />
+      <field name="name" type="string" unique="true" />
     </class>
 
     <class name="Book">
@@ -53,7 +53,7 @@
 
     <class name="Location">
       <field refersTo="Book" multiplicity="many"/>
-      <field name="Floor" type="string" default=""/>
+      <field name="Floor" type="string" default="warehouse"/>
       <field name="Shelf" type="string" default=""/>
       <field name="Position" type="int" default="-1"/>
     </class>

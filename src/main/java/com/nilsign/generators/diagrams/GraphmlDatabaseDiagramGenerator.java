@@ -94,13 +94,13 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
             && !(field.getRelation().isOneToMany() && field.isToManyRelation()))
         .forEach(field
             -> tableValues.add(Arrays.asList(
-              getFieldNameCellValue(field),
-              getFieldTypeCellValue(field),
-              getFieldIndexCellValue(field),
-              getFieldUniqueCellValue(field),
-              getFieldNullableCellValue(field),
-              getFieldFtsCellValue(field),
-              getFieldDefaultCellValue(field))));
+                getFieldNameCellValue(field),
+                getFieldTypeCellValue(field),
+                getFieldIndexCellValue(field),
+                getFieldUniqueCellValue(field),
+                getFieldNullableCellValue(field),
+                getFieldFtsCellValue(field),
+                getFieldDefaultCellValue(field))));
     return tableValues;
   }
 
@@ -181,19 +181,20 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
 
   private String getFieldIndexCellValue(DxdEntityField field) {
     return field.isRelation()
-        || field.isFts()
-        || field.isIndexed() ? YES : NO;
+        || field.isIndexed()
+        || field.isUnique()
+        || field.isFts() ? YES : NO;
   }
 
   private String getFieldUniqueCellValue(DxdEntityField field) {
     return field.isUnique()
         || field.isRelation()
         && field.getRelation().isOneToOne()
-        && !field.isNullable()? YES : NO;
+        && !field.isNullable() ? YES : NO;
   }
 
   private String getFieldNullableCellValue(DxdEntityField field) {
-    return field.isNullable() || field.isUnique() ? YES : NO;
+    return field.isNullable() ? YES : NO;
   }
 
   private String getFieldFtsCellValue(DxdEntityField field) {
@@ -207,14 +208,14 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
       return NO;
     }
     if (field.getDefaultValue() == null) {
-      return "null";
+      return field.isNullable() ? "null" : NO;
     }
     boolean isStringType = field.getType() == DxdFieldType.STRING;
-    return field.getDefaultValue().length() <= 10
-        ? field.getDefaultValue()
-        : String.format("%s%s...%s",
-            isStringType,
-            field.getDefaultValue().substring(0, 10),
-            isStringType);
+    if (!isStringType) {
+      return field.getDefaultValue();
+    }
+    return field.getDefaultValue().length() <= 7
+        ? String.format("'%s'", field.getDefaultValue())
+        : String.format("'%s...'", field.getDefaultValue().substring(0, 5));
   }
 }
