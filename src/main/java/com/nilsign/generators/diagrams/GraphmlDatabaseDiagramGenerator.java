@@ -4,7 +4,7 @@ import com.nilsign.dxd.noxml.DxdEntityRelation;
 import com.nilsign.dxd.xml.DxdModel;
 import com.nilsign.dxd.xml.entities.DxdEntityClass;
 import com.nilsign.dxd.xml.entities.DxdEntityField;
-import com.nilsign.dxd.xmlvaluetypes.DxdAttributeType;
+import com.nilsign.dxd.xmlvaluetypes.DxdFieldType;
 import com.nilsign.generators.sql.SqlSchemaGenerator;
 import lombok.NonNull;
 
@@ -19,8 +19,8 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
 
   public static final String TARGET_FILE_NAME = "dabacog-db-diagram.pot";
 
-  private static final String YES = "YES";
-  private static final String NO = "NO";
+  private static final String YES = "yes";
+  private static final String NO = "no";
 
   public static void run(@NonNull DxdModel model) throws GraphmlGeneratorException {
     new GraphmlDatabaseDiagramGenerator(model).generate();
@@ -65,14 +65,14 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
     return output.toString();
   }
 
-  private String addDatabaseTable(DxdEntityClass dxdClass) {
+  private String addDatabaseTable(@NonNull DxdEntityClass dxdClass) {
     return new StringBuffer()
         .append(openGraphmlNode(SqlSchemaGenerator.buildTableName(dxdClass)))
         .append(openGraphmlLabel())
         .append(openGraphmlTable())
-        .append(addGraphmlTableName(SqlSchemaGenerator.buildTableName(dxdClass), 5))
+        .append(addGraphmlTableName(SqlSchemaGenerator.buildTableName(dxdClass), 7))
         .append(addGraphmlTableColumnNames(Arrays.asList(
-            "NAME", "TYPE", "INDEX", "UNIQUE", "NULLABLE")))
+            "NAME", "TYPE", "INDEX", "UNIQUE", "NULLABLE", "FTS", "DEFAULT")))
         .append(addGraphmlTableRows(getDatabaseTableColumnValues(dxdClass.getFields())))
         .append(closeGraphmlTable())
         .append(closeGraphmlLabel())
@@ -84,8 +84,8 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
     List<List<String>> tableValues = new ArrayList<>();
     tableValues.add(Arrays.asList(
         SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME,
-        DxdAttributeType.LONG.toString(),
-        YES, YES, NO));
+        DxdFieldType.LONG.toString().toLowerCase(),
+        YES, YES, NO, NO, NO));
     fields
         .stream()
         .filter(field
@@ -94,13 +94,13 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
             && !(field.getRelation().isOneToMany() && field.isToManyRelation()))
         .forEach(field
             -> tableValues.add(Arrays.asList(
-                field.isRelation()
-                    ? SqlSchemaGenerator.buildForeignKeyName(field.getRefersTo())
-                    : field.getName(),
-                field.getType(),
-                "todo",
-                "todo",
-                "todo")));
+                getFieldNameCellValue(field),
+                getFieldTypeCellValue(field),
+                getFieldIndexCellValue(field),
+                getFieldUniqueCellValue(field),
+                getFieldNullableCellValue(field),
+                getFieldFtsCellValue(field),
+                getFieldDefaultCellValue(field))));
     return tableValues;
   }
 
@@ -164,5 +164,58 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
       }
     });
     return output.toString();
+  }
+
+  private String getFieldNameCellValue(DxdEntityField field) {
+    return field.isRelation()
+        ? SqlSchemaGenerator.buildForeignKeyName(field.getRefersTo())
+        : field.getName();
+  }
+
+  private String getFieldTypeCellValue(DxdEntityField field) {
+    return (field.isRelation()
+        ? DxdFieldType.LONG.toString()
+        : field.getType().toString())
+        .toLowerCase();
+  }
+
+  private String getFieldIndexCellValue(DxdEntityField field) {
+    return field.isRelation()
+        || field.isIndexed()
+        || field.isUnique()
+        || field.isFts() ? YES : NO;
+  }
+
+  private String getFieldUniqueCellValue(DxdEntityField field) {
+    return field.isUnique()
+        || field.isRelation()
+        && field.getRelation().isOneToOne()
+        && !field.isNullable() ? YES : NO;
+  }
+
+  private String getFieldNullableCellValue(DxdEntityField field) {
+    return field.isNullable() ? YES : NO;
+  }
+
+  private String getFieldFtsCellValue(DxdEntityField field) {
+    return field.isFts() ? YES : NO;
+  }
+
+  private String getFieldDefaultCellValue(DxdEntityField field) {
+    if (field.isRelation()
+        || field.getType() == DxdFieldType.BLOB
+        || field.getType() == DxdFieldType.DATE) {
+      return NO;
+    }
+    if (field.getDefaultValue() == null) {
+      return field.isNullable() ? "null" : NO;
+    }
+    boolean isStringType = field.getType() == DxdFieldType.STRING;
+    if (!isStringType) {
+      return field.getDefaultValue();
+    }
+    return field.getDefaultValue().length() <= 7
+        ? String.format("'%s'", field.getDefaultValue())
+        : String.format("'%s...'", field.getDefaultValue().substring(0, 5));
   }
 }

@@ -1,7 +1,8 @@
 package com.nilsign.dxd.xml.entities;
 
 import com.nilsign.dxd.noxml.DxdEntityRelation;
-import com.nilsign.dxd.xmlvaluetypes.DxdAttributeMultiplicity;
+import com.nilsign.dxd.xmlvaluetypes.DxdFieldMultiplicity;
+import com.nilsign.dxd.xmlvaluetypes.DxdFieldType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.simpleframework.xml.Attribute;
@@ -17,13 +18,33 @@ public class DxdEntityField {
   private String refersTo;
 
   @Attribute(required=false)
-  private DxdAttributeMultiplicity multiplicity;
+  private DxdFieldMultiplicity multiplicity;
+
+  @Attribute(required=false)
+  private boolean hidden;
+
+  @Attribute(required=false)
+  private boolean indexed;
 
   @Attribute(required=false)
   private String name;
 
   @Attribute(required=false)
-  private String type;
+  private DxdFieldType type;
+
+  @Attribute(required=false)
+  private boolean unique;
+
+  @Attribute(required=false)
+  private boolean nullable;
+
+  // TODO(nilsheumer): Add support for full test search.
+  // https://hackernoon.com/how-useful-is-postgresql-full-text-search-u39242fi
+  @Attribute(required=false)
+  private boolean fts;
+
+  @Attribute(name="default", required=false)
+  private String defaultValue;
 
   @EqualsAndHashCode.Exclude
   private DxdEntityClass parentClass;
@@ -36,10 +57,10 @@ public class DxdEntityField {
   }
 
   public boolean isToManyRelation() {
-    return multiplicity == DxdAttributeMultiplicity.MANY;
+    return multiplicity == DxdFieldMultiplicity.MANY;
   }
 
   public boolean isToOneRelation() {
-    return multiplicity == DxdAttributeMultiplicity.ONE;
+    return multiplicity == DxdFieldMultiplicity.ONE;
   }
 }
