@@ -41,7 +41,7 @@ public class DxdEntityField {
   // TODO(nilsheumer): Add support for full test search.
   // https://hackernoon.com/how-useful-is-postgresql-full-text-search-u39242fi
   @Attribute(required=false)
-  private boolean fts = false;
+  private boolean fts;
 
   @Attribute(name="default", required=false)
   private String defaultValue;
