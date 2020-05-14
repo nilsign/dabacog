@@ -76,10 +76,12 @@ public class DxdEntityRelation {
 
   @Override
   public String toString() {
-    return String.format("%s -> %s [%s]%s",
+    return String.format("%s%s -> %s -> %s%s%s",
         referencingClass.getName(),
-        referencedClass.getName(),
+        referencingField.isHidden() ? " (HIDDEN)" : "",
         type,
-        !hasBackReferencingField() ? "[NO-BACK-REFERENCE]" : "");
+        referencedClass.getName(),
+        !hasBackReferencingField() ? " (HIDDEN - NO-BACK-REFERENCE)" : "",
+        hasBackReferencingField() && backReferencingField.isHidden() ? " (HIDDEN)" : "");
   }
 }
