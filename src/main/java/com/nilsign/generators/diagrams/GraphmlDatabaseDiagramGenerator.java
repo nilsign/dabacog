@@ -91,7 +91,8 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
         .filter(field
             -> !field.isRelation()
             || !field.getRelation().isManyToMany()
-            && !(field.getRelation().isOneToMany() && field.isToManyRelation()))
+            && !(field.getRelation().isOneToMany() && field.isToManyRelation())
+            && !(field.getRelation().isOneToOne() && field.isHidden()))
         .forEach(field
             -> tableValues.add(Arrays.asList(
                 getFieldNameCellValue(field),
@@ -154,12 +155,16 @@ public class GraphmlDatabaseDiagramGenerator extends GraphmlGenerator {
               SqlSchemaGenerator.buildTableName(relation.getReferencingClass())));
           break;
         case ONE_TO_ONE:
-          output.append(String.format("\tgml_node_%s -> gml_node_%s [style=\"dotted\"];\n",
-              SqlSchemaGenerator.buildTableName(relation.getReferencingClass()),
-              SqlSchemaGenerator.buildTableName(relation.getReferencedClass())));
-          output.append(String.format("\tgml_node_%s -> gml_node_%s [style=\"dotted\"];\n",
-                  SqlSchemaGenerator.buildTableName(relation.getReferencedClass()),
-                  SqlSchemaGenerator.buildTableName(relation.getReferencingClass())));
+          if (!relation.getReferencingField().isHidden()) {
+            output.append(String.format("\tgml_node_%s -> gml_node_%s [style=\"dotted\"];\n",
+                SqlSchemaGenerator.buildTableName(relation.getReferencingClass()),
+                SqlSchemaGenerator.buildTableName(relation.getReferencedClass())));
+          }
+          if (!relation.getBackReferencingField().isHidden()) {
+            output.append(String.format("\tgml_node_%s -> gml_node_%s [style=\"dotted\"];\n",
+                    SqlSchemaGenerator.buildTableName(relation.getReferencedClass()),
+                    SqlSchemaGenerator.buildTableName(relation.getReferencingClass())));
+          }
           break;
       }
     });
