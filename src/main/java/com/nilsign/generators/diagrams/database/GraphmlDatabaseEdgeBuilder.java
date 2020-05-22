@@ -20,7 +20,7 @@ public class GraphmlDatabaseEdgeBuilder {
     return null;
   }
 
-  private String buildManyToManyEdges(DxdEntityRelation dxdRelation) {
+  private String buildManyToManyEdges(@NonNull DxdEntityRelation dxdRelation) {
     return new StringBuffer()
         .append(Graphml.addEdge(
             String.format("node_%s", SqlSchemaGenerator.buildTableName(dxdRelation)),
@@ -43,7 +43,7 @@ public class GraphmlDatabaseEdgeBuilder {
         .toString();
   }
 
-  private String buildManyToOneEdge(DxdEntityRelation dxdRelation) {
+  private String buildManyToOneEdge(@NonNull DxdEntityRelation dxdRelation) {
     return Graphml.addEdge(
         String.format("node_%s",
             SqlSchemaGenerator.buildTableName(dxdRelation.getReferencingClass())),
@@ -57,7 +57,7 @@ public class GraphmlDatabaseEdgeBuilder {
         Graphml.EdgeStyle.DASHED);
   }
 
-  private String buildOneToManyEdge(DxdEntityRelation dxdRelation) {
+  private String buildOneToManyEdge(@NonNull DxdEntityRelation dxdRelation) {
     return Graphml.addEdge(
         String.format("node_%s",
             SqlSchemaGenerator.buildTableName(dxdRelation.getReferencedClass())),
@@ -72,7 +72,7 @@ public class GraphmlDatabaseEdgeBuilder {
         Graphml.EdgeStyle.DASHED);
   }
 
-  private String buildOneToOneEdge(DxdEntityRelation dxdRelation) {
+  private String buildOneToOneEdge(@NonNull DxdEntityRelation dxdRelation) {
     StringBuffer output = new StringBuffer()
         .append(Graphml.addEdge(
             String.format("node_%s",

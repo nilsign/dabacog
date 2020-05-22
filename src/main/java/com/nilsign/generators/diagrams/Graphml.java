@@ -89,12 +89,12 @@ public final class Graphml {
   }
 
   public static String addEdge(
-      String sourceNodeName,
-      String sourceNodePortName,
-      PortLocation sourceNodePortLocation,
-      String targetNodeName,
-      String targetNodePortName,
-      PortLocation targetNodePortLocation) {
+      @NonNull String sourceNodeName,
+      @NonNull String sourceNodePortName,
+      @NonNull PortLocation sourceNodePortLocation,
+      @NonNull String targetNodeName,
+      @NonNull String targetNodePortName,
+      @NonNull PortLocation targetNodePortLocation) {
     return String.format("\t%s:%s:%s -> %s:%s:%s\n",
         sourceNodeName,
         sourceNodePortName,
@@ -105,13 +105,13 @@ public final class Graphml {
   }
 
   public static String addEdge(
-      String sourceNodeName,
-      String sourceNodePortName,
-      PortLocation sourceNodePortLocation,
-      String targetNodeName,
-      String targetNodePortName,
-      PortLocation targetNodePortLocation,
-      EdgeStyle edgeStyle) {
+      @NonNull String sourceNodeName,
+      @NonNull String sourceNodePortName,
+      @NonNull PortLocation sourceNodePortLocation,
+      @NonNull String targetNodeName,
+      @NonNull String targetNodePortName,
+      @NonNull PortLocation targetNodePortLocation,
+      @NonNull EdgeStyle edgeStyle) {
     return String.format("\t%s:%s:%s -> %s:%s:%s %s\n",
         sourceNodeName,
         sourceNodePortName,
