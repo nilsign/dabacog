@@ -29,8 +29,8 @@
     </class>
 
     <class name="Loan">
-      <field refersTo="Customer" multiplicity="one"/>
       <field refersTo="Book" multiplicity="one"/>
+      <field refersTo="Customer" multiplicity="one"/>
       <field name="Start" type="date" />
       <field name="End" type="date" indexed="true"/>
       <field name="Return" type="date" nullable="true"/>
