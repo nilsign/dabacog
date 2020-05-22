@@ -4,7 +4,7 @@ import com.nilsign.dxd.DxdReader;
 import com.nilsign.dxd.DxdReaderException;
 import com.nilsign.dxd.xml.DxdModel;
 import com.nilsign.dxd.xml.DxdModelException;
-import com.nilsign.generators.diagrams.GraphmlDatabaseDiagramGenerator;
+import com.nilsign.generators.diagrams.database.GraphmlDatabaseDiagramGenerator;
 import com.nilsign.generators.diagrams.GraphmlGeneratorException;
 import com.nilsign.generators.diagrams.GraphmlRenderer;
 import com.nilsign.generators.diagrams.GraphmlRendererException;

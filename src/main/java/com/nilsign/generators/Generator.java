@@ -17,15 +17,15 @@ public abstract class Generator {
   }
 
   protected abstract String getOutputDirectory();
-  protected abstract String getTargetFileName();
+  protected abstract String getOutputFileName();
 
-  public String getTargetFilePath() {
+  public String getOutputFilePath() {
     String filePath = FileHelper.createDirectoriesIfNotExist(getOutputDirectory());
-    return FileHelper.normalizePath(filePath) + getTargetFileName().trim();
+    return FileHelper.normalizePath(filePath) + getOutputFileName().trim();
   }
 
-  public File createGenerationTargetFile() throws GraphmlGeneratorException {
-    String filePath = getTargetFilePath();
+  public File createOutputFile() throws GraphmlGeneratorException {
+    String filePath = getOutputFilePath();
     FileHelper.deleteFileIfExists(filePath);
     try {
       return FileHelper.createFileIfNotExists(filePath);
