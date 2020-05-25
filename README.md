@@ -82,11 +82,11 @@ progress status (DONE, DEV, PLANNED).
 2. Create an XML Parser and read the Dxd model. [DONE]
 3. Generate a relational database diagram, and an entity class diagram (code) with
 [Graphviz](https://www.graphviz.org/). [DEV]
-4. Generate a Postgres database schema from the Dxd model. [PLANNED]
+4. Generate a Postgres database scheme from the Dxd model. [PLANNED]
 5. Generate the Java entity source code from the Dxd model. [PLANNED]
 6. Generate the Java and Postgres SQL code required for all CRUD operations on all entities
 7. Generate DTO classes out of many dxd model entity classes. [PLANNED]
-8. Add support for database schema changes within an already running project, including support for
+8. Add support for database scheme changes within an already running project, including support for
 data migration strategies, by the use of [Flyway](https://flywaydb.org) and/or
 [Liquibase](https://www.liquibase.org/). [PLANNED]
 9. Support to migrate to DABACOG for already existing projects. [PLANNED]

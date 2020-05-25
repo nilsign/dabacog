@@ -38,8 +38,8 @@ public final class Graphml {
     return new StringBuffer()
         .append(
             "\tgraph [pad=\"0.5\", nodesep=\"1\", edgesep=\"1\", ranksep=\"1\", ordering=\"out\"];\n")
-        .append("\tnode [shape=plaintext fontname=\"Arial\" fontsize=\"10\"];\n")
-        .append("\trankdir=\"TR\";\n")
+        .append("\tnode [shape=plaintext fontname=\"Arial\" fontsize=\"12\"];\n")
+        .append("\trankdir=\"TB\";\n")
         .append(String.format("\tlabel = \"%s\";\n", graphName))
         .append("\tlabelloc = \"t\";\n")
         .toString();
