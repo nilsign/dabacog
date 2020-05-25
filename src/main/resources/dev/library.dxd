@@ -5,7 +5,7 @@
     <diagrams
         outputPath="./generated">
         <database
-            diagramName="Dabacog - Demo Diagram"
+            diagramName="Dabacog - Demo Database Diagram"
             primaryKeyFieldPorts="false"
             foreignKeyFieldPorts="true"/>
     </diagrams>

@@ -56,10 +56,10 @@ public class GraphmlDatabaseDiagramGenerator extends Generator {
   private String addDatabaseEntityNodes() {
     StringBuffer output = new StringBuffer();
     super.dxdModel.getEntities().getDxdClasses().forEach(dxdEntityClass -> {
-      output.append(GraphmlDatabaseNodeBuilder.buildEntityNode(dxdEntityClass));
+      output.append(GraphmlDatabaseNodeBuilder.buildEntityNode(dxdModel, dxdEntityClass));
     });
     super.dxdModel.getEntities().getManyToManyRelations().forEach(dxdRelation ->
-       output.append(GraphmlDatabaseNodeBuilder.buildEntityRelationNode(dxdRelation)));
+       output.append(GraphmlDatabaseNodeBuilder.buildEntityRelationNode(dxdModel, dxdRelation)));
     return output.toString();
   }
 

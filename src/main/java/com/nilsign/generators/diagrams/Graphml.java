@@ -29,17 +29,16 @@ public final class Graphml {
     private final String styleName;
   }
 
-
   public static String openGraph() {
     return "digraph G {\n";
   }
 
   public static String addGraphProperties(@NonNull String graphName) {
     return new StringBuffer()
-        .append(
-            "\tgraph [pad=\"0.5\", nodesep=\"1\", edgesep=\"1\", ranksep=\"1\", ordering=\"out\"];\n")
+        .append("\tgraph "
+            + "[pad=\"0.5\", nodesep=\"1\", edgesep=\"1\", ranksep=\"1\", ordering=\"out\"];\n")
         .append("\tnode [shape=plaintext fontname=\"Arial\" fontsize=\"12\"];\n")
-        .append("\trankdir=\"TB\";\n")
+        .append("\trankdir=\"TL\";\n")
         .append(String.format("\tlabel = \"%s\";\n", graphName))
         .append("\tlabelloc = \"t\";\n")
         .toString();
