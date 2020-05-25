@@ -4,6 +4,10 @@
   <meta>
     <diagrams
         outputPath="./generated">
+        <database
+            diagramName="Dabacog - Demo Database Diagram"
+            primaryKeyFieldPorts="false"
+            foreignKeyFieldPorts="true"/>
     </diagrams>
     <database
         system="postgres"

@@ -1,6 +1,7 @@
 package com.nilsign.generators.diagrams.database;
 
 import com.nilsign.dxd.noxml.DxdEntityRelation;
+import com.nilsign.dxd.xml.DxdModel;
 import com.nilsign.dxd.xml.entities.DxdEntityClass;
 import com.nilsign.dxd.xml.entities.DxdEntityField;
 import com.nilsign.dxd.xmlvaluetypes.DxdFieldType;
@@ -46,23 +47,29 @@ public class GraphmlDatabaseNodeLabelRowBuilder {
     return Graphml.addNodeLabelTableColumnNames(ENTITY_RELATION_NODE_COLUMN_NAMES);
   }
 
-  public static String buildEntityNodePrimaryKeyRow() {
-    return of().buildEntityNodePrimaryKeyRowImpl();
+  public static String buildEntityNodePrimaryKeyRow(@NonNull DxdModel dxdModel) {
+    return of().buildEntityNodePrimaryKeyRowImpl(dxdModel);
   }
 
-  public static String buildEntityNodeFieldRow(@NonNull DxdEntityField dxdField) {
-    return of().buildEntityNodeFieldLabelRow(dxdField);
+  public static String buildEntityNodeFieldRow(
+      @NonNull DxdModel dxdModel,
+      @NonNull DxdEntityField dxdField) {
+    return of().buildEntityNodeFieldLabelRow(dxdModel, dxdField);
   }
 
-  public static String buildEntityRelationNodeFieldsRow(@NonNull DxdEntityRelation dxdRelation) {
-    return of().buildEntityRelationNodeFieldsRowImpl(dxdRelation);
+  public static String buildEntityRelationNodeFieldsRow(
+      @NonNull DxdModel dxdModel,
+      @NonNull DxdEntityRelation dxdRelation) {
+    return of().buildEntityRelationNodeFieldsRowImpl(dxdModel, dxdRelation);
   }
-  private String buildEntityNodePrimaryKeyRowImpl() {
+  private String buildEntityNodePrimaryKeyRowImpl(@NonNull DxdModel dxdModel) {
     return new StringBuffer()
         .append(Graphml.openNodeLabelTableRow())
-        .append(Graphml.addNodeLabelTableCell(
-            SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME,
-            String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME)))
+        .append(hasPrimaryKeyPorts(dxdModel)
+            ? Graphml.addNodeLabelTableCell(
+                SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME,
+                String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME))
+            : Graphml.addNodeLabelTableCell(SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME))
         .append(Graphml.addNodeLabelTableCell(YES))
         .append(Graphml.addNodeLabelTableCell(YES))
         .append(Graphml.addNodeLabelTableCell(NO))
@@ -73,33 +80,43 @@ public class GraphmlDatabaseNodeLabelRowBuilder {
         .toString();
   }
 
-  private String buildEntityNodeFieldLabelRow(@NonNull DxdEntityField dxdField) {
+  private String buildEntityNodeFieldLabelRow(
+      @NonNull DxdModel dxdModel,
+      @NonNull DxdEntityField dxdField) {
     StringBuffer output = new StringBuffer()
         .append(Graphml.openNodeLabelTableRow());
     for (int i = 0; i < ENTITY_NODE_COLUMN_NAMES.size(); ++i) {
-      output.append(dxdField.isRelation() && i == ENTITY_NODE_COLUMN_NAMES.size() - 1
-          ? Graphml.addNodeLabelTableCell(
-              getCellValue(i, dxdField),
-              String.format("port_%s_%s",
-                  SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME,
-                  dxdField.getRefersTo()))
-          : Graphml.addNodeLabelTableCell(getCellValue(i, dxdField)));
+      output.append(dxdField.isRelation()
+          && i == ENTITY_NODE_COLUMN_NAMES.size() - 1
+          && hasForeignKeyPorts(dxdModel)
+              ? Graphml.addNodeLabelTableCell(
+                  getCellValue(i, dxdField),
+                  String.format("port_%s_%s",
+                      SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME,
+                      dxdField.getRefersTo()))
+              : Graphml.addNodeLabelTableCell(getCellValue(i, dxdField)));
     }
     return output
         .append(Graphml.closeNodeLabelTableRow())
         .toString();
   }
 
-  private String buildEntityRelationNodeFieldsRowImpl(@NonNull DxdEntityRelation dxdRelation) {
+  private String buildEntityRelationNodeFieldsRowImpl(
+      @NonNull DxdModel dxdModel,
+      @NonNull DxdEntityRelation dxdRelation) {
     Pair<String, String> foreignKeyName = SqlSchemaGenerator.buildForeignKeyNames(dxdRelation);
     return new StringBuffer()
         .append(Graphml.openNodeLabelTableRow())
-        .append(Graphml.addNodeLabelTableCell(
-            foreignKeyName.getFirst(),
-            String.format("port_%s", foreignKeyName.getFirst())))
-        .append(Graphml.addNodeLabelTableCell(
-            foreignKeyName.getSecond(),
-            String.format("port_%s", foreignKeyName.getSecond())))
+        .append(hasForeignKeyPorts(dxdModel)
+            ? Graphml.addNodeLabelTableCell(
+                  foreignKeyName.getFirst(),
+                  String.format("port_%s", foreignKeyName.getFirst()))
+            : Graphml.addNodeLabelTableCell(foreignKeyName.getFirst()))
+        .append(hasForeignKeyPorts(dxdModel)
+            ? Graphml.addNodeLabelTableCell(
+                foreignKeyName.getSecond(),
+                String.format("port_%s", foreignKeyName.getSecond()))
+            : Graphml.addNodeLabelTableCell(foreignKeyName.getSecond()))
         .append(Graphml.closeNodeLabelTableRow())
         .toString();
   }
@@ -167,5 +184,21 @@ public class GraphmlDatabaseNodeLabelRowBuilder {
     return dxdField.getDefaultValue().length() <= 10
         ? String.format("'%s'", dxdField.getDefaultValue())
         : String.format("'%s...'", dxdField.getDefaultValue().substring(0, 8));
+  }
+
+  private boolean hasPrimaryKeyPorts(@NonNull DxdModel dxdModel) {
+    return dxdModel
+        .getMeta()
+        .getMetaDiagrams()
+        .getDxdMetaDiagramsDatabase()
+        .isPrimaryKeyFieldPorts();
+  }
+
+  private boolean hasForeignKeyPorts(@NonNull DxdModel dxdModel) {
+    return dxdModel
+        .getMeta()
+        .getMetaDiagrams()
+        .getDxdMetaDiagramsDatabase()
+        .isForeignKeyFieldPorts();
   }
 }

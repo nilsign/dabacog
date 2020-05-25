@@ -10,4 +10,7 @@ public class DxdMetaDiagrams {
 
   @Attribute
   private String outputPath;
+
+  @Element(name = "database")
+  private DxdMetaDiagramsDatabase dxdMetaDiagramsDatabase;
 }

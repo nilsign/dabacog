@@ -35,13 +35,18 @@ public class GraphmlDatabaseDiagramGenerator extends Generator {
   public void generate() throws GraphmlGeneratorException {
     File outputFile = super.createOutputFile();
     try (FileWriter writer = new FileWriter(outputFile)) {
-      writer.write(new StringBuffer()
-          .append(Graphml.openGraph())
-          .append(Graphml.addGraphProperties("Database Description"))
-          .append(addDatabaseEntityNodes())
-          .append(addDatabaseEntityRelationEdges())
-          .append(Graphml.closeGraph())
-          .toString());
+      writer.write(
+          new StringBuffer()
+              .append(Graphml.openGraph())
+              .append(Graphml.addGraphProperties(dxdModel
+                  .getMeta()
+                  .getMetaDiagrams()
+                  .getDxdMetaDiagramsDatabase()
+                  .getDiagramName()))
+              .append(addDatabaseEntityNodes())
+              .append(addDatabaseEntityRelationEdges())
+              .append(Graphml.closeGraph())
+              .toString());
     } catch (IOException e) {
       throw new GraphmlGeneratorException(
           "An error occurred while writing to the database diagram description file.", e);
@@ -51,10 +56,10 @@ public class GraphmlDatabaseDiagramGenerator extends Generator {
   private String addDatabaseEntityNodes() {
     StringBuffer output = new StringBuffer();
     super.dxdModel.getEntities().getDxdClasses().forEach(dxdEntityClass -> {
-      output.append(GraphmlDatabaseNodeBuilder.buildEntityNode(dxdEntityClass));
+      output.append(GraphmlDatabaseNodeBuilder.buildEntityNode(dxdModel, dxdEntityClass));
     });
     super.dxdModel.getEntities().getManyToManyRelations().forEach(dxdRelation ->
-       output.append(GraphmlDatabaseNodeBuilder.buildEntityRelationNode(dxdRelation)));
+       output.append(GraphmlDatabaseNodeBuilder.buildEntityRelationNode(dxdModel, dxdRelation)));
     return output.toString();
   }
 

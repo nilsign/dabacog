@@ -16,8 +16,8 @@ public class GraphmlDatabaseEdgeBuilder {
       case MANY_TO_ONE: return of().buildManyToOneEdge(dxdRelation);
       case ONE_TO_MANY: return of().buildOneToManyEdge(dxdRelation);
       case ONE_TO_ONE: return of().buildOneToOneEdge(dxdRelation);
+      default: return null;
     }
-    return null;
   }
 
   private String buildManyToManyEdges(@NonNull DxdEntityRelation dxdRelation) {
