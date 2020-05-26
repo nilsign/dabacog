@@ -21,84 +21,111 @@ public class GraphmlDatabaseEdgeBuilder {
   }
 
   private String buildManyToManyEdges(@NonNull DxdEntityRelation dxdRelation) {
+    if (!dxdRelation.isManyToMany()) {
+      return "";
+    }
     return new StringBuffer()
         .append(Graphml.addEdge(
             String.format("node_%s", SqlSchemaGenerator.buildTableName(dxdRelation)),
             String.format("port_%s",
                 SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getFirst()),
-            Graphml.PortLocation.WEST,
+            Graphml.PortAlignment.WEST,
             String.format("node_%s",
                 SqlSchemaGenerator.buildTableName(dxdRelation.getReferencingClass())),
             String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME),
-            Graphml.PortLocation.WEST))
+            Graphml.PortAlignment.WEST))
         .append(Graphml.addEdge(
             String.format("node_%s", SqlSchemaGenerator.buildTableName(dxdRelation)),
             String.format("port_%s",
                 SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getSecond()),
-            Graphml.PortLocation.EAST,
+            Graphml.PortAlignment.EAST,
             String.format("node_%s",
                 SqlSchemaGenerator.buildTableName(dxdRelation.getReferencedClass())),
             String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME),
-            Graphml.PortLocation.WEST))
+            Graphml.PortAlignment.WEST))
         .toString();
   }
 
   private String buildManyToOneEdge(@NonNull DxdEntityRelation dxdRelation) {
+    if (!dxdRelation.isManyToOne()) {
+      return "";
+    }
     return Graphml.addEdge(
         String.format("node_%s",
             SqlSchemaGenerator.buildTableName(dxdRelation.getReferencingClass())),
         String.format("port_%s",
             SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getFirst()),
-        Graphml.PortLocation.EAST,
+        Graphml.PortAlignment.EAST,
         String.format("node_%s",
             SqlSchemaGenerator.buildTableName(dxdRelation.getReferencedClass())),
         String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME),
-        Graphml.PortLocation.WEST,
+        Graphml.PortAlignment.WEST,
         Graphml.EdgeStyle.DASHED);
   }
 
   private String buildOneToManyEdge(@NonNull DxdEntityRelation dxdRelation) {
+    if (!dxdRelation.isOneToMany()) {
+      return "";
+    }
     return Graphml.addEdge(
         String.format("node_%s",
             SqlSchemaGenerator.buildTableName(dxdRelation.getReferencedClass())),
         String.format("port_%s",
             SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getSecond()),
-        Graphml.PortLocation.EAST,
+        Graphml.PortAlignment.EAST,
         String.format("node_%s",
             SqlSchemaGenerator.buildTableName(dxdRelation.getReferencingClass())),
         String.format("port_%s",
             SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME),
-        Graphml.PortLocation.WEST,
+        Graphml.PortAlignment.WEST,
         Graphml.EdgeStyle.DASHED);
   }
 
   private String buildOneToOneEdge(@NonNull DxdEntityRelation dxdRelation) {
-    StringBuffer output = new StringBuffer()
-        .append(Graphml.addEdge(
-            String.format("node_%s",
-                SqlSchemaGenerator.buildTableName(dxdRelation.getReferencingClass())),
-            String.format("port_%s",
-                SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getFirst()),
-            Graphml.PortLocation.EAST,
-            String.format("node_%s",
-                SqlSchemaGenerator.buildTableName(dxdRelation.getReferencedClass())),
-            String.format("port_%s",
-                SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME),
-            Graphml.PortLocation.WEST,
-            Graphml.EdgeStyle.DOTTED));
+    if (!dxdRelation.isOneToOne()) {
+      return "";
+    }
+    if (dxdRelation.isSelfReference()) {
+      return Graphml.addEdge(
+          String.format(
+            "node_%s", SqlSchemaGenerator.buildTableName(dxdRelation.getReferencingClass())),
+          String.format(
+              "port_%s", SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getFirst()),
+          Graphml.PortAlignment.EAST,
+          String.format(
+              "node_%s", SqlSchemaGenerator.buildTableName(dxdRelation.getReferencedClass())),
+          String.format("port_%s", Graphml.PortLocation.TOP.getShortName()),
+          Graphml.PortAlignment.NORTH,
+          Graphml.EdgeStyle.DOTTED);
+    }
+    StringBuffer output = new StringBuffer();
+    if (!dxdRelation.getReferencingField().isHidden()) {
+      output.append(Graphml.addEdge(
+          String.format(
+              "node_%s", SqlSchemaGenerator.buildTableName(dxdRelation.getReferencingClass())),
+          String.format(
+              "port_%s", SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getFirst()),
+          Graphml.PortAlignment.EAST,
+          String.format(
+              "node_%s", SqlSchemaGenerator.buildTableName(dxdRelation.getReferencedClass())),
+          String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME),
+          Graphml.PortAlignment.WEST,
+          Graphml.EdgeStyle.DOTTED));
+    }
     if (dxdRelation.hasBackReferencingField()
-        && !dxdRelation.getBackReferencingField().isHidden()) {
+        && !dxdRelation.getBackReferencingField().isHidden()
+        && !dxdRelation.isSelfReference()) {
       output.append(Graphml.addEdge(
           String.format("node_%s",
               SqlSchemaGenerator.buildTableName(dxdRelation.getReferencedClass())),
           String.format("port_%s",
               SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getSecond()),
-          Graphml.PortLocation.EAST,
+          Graphml.PortAlignment.EAST,
           String.format("node_%s",
               SqlSchemaGenerator.buildTableName(dxdRelation.getReferencingClass())),
           String.format("port_%s",
               SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME),
-          Graphml.PortLocation.WEST,
+          Graphml.PortAlignment.WEST,
           Graphml.EdgeStyle.DOTTED));
     }
     return output.toString();

@@ -12,6 +12,15 @@ public final class Graphml {
 
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
   public enum PortLocation {
+    TOP("top");
+
+    @Getter
+    private final String shortName;
+  }
+
+  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+  public enum PortAlignment {
+    NORTH("n"),
     EAST("e"),
     WEST("w");
 
@@ -36,9 +45,9 @@ public final class Graphml {
   public static String addGraphProperties(@NonNull String graphName) {
     return new StringBuffer()
         .append("\tgraph "
-            + "[pad=\"0.5\", nodesep=\"1\", edgesep=\"1\", ranksep=\"1\", ordering=\"out\"];\n")
+            + "[pad=\"0.5\", nodesep=\"2\", ranksep=\"1.5\", ordering=\"in\"];\n")
         .append("\tnode [shape=plaintext fontname=\"Arial\" fontsize=\"12\"];\n")
-        .append("\trankdir=\"TL\";\n")
+        .append("\trankdir=\"LT\";\n")
         .append(String.format("\tlabel = \"%s\";\n", graphName))
         .append("\tlabelloc = \"t\";\n")
         .toString();
@@ -58,8 +67,9 @@ public final class Graphml {
 
   public static String addNodeLabelTableName(@NonNull String tableName, @NonNull int columns) {
     return String.format(
-        "\t\t\t\t<tr><td colspan=\"%s\">%s</td></tr>\n",
+        "\t\t\t\t<tr><td colspan=\"%s\" port=\"port_%s\">%s</td></tr>\n",
         columns,
+        PortLocation.TOP.getShortName(),
         tableName);
   }
 
@@ -90,10 +100,10 @@ public final class Graphml {
   public static String addEdge(
       @NonNull String sourceNodeName,
       @NonNull String sourceNodePortName,
-      @NonNull PortLocation sourceNodePortLocation,
+      @NonNull Graphml.PortAlignment sourceNodePortLocation,
       @NonNull String targetNodeName,
       @NonNull String targetNodePortName,
-      @NonNull PortLocation targetNodePortLocation) {
+      @NonNull Graphml.PortAlignment targetNodePortLocation) {
     return String.format("\t%s:%s:%s -> %s:%s:%s\n",
         sourceNodeName,
         sourceNodePortName,
@@ -106,10 +116,10 @@ public final class Graphml {
   public static String addEdge(
       @NonNull String sourceNodeName,
       @NonNull String sourceNodePortName,
-      @NonNull PortLocation sourceNodePortLocation,
+      @NonNull Graphml.PortAlignment sourceNodePortLocation,
       @NonNull String targetNodeName,
       @NonNull String targetNodePortName,
-      @NonNull PortLocation targetNodePortLocation,
+      @NonNull Graphml.PortAlignment targetNodePortLocation,
       @NonNull EdgeStyle edgeStyle) {
     return String.format("\t%s:%s:%s -> %s:%s:%s %s\n",
         sourceNodeName,
