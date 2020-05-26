@@ -44,8 +44,10 @@ public final class Graphml {
 
   public static String addGraphProperties(@NonNull String graphName) {
     return new StringBuffer()
-        .append("\tgraph "
-            + "[pad=\"0.5\", nodesep=\"2\", ranksep=\"1.5\", ordering=\"in\"];\n")
+        .append(
+            "\tgraph "
+                + "[pad=\"0.5\" nodesep=\"2\" ranksep=\"1.5\" ordering=\"in\" "
+                + "fontname=Arial, fontsize=24 ];\n")
         .append("\tnode [shape=plaintext fontname=\"Arial\" fontsize=\"12\"];\n")
         .append("\trankdir=\"LT\";\n")
         .append(String.format("\tlabel = \"%s\";\n", graphName))
