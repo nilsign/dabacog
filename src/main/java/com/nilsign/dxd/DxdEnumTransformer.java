@@ -1,4 +1,4 @@
-package com.nilsign.dxd.xmlvaluetypes;
+package com.nilsign.dxd;
 
 import lombok.NonNull;
 import org.simpleframework.xml.transform.Transform;

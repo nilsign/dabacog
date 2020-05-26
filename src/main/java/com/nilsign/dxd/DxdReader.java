@@ -1,7 +1,6 @@
 package com.nilsign.dxd;
 
 import com.nilsign.dxd.xml.DxdModel;
-import com.nilsign.dxd.xmlvaluetypes.DxdEnumTransformer;
 import lombok.NonNull;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;

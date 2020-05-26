@@ -58,6 +58,10 @@ public class DxdEntityRelation {
     return backReferencingField != null;
   }
 
+  public boolean isSelfReference() {
+    return referencingClass.equals(referencedClass);
+  }
+
   public boolean isManyToMany() {
     return type == DxdEntityRelationType.MANY_TO_MANY;
   }
