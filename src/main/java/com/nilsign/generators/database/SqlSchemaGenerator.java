@@ -2,6 +2,7 @@ package com.nilsign.generators.database;
 
 import com.nilsign.dxd.noxml.DxdEntityRelation;
 import com.nilsign.dxd.xml.entities.DxdEntityClass;
+import com.nilsign.dxd.xml.entities.DxdEntityField;
 import com.nilsign.misc.Pair;
 import lombok.NonNull;
 
@@ -39,7 +40,11 @@ public class SqlSchemaGenerator {
              transformClassEntityName(relation.getReferencingClass().getName())));
   }
 
-  private static String transformClassEntityName(String entityName) {
+  public static String buildFieldName(@NonNull DxdEntityField fieldName) {
+    return transformClassEntityName(fieldName.getName());
+  }
+
+  private static String transformClassEntityName(@NonNull String entityName) {
     String normalizedName = "";
     for (int i = 0; i < entityName.length(); ++i) {
       if (i > 0
@@ -47,7 +52,8 @@ public class SqlSchemaGenerator {
           && Character.isLowerCase(entityName.charAt(i - 1))
           || i > 1
           && Character.isLowerCase(entityName.charAt(i))
-          && Character.isUpperCase(entityName.charAt(i - 1))) {
+          && Character.isUpperCase(entityName.charAt(i - 1))
+          && Character.isUpperCase(entityName.charAt(i - 2))) {
         normalizedName += "_";
       }
       normalizedName += entityName.charAt(i);
