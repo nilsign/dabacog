@@ -1,14 +1,14 @@
 package com.nilsign.helper;
 
+import lombok.AccessLevel;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.io.File;
 import java.io.IOException;
 
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FileHelper {
-
-  private FileHelper() {
-  }
 
   public static String normalizePath(@NonNull String path) {
     String normalizedPath = path.trim().replaceAll("[/\\\\]", "\\" + File.separator);

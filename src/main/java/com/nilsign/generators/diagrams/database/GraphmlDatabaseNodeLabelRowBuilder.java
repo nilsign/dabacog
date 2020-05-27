@@ -137,7 +137,7 @@ public class GraphmlDatabaseNodeLabelRowBuilder {
   private String getFieldNameCellValue(@NonNull DxdEntityField dxdField) {
     return dxdField.isRelation()
         ? SqlSchemaGenerator.buildForeignKeyName(dxdField.getRefersTo())
-        : dxdField.getName();
+        : SqlSchemaGenerator.buildFieldName(dxdField);
   }
 
   private String getFieldTypeCellValue(@NonNull DxdEntityField dxdField) {
