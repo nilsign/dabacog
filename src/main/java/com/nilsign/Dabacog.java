@@ -101,9 +101,6 @@ public class Dabacog {
     System.out.println("DISTINCT MANY-TO-MANY-RELATIONS");
     model.getEntities().getManyToManyRelations().forEach(relation
         -> System.out.println(String.format("+ %s", relation.toString())));
-    System.out.println("DISTINCT MANY-TO-ONE-RELATIONS");
-    model.getEntities().getManyToOneRelations().forEach(relation
-        -> System.out.println(String.format("+ %s", relation.toString())));
     System.out.println("DISTINCT ONE-TO-MANY-RELATIONS");
     model.getEntities().getOneToManyRelations().forEach(relation
         -> System.out.println(String.format("+ %s", relation.toString())));

@@ -36,10 +36,10 @@ public class GraphmlDatabaseNodeLabelBuilder {
         .stream()
         .filter(field
             -> !field.isRelation()
-            || !field.getRelation().isManyToMany()
+            || field.getRelation() != null
+            && !field.getRelation().isManyToMany()
             && !(field.getRelation().isOneToMany() && field.isToManyRelation())
-            && !(field.getRelation().isOneToOne() && field.isHidden())
-            && !(field.getRelation().isManyToOne() && field.isToManyRelation()))
+            && !(field.getRelation().isOneToOne() && field.isHidden()))
         .forEach(field
             -> output.append(
                 GraphmlDatabaseNodeLabelRowBuilder.buildEntityNodeFieldRow(dxdModel, field)));

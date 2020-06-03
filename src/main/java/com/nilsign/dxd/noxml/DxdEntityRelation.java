@@ -14,7 +14,6 @@ public class DxdEntityRelation {
   @NonNull
   private final DxdEntityClass referencingClass;
 
-  @NonNull
   private final DxdEntityField referencingField;
 
   @NonNull
@@ -30,6 +29,15 @@ public class DxdEntityRelation {
       @NonNull DxdEntityField referencingField,
       @NonNull DxdEntityClass referencedClass) {
     DxdEntityField backReferencingField = referencedClass.findReferenceFieldTo(referencingClass);
+    if (referencingField.isToOneRelation()
+        && (backReferencingField == null || backReferencingField.isToManyRelation())) {
+      return of(
+          referencedClass,
+          backReferencingField,
+          referencingClass,
+          referencingField,
+          detectRelationType(referencingField, backReferencingField));
+    }
     return of(
         referencingClass,
         referencingField,
@@ -48,15 +56,20 @@ public class DxdEntityRelation {
     }
     if (referencingField.isToOneRelation()) {
       return backReferencingField == null || backReferencingField.isToManyRelation()
-          ? DxdEntityRelationType.MANY_TO_ONE
+          ? DxdEntityRelationType.ONE_TO_MANY
           : DxdEntityRelationType.ONE_TO_ONE;
     }
     return null;
   }
 
+  public boolean hasReferencingField() {
+    return referencingField != null;
+  }
+
   public boolean hasBackReferencingField() {
     return backReferencingField != null;
   }
+
 
   public boolean isSelfReference() {
     return referencingClass.equals(referencedClass);
@@ -64,10 +77,6 @@ public class DxdEntityRelation {
 
   public boolean isManyToMany() {
     return type == DxdEntityRelationType.MANY_TO_MANY;
-  }
-
-  public boolean isManyToOne() {
-    return type == DxdEntityRelationType.MANY_TO_ONE;
   }
 
   public boolean isOneToMany() {
@@ -80,9 +89,10 @@ public class DxdEntityRelation {
 
   @Override
   public String toString() {
-    return String.format("%s%s -> %s -> %s%s%s",
+    return String.format("%s%s%s -> %s -> %s%s%s",
         referencingClass.getName(),
-        referencingField.isHidden() ? " (HIDDEN)" : "",
+        !hasReferencingField() ?  " (HIDDEN - NO-REFERENCE)" : "",
+        hasReferencingField() && referencingField.isHidden() ? " (HIDDEN)" : "",
         type,
         referencedClass.getName(),
         !hasBackReferencingField() ? " (HIDDEN - NO-BACK-REFERENCE)" : "",

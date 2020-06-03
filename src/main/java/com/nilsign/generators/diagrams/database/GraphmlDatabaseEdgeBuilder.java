@@ -13,7 +13,6 @@ public class GraphmlDatabaseEdgeBuilder {
   public static String buildEntityRelationEdge(@NonNull DxdEntityRelation dxdRelation) {
     switch(dxdRelation.getType()) {
       case MANY_TO_MANY: return of().buildManyToManyEdges(dxdRelation);
-      case MANY_TO_ONE: return of().buildManyToOneEdge(dxdRelation);
       case ONE_TO_MANY: return of().buildOneToManyEdge(dxdRelation);
       case ONE_TO_ONE: return of().buildOneToOneEdge(dxdRelation);
       default: return null;
@@ -44,23 +43,6 @@ public class GraphmlDatabaseEdgeBuilder {
             String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME),
             Graphml.PortAlignment.WEST))
         .toString();
-  }
-
-  private String buildManyToOneEdge(@NonNull DxdEntityRelation dxdRelation) {
-    if (!dxdRelation.isManyToOne()) {
-      return "";
-    }
-    return Graphml.addEdge(
-        String.format("node_%s",
-            SqlSchemaGenerator.buildTableName(dxdRelation.getReferencingClass())),
-        String.format("port_%s",
-            SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getFirst()),
-        Graphml.PortAlignment.EAST,
-        String.format("node_%s",
-            SqlSchemaGenerator.buildTableName(dxdRelation.getReferencedClass())),
-        String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME),
-        Graphml.PortAlignment.WEST,
-        Graphml.EdgeStyle.DASHED);
   }
 
   private String buildOneToManyEdge(@NonNull DxdEntityRelation dxdRelation) {

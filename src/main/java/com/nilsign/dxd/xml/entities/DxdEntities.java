@@ -30,7 +30,6 @@ public class DxdEntities {
   // Class relation mappings
   private final List<DxdEntityRelation> relations = new ArrayList<>();
   private final List<DxdEntityRelation> manyToManyRelations = new ArrayList<>();
-  private final List<DxdEntityRelation> manyToOneRelations = new ArrayList<>();
   private final List<DxdEntityRelation> oneToManyRelations = new ArrayList<>();
   private final List<DxdEntityRelation> oneToOneRelations = new ArrayList<>();
 
@@ -66,11 +65,12 @@ public class DxdEntities {
           DxdEntityClass referencedDxdClass = classNameToClassMap.get(dxdField.getRefersTo());
           DxdEntityRelation relation = DxdEntityRelation.of(dxdClass, dxdField, referencedDxdClass);
           if (!addedDxdClassRelations.contains(
-              Pair.of(relation.getReferencedClass(), relation.getReferencingClass()))) {
+              Pair.of(relation.getReferencedClass(), relation.getReferencingClass()))
+                  && !addedDxdClassRelations.contains(
+                      Pair.of(relation.getReferencingClass(), relation.getReferencedClass()))) {
             relations.add(relation);
             switch (relation.getType()) {
               case MANY_TO_MANY: manyToManyRelations.add(relation); break;
-              case MANY_TO_ONE: manyToOneRelations.add(relation); break;
               case ONE_TO_MANY: oneToManyRelations.add(relation); break;
               case ONE_TO_ONE: oneToOneRelations.add(relation); break;
             }
