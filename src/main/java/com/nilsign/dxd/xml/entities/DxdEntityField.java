@@ -15,10 +15,10 @@ public class DxdEntityField {
   public static final String ATTRIBUTE_NAME_MULTIPLICITY = "multiplicity";
 
   @Attribute(required=false)
-  private String refersTo;
-
-  @Attribute(required=false)
   private DxdFieldMultiplicity multiplicity;
+
+  @Attribute
+  private DxdFieldType type;
 
   @Attribute(required=false)
   private boolean hidden;
@@ -28,9 +28,6 @@ public class DxdEntityField {
 
   @Attribute(required=false)
   private String name;
-
-  @Attribute(required=false)
-  private DxdFieldType type;
 
   @Attribute(required=false)
   private boolean unique;
