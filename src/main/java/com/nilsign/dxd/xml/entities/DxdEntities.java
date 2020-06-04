@@ -36,11 +36,18 @@ public class DxdEntities {
 
   public void prepareModels() throws DxdModelException {
     try {
+      createTypes();
       createCommonMappings();
       createDistinctRelations();
     } catch (Exception e) {
       throw new DxdModelException("The Dxd model preparation failed.", e);
     }
+  }
+
+  public void createTypes() {
+    dxdClasses.forEach(dxdClass
+        -> dxdClass.getFields().forEach(field
+            -> field.prepare()));
   }
 
   private void createCommonMappings() {
@@ -63,7 +70,8 @@ public class DxdEntities {
     Set<Pair<DxdEntityClass, DxdEntityClass>> addedDxdClassRelations = new HashSet<>();
     dxdClasses.forEach(dxdClass
         -> dxdClass.getRelationFields().forEach(dxdField -> {
-          DxdEntityClass referencedDxdClass = classNameToClassMap.get(dxdField.getRefersTo());
+          DxdEntityClass referencedDxdClass = classNameToClassMap.get(
+              dxdField.getFieldType().getTypeName());
           DxdEntityRelation relation = DxdEntityRelation.of(dxdClass, dxdField, referencedDxdClass);
           if (!addedDxdClassRelations.contains(
               Pair.of(relation.getReferencedClass(), relation.getReferencingClass()))) {
