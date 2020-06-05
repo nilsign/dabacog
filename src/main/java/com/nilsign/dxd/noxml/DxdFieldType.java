@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NonNull;
 
 import java.util.Arrays;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -35,14 +34,12 @@ public class DxdFieldType {
     }
   }
 
-  private final String typeName;
+  @NonNull
   private final FieldType type;
 
-  public DxdFieldType(String name) {
-    Set<String> test = Arrays
-        .stream(FieldType.values())
-        .map(FieldType::toString)
-        .collect(Collectors.toSet());
+  private final String typeName;
+
+  public DxdFieldType(@NonNull String name) {
     if (Arrays
         .stream(FieldType.values())
         .map(FieldType::toString)
