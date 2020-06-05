@@ -4,10 +4,10 @@
   <meta>
     <diagrams
         outputPath="./generated">
-        <database
-            diagramName="Dabacog - Demo Database Diagram"
-            primaryKeyFieldPorts="false"
-            foreignKeyFieldPorts="true"/>
+      <database
+          diagramName="Dabacog - Demo Database Diagram"
+          primaryKeyFieldPorts="false"
+          foreignKeyFieldPorts="true"/>
     </diagrams>
     <database
         system="postgres"
@@ -19,67 +19,67 @@
 
   <entities>
     <class name="Genre">
-      <field name="name" type="string" unique="true" />
+      <field type="string" name="name" unique="true" />
     </class>
 
     <class name="Loan">
-      <field refersTo="Book" multiplicity="one"/>
-      <field refersTo="Customer" multiplicity="one"/>
-      <field name="Start" type="date" />
-      <field name="End" type="date" indexed="true"/>
-      <field name="Return" type="date" nullable="true"/>
-      <field name="DunningLetter" type="boolean" default="false"/>
+      <field type="Book" multiplicity="one"/>
+      <field type="Customer" multiplicity="one"/>
+      <field type="date" name="Start" />
+      <field type="date" name="End" indexed="true"/>
+      <field type="date" name="Return" nullable="true"/>
+      <field type="boolean" name="DunningLetter" default="false"/>
     </class>
 
     <class name="Book">
-      <field refersTo="Author" multiplicity="many"/>
-      <field refersTo="Genre" multiplicity="many"/>
-      <field refersTo="Loan" multiplicity="many" hidden="true"/>
-      <field refersTo="Location" multiplicity="one"/>
-      <field name="Name" type="string" fts="true"/>
-      <field name="Isbn" type="string" unique="true"/>
-      <field name="Price" type="double" nullable="true"/>
+      <field type="Author" multiplicity="many"/>
+      <field type="Genre" multiplicity="many"/>
+      <field type="Loan" multiplicity="many" hidden="true"/>
+      <field type="Location" multiplicity="one"/>
+      <field type="string" name="Name" fts="true"/>
+      <field type="string" name="Isbn" unique="true"/>
+      <field type="double" name="Price" nullable="true"/>
     </class>
 
     <class name="Customer">
-      <field refersTo="Address" multiplicity="one" nullable="true"/>
-      <field refersTo="Contact" multiplicity="one"/>
-      <field name="FirstName" type="string"/>
-      <field name="LastName" type="string"/>
+      <field type="Address" multiplicity="one" nullable="true"/>
+      <field type="Contact" multiplicity="one"/>
+      <field type="string" name="FirstName"/>
+      <field type="string" name="LastName"/>
     </class>
 
     <class name="Address">
-      <field refersTo="Customer" multiplicity="one" hidden="true"/>
-      <field refersTo="Employee" multiplicity="one" hidden="true"/>
-      <field name="Street" type="string"/>
-      <field name="Zipcode" type="string"/>
-      <field name="City" type="string"/>
+      <field type="Customer" multiplicity="one" hidden="true"/>
+      <field type="Employee" multiplicity="one" hidden="true"/>
+      <field type="string" name="Street"/>
+      <field type="string" name="Zipcode"/>
+      <field type="string" name="City"/>
     </class>
 
     <class name="Location">
-      <field refersTo="Book" multiplicity="many"/>
-      <field name="Floor" type="string" default="warehouse"/>
-      <field name="Shelf" type="string" default=""/>
-      <field name="Position" type="int" default="-1"/>
+      <field type="Book" multiplicity="many"/>
+      <field type="string" name="Floor" default="warehouse"/>
+      <field type="string" name="Shelf" default=""/>
+      <field type="int" name="Position" default="-1"/>
     </class>
 
     <class name="Author">
-      <field refersTo="Book" multiplicity="many"/>
-      <field name="Name" type="string" fts="true"/>
+      <field type="Book" multiplicity="many"/>
+      <field type="string" name="Name" fts="true"/>
     </class>
 
     <class name="Employee">
-      <field refersTo="Employee" multiplicity="one" nullable="true"/>
-      <field refersTo="Address" multiplicity="one"/>
-      <field name="FirstName" type="string"/>
-      <field name="LastName" type="string"/>
+      <field type="Employee" multiplicity="one" nullable="true"/>
+      <field type="Address" multiplicity="one"/>
+      <field type="string" name="FirstName" />
+      <field type="string" name="LastName"/>
     </class>
 
     <class name="Contact">
-      <field refersTo="Customer" multiplicity="one"/>
-      <field name="Mobile" type="string" nullable="true"/>
-      <field name="Home" type="string" nullable="true"/>
-      <field name="Email" type="string"/>
+      <field type="Customer" multiplicity="one"/>
+      <field type="string" name="Mobile" nullable="true"/>
+      <field type="string" name="Home" nullable="true"/>
+      <field type="string" name="Email"/>
     </class>
 
   </entities>

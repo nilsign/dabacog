@@ -4,7 +4,7 @@ import com.nilsign.dxd.noxml.DxdEntityRelation;
 import com.nilsign.dxd.xml.DxdModel;
 import com.nilsign.dxd.xml.entities.DxdEntityClass;
 import com.nilsign.dxd.xml.entities.DxdEntityField;
-import com.nilsign.dxd.xmlvaluetypes.DxdFieldType;
+import com.nilsign.dxd.noxml.DxdFieldType;
 import com.nilsign.generators.database.SqlSchemaGenerator;
 import com.nilsign.generators.diagrams.Graphml;
 import com.nilsign.misc.Pair;
@@ -93,7 +93,7 @@ public class GraphmlDatabaseNodeLabelRowBuilder {
                   getCellValue(i, dxdField),
                   String.format("port_%s_%s",
                       SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME,
-                      dxdField.getRefersTo()))
+                      dxdField.getFieldType().getTypeName()))
               : Graphml.addNodeLabelTableCell(getCellValue(i, dxdField)));
     }
     return output
@@ -136,14 +136,14 @@ public class GraphmlDatabaseNodeLabelRowBuilder {
 
   private String getFieldNameCellValue(@NonNull DxdEntityField dxdField) {
     return dxdField.isRelation()
-        ? SqlSchemaGenerator.buildForeignKeyName(dxdField.getRefersTo())
+        ? SqlSchemaGenerator.buildForeignKeyName(dxdField.getFieldType().getTypeName())
         : SqlSchemaGenerator.buildFieldName(dxdField);
   }
 
   private String getFieldTypeCellValue(@NonNull DxdEntityField dxdField) {
     return (dxdField.isRelation()
-        ? DxdFieldType.LONG.toString()
-        : dxdField.getType().toString())
+        ? DxdFieldType.LONG_TYPE_NAME
+        : dxdField.getFieldType().getTypeName())
         .toLowerCase();
   }
 
@@ -171,14 +171,14 @@ public class GraphmlDatabaseNodeLabelRowBuilder {
 
   private String getFieldDefaultCellValue(@NonNull DxdEntityField dxdField) {
     if (dxdField.isRelation()
-        || dxdField.getType() == DxdFieldType.BLOB
-        || dxdField.getType() == DxdFieldType.DATE) {
+        || dxdField.getFieldType().isBlob()
+        || dxdField.getFieldType().isDate()) {
       return NO;
     }
     if (dxdField.getDefaultValue() == null) {
       return dxdField.isNullable() ? "null" : NO;
     }
-    if (dxdField.getType() != DxdFieldType.STRING) {
+    if (!dxdField.getFieldType().isString()) {
       return dxdField.getDefaultValue();
     }
     return dxdField.getDefaultValue().length() <= 10

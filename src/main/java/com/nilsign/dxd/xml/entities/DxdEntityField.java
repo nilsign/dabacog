@@ -1,8 +1,8 @@
 package com.nilsign.dxd.xml.entities;
 
 import com.nilsign.dxd.noxml.DxdEntityRelation;
+import com.nilsign.dxd.noxml.DxdFieldType;
 import com.nilsign.dxd.xmlvaluetypes.DxdFieldMultiplicity;
-import com.nilsign.dxd.xmlvaluetypes.DxdFieldType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.simpleframework.xml.Attribute;
@@ -15,10 +15,10 @@ public class DxdEntityField {
   public static final String ATTRIBUTE_NAME_MULTIPLICITY = "multiplicity";
 
   @Attribute(required=false)
-  private String refersTo;
-
-  @Attribute(required=false)
   private DxdFieldMultiplicity multiplicity;
+
+  @Attribute
+  private String type;
 
   @Attribute(required=false)
   private boolean hidden;
@@ -28,9 +28,6 @@ public class DxdEntityField {
 
   @Attribute(required=false)
   private String name;
-
-  @Attribute(required=false)
-  private DxdFieldType type;
 
   @Attribute(required=false)
   private boolean unique;
@@ -51,6 +48,13 @@ public class DxdEntityField {
 
   @EqualsAndHashCode.Exclude
   private DxdEntityRelation relation;
+
+  @EqualsAndHashCode.Exclude
+  private DxdFieldType fieldType;
+
+  public void prepare() {
+    fieldType = new DxdFieldType(type);
+  }
 
   public boolean isRelation() {
     return isToManyRelation() || isToOneRelation();

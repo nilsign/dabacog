@@ -39,7 +39,7 @@ public class DxdEntityClass {
         : getRelationFields()
           .stream()
           .filter((DxdEntityField field)
-              -> aClass.getName().equalsIgnoreCase(field.getRefersTo()))
+              -> aClass.getName().equalsIgnoreCase(field.getFieldType().getTypeName()))
           .findFirst()
           .orElse(null);
   }
