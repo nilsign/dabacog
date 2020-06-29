@@ -1,7 +1,7 @@
 package com.nilsign.generators;
 
-import com.nilsign.dxd.xml.DxdModel;
-import com.nilsign.generators.diagrams.GraphmlGeneratorException;
+import com.nilsign.dxd.model.DxdModel;
+import com.nilsign.generators.diagrams.database.dot.DotGeneratorException;
 import com.nilsign.helper.FileHelper;
 import lombok.NonNull;
 
@@ -24,13 +24,13 @@ public abstract class Generator {
     return FileHelper.normalizePath(filePath) + getOutputFileName().trim();
   }
 
-  public File createOutputFile() throws GraphmlGeneratorException {
+  public File createOutputFile() throws DotGeneratorException {
     String filePath = getOutputFilePath();
     FileHelper.deleteFileIfExists(filePath);
     try {
       return FileHelper.createFileIfNotExists(filePath);
     } catch (IOException e) {
-      throw new GraphmlGeneratorException(
+      throw new DotGeneratorException(
           String.format(
               "Couldn't create new generation target file at '%s'",
               filePath),

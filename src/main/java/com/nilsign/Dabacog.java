@@ -1,13 +1,15 @@
 package com.nilsign;
 
-import com.nilsign.dxd.DxdReader;
-import com.nilsign.dxd.DxdReaderException;
-import com.nilsign.dxd.xml.DxdModel;
-import com.nilsign.dxd.xml.DxdModelException;
-import com.nilsign.generators.diagrams.database.GraphmlDatabaseDiagramGenerator;
-import com.nilsign.generators.diagrams.GraphmlGeneratorException;
-import com.nilsign.generators.diagrams.GraphmlRenderer;
-import com.nilsign.generators.diagrams.GraphmlRendererException;
+import com.nilsign.dxd.DxdModelException;
+import com.nilsign.dxd.XmlToDxdConverter;
+import com.nilsign.dxd.model.DxdModel;
+import com.nilsign.generators.diagrams.database.GraphvizDotRenderer;
+import com.nilsign.generators.diagrams.database.GraphvizDotRendererException;
+import com.nilsign.generators.diagrams.database.dot.DotDatabaseDiagramGenerator;
+import com.nilsign.generators.diagrams.database.dot.DotGeneratorException;
+import com.nilsign.reader.xml.XmlReader;
+import com.nilsign.reader.xml.XmlReaderException;
+import com.nilsign.reader.xml.model.XmlModel;
 import lombok.NonNull;
 
 import java.util.Arrays;
@@ -20,6 +22,7 @@ public class Dabacog {
   private static boolean flagDebug = false;
   private static boolean flagShowVersion = false;
 
+  private static XmlModel xmlModel;
   private static DxdModel dxdModel;
 
   // TODO(nilsheumer): User picocli as framework to create the CLI.
@@ -31,10 +34,10 @@ public class Dabacog {
       if (arguments != null && arguments.length > 0 && arguments[0].equals("-v")) {
         System.exit(0);;
       }
-      Dabacog.readDxdModel();
-      Dabacog.prepareDxdModel();
-      Dabacog.generateGraphmlDatabaseDiagram();
-      Dabacog.renderGraphmlDatabaseDiagram();
+      Dabacog.readXmlFile();
+      Dabacog.buildDxdModel();
+      Dabacog.generateDotDatabaseDiagram();
+      Dabacog.renderDotDatabaseDiagram();
     } catch (Exception e) {
       if (flagDebug) {
         e.printStackTrace();
@@ -67,48 +70,49 @@ public class Dabacog {
         -> argument.equalsIgnoreCase(shortArgument) || argument.equalsIgnoreCase(longArgument));
   }
 
-  private static void readDxdModel() throws DxdReaderException {
+  private static void readXmlFile() throws XmlReaderException {
     System.out.println(String.format("Parsing DXD file '%s'...", DXD_FILE_PATH));
-    dxdModel = DxdReader.run(Dabacog.DXD_FILE_PATH);
+    xmlModel = XmlReader.run(Dabacog.DXD_FILE_PATH);
     if (flagDebug) {
-      System.out.println(String.format("DXD MODEL\n%s", dxdModel.toString()));
+      System.out.println(String.format("DXD MODEL\n%s", xmlModel.toString()));
     }
     System.out.println(String.format("Parsing DXD file -> [DONE]", DXD_FILE_PATH)) ;
   }
 
-  private static void prepareDxdModel() throws DxdModelException {
+  private static void buildDxdModel() throws DxdModelException {
     System.out.println(String.format("Preparing Dxd Model..."));
-    dxdModel.getEntities().prepareModels();
-    if (flagDebug) {
-      printRelations(dxdModel);
-    }
+    dxdModel = XmlToDxdConverter.of(xmlModel).convert();
+//    dxdModel.getEntities().prepareModels();
+//    if (flagDebug) {
+//      printRelations(dxdModel);
+//    }
     System.out.println(String.format("Preparing Dxd Model -> [DONE]"));
   }
 
-  private static void generateGraphmlDatabaseDiagram() throws GraphmlGeneratorException {
+  private static void generateDotDatabaseDiagram() throws DotGeneratorException {
     System.out.println(String.format("Generating database diagram description..."));
-    GraphmlDatabaseDiagramGenerator.run(dxdModel);
+    DotDatabaseDiagramGenerator.run(dxdModel);
     System.out.println(String.format("Generating database diagram description -> [DONE]"));
   }
 
-  public static void renderGraphmlDatabaseDiagram() throws GraphmlRendererException {
+  public static void renderDotDatabaseDiagram() throws GraphvizDotRendererException {
     System.out.println(String.format("Rendering database diagram..."));
-    GraphmlRenderer.run(dxdModel);
+    GraphvizDotRenderer.run(dxdModel);
     System.out.println(String.format("Rendering database diagram -> [DONE]"));
   }
 
-  private static void printRelations(@NonNull DxdModel model) {
-    System.out.println("DISTINCT MANY-TO-MANY-RELATIONS");
-    model.getEntities().getManyToManyRelations().forEach(relation
-        -> System.out.println(String.format("+ %s", relation.toString())));
-    System.out.println("DISTINCT MANY-TO-ONE-RELATIONS");
-    model.getEntities().getManyToOneRelations().forEach(relation
-        -> System.out.println(String.format("+ %s", relation.toString())));
-    System.out.println("DISTINCT ONE-TO-MANY-RELATIONS");
-    model.getEntities().getOneToManyRelations().forEach(relation
-        -> System.out.println(String.format("+ %s", relation.toString())));
-    System.out.println("DISTINCT ONE-TO-ONE-RELATIONS");
-    model.getEntities().getOneToOneRelations().forEach(relation
-        -> System.out.println(String.format("+ %s", relation.toString())));
-  }
+//  private static void printRelations(@NonNull XmlDxd model) {
+//    System.out.println("DISTINCT MANY-TO-MANY-RELATIONS");
+//    model.getEntities().getManyToManyRelations().forEach(relation
+//        -> System.out.println(String.format("+ %s", relation.toString())));
+//    System.out.println("DISTINCT MANY-TO-ONE-RELATIONS");
+//    model.getEntities().getManyToOneRelations().forEach(relation
+//        -> System.out.println(String.format("+ %s", relation.toString())));
+//    System.out.println("DISTINCT ONE-TO-MANY-RELATIONS");
+//    model.getEntities().getOneToManyRelations().forEach(relation
+//        -> System.out.println(String.format("+ %s", relation.toString())));
+//    System.out.println("DISTINCT ONE-TO-ONE-RELATIONS");
+//    model.getEntities().getOneToOneRelations().forEach(relation
+//        -> System.out.println(String.format("+ %s", relation.toString())));
+//  }
 }
