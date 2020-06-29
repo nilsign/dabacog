@@ -27,7 +27,7 @@ public class Dabacog {
 
   // TODO(nilsheumer): User picocli as framework to create the CLI.
   // https://github.com/remkop/picocli
-  public static void main(String[] arguments) throws Exception {
+  public static void main(String[] arguments) {
     try {
       Dabacog.printDabacog();
       extractFlagsFromArguments(arguments);
@@ -71,21 +71,17 @@ public class Dabacog {
   }
 
   private static void readXmlFile() throws XmlReaderException {
-    System.out.println(String.format("Parsing DXD file '%s'...", DXD_FILE_PATH));
+    System.out.println(String.format("Parsing DXD (Xml) file '%s'...", DXD_FILE_PATH));
     xmlModel = XmlReader.run(Dabacog.DXD_FILE_PATH);
+    System.out.println(String.format("Parsing DXD (Xml) file -> [DONE]", DXD_FILE_PATH)) ;
     if (flagDebug) {
-      System.out.println(String.format("DXD MODEL\n%s", xmlModel.toString()));
+      System.out.print(String.format("DXD (Xml) Model\n%s", xmlModel.toString()));
     }
-    System.out.println(String.format("Parsing DXD file -> [DONE]", DXD_FILE_PATH)) ;
   }
 
   private static void buildDxdModel() throws DxdModelException {
     System.out.println(String.format("Preparing Dxd Model..."));
     dxdModel = XmlToDxdConverter.of(xmlModel).convert();
-//    dxdModel.getEntities().prepareModels();
-//    if (flagDebug) {
-//      printRelations(dxdModel);
-//    }
     System.out.println(String.format("Preparing Dxd Model -> [DONE]"));
   }
 
@@ -100,19 +96,4 @@ public class Dabacog {
     GraphvizDotRenderer.run(dxdModel);
     System.out.println(String.format("Rendering database diagram -> [DONE]"));
   }
-
-//  private static void printRelations(@NonNull XmlDxd model) {
-//    System.out.println("DISTINCT MANY-TO-MANY-RELATIONS");
-//    model.getEntities().getManyToManyRelations().forEach(relation
-//        -> System.out.println(String.format("+ %s", relation.toString())));
-//    System.out.println("DISTINCT MANY-TO-ONE-RELATIONS");
-//    model.getEntities().getManyToOneRelations().forEach(relation
-//        -> System.out.println(String.format("+ %s", relation.toString())));
-//    System.out.println("DISTINCT ONE-TO-MANY-RELATIONS");
-//    model.getEntities().getOneToManyRelations().forEach(relation
-//        -> System.out.println(String.format("+ %s", relation.toString())));
-//    System.out.println("DISTINCT ONE-TO-ONE-RELATIONS");
-//    model.getEntities().getOneToOneRelations().forEach(relation
-//        -> System.out.println(String.format("+ %s", relation.toString())));
-//  }
 }

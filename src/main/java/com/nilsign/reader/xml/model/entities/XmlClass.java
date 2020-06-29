@@ -16,4 +16,20 @@ public class XmlClass {
 
   @ElementList(inline = true, entry = "field")
   private List<XmlField> fields;
+
+  public String toString(String indentation) {
+    StringBuffer output = new StringBuffer()
+        .append(String.format("%s%s [%s: %s]\n",
+            indentation,
+            XmlClass.class.getSimpleName(),
+            "Name",
+            name));
+    fields.forEach(field
+        -> output.append(field.toString(String.format("%s\t", indentation))));
+    return output.toString();
+  }
+
+  public String toString() {
+    return toString("");
+  }
 }

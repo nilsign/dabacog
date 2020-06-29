@@ -33,4 +33,20 @@ public class XmlField {
 
   @Attribute(name = "default", required = false)
   private String defaultValue;
+
+  public String toString(String indentation) {
+    return new StringBuffer()
+        .append(String.format("%s%s [%s: %s - %s: %s]\n",
+            indentation,
+            XmlField.class.getSimpleName(),
+            "Type",
+            type,
+            relation != null ? "Relation" : "Name",
+            relation != null ? relation : name))
+        .toString();
+  }
+
+  public String toString() {
+    return toString("");
+  }
 }

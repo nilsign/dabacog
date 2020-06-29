@@ -19,4 +19,30 @@ public class XmlDiagramsConfig {
 
   @Attribute(required = false)
   private boolean diagramDatabaseForeignKeyFieldPorts;
+
+  public String toString(String indentation) {
+    return new StringBuffer()
+        .append(String.format("%s%s\n", indentation, XmlDiagramsConfig.class.getSimpleName()))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "DiagramDatabaseOutputPath",
+            diagramDatabaseOutputPath))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "DiagramDatabaseTitle",
+            diagramDatabaseTitle))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "DiagramDatabasePrimaryKeyFieldPorts",
+            diagramDatabasePrimaryKeyFieldPorts))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "DiagramDatabaseForeignKeyFieldPorts",
+            diagramDatabaseForeignKeyFieldPorts))
+        .toString();
+  }
+
+  public String toString() {
+    return toString("");
+  }
 }

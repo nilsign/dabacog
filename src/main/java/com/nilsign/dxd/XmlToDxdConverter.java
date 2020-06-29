@@ -14,9 +14,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @RequiredArgsConstructor(staticName = "of")
 public class XmlToDxdConverter {
@@ -49,7 +47,7 @@ public class XmlToDxdConverter {
   private List<DxdClass> buildDxdClasses() {
     List<DxdClass> dxdClasses = new ArrayList<>();
     xmlModel.getEntities().getClasses().forEach(aClass -> {
-      Set<DxdField> dxdFields = new HashSet<>();
+      List<DxdField> dxdFields = new ArrayList<>();
       aClass.getFields().forEach(field -> dxdFields.add(buildDxdField(field)));
       dxdClasses.add(DxdClass.of(aClass.getName(), ImmutableList.copyOf(dxdFields)));
     });
