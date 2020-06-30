@@ -36,4 +36,21 @@ public final class DxdField {
   public boolean hasDefaultValue() {
     return defaultValue != null;
   }
+
+  public String toString(@NonNull String indentation) {
+    return new StringBuffer()
+        .append(String.format("%s%s [%s%s%s]\n",
+            indentation,
+            DxdField.class.getSimpleName(),
+            String.format("Type: %s", type.getObjectName()),
+            String.format(" - Name: %s", name),
+            relationType != null
+                ? String.format(" - Relation: %s", relationType)
+                : ""))
+        .toString();
+  }
+
+  public String toString() {
+    return toString("");
+  }
 }

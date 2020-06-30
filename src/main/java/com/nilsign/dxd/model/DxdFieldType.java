@@ -22,9 +22,10 @@ public final class DxdFieldType {
     BLOB("blob"),
     OBJECT("object");
 
+    @NonNull
     private final String name;
 
-    FieldType(@NonNull String name) {
+    FieldType(String name) {
       this.name = name;
     }
 

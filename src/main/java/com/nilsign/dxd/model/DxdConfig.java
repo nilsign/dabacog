@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 public final class DxdConfig {
 
-  @NonNull
   private static final String DEFAULT_OUTPUT_PATH = "./generated";
 
   // Diagram
