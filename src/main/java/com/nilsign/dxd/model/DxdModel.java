@@ -36,56 +36,116 @@ public final class DxdModel {
   }
 
   // Common mappings
-  @NonNull private ImmutableMap<String, DxdClass> classNameToClassMap;
-  @NonNull private ImmutableMap<DxdField, DxdClass> fieldToClassMap;
-  @NonNull private ImmutableMap<DxdClass, ImmutableSet<DxdField>> classToFieldsMap;
-  @NonNull private ImmutableMap<String, ImmutableSet<DxdField>> classNameToFieldsMap;
-  @NonNull private ImmutableMap<Pair<String, DxdClass>, DxdField> fieldNameToFieldMap;
+  @NonNull
+  private ImmutableMap<String, DxdClass> classNameToClassMap;
+
+  @NonNull
+  private ImmutableMap<DxdField, DxdClass> fieldToClassMap;
+
+  @NonNull
+  private ImmutableMap<DxdClass, ImmutableSet<DxdField>> classToFieldsMap;
+
+  @NonNull
+  private ImmutableMap<String, ImmutableSet<DxdField>> classNameToFieldsMap;
+
+  @NonNull
+  private ImmutableMap<Pair<String, DxdClass>, DxdField> fieldNameToFieldMap;
 
   // All relations
-  @NonNull private ImmutableList<DxdFieldRelation> relations;
-  @NonNull private ImmutableList<DxdFieldRelation> manyToManyRelations;
-  @NonNull private ImmutableList<DxdFieldRelation> manyToOneRelations;
-  @NonNull private ImmutableList<DxdFieldRelation> oneToManyRelations;
-  @NonNull private ImmutableList<DxdFieldRelation> oneToOneRelations;
+  @NonNull
+  private ImmutableList<DxdFieldRelation> relations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> manyToManyRelations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> manyToOneRelations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> oneToManyRelations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> oneToOneRelations;
 
   // Distinct relation
-  @NonNull private ImmutableList<DxdFieldRelation> distinctRelations;
-  @NonNull private ImmutableList<DxdFieldRelation> distinctManyToManyRelations;
-  @NonNull private ImmutableList<DxdFieldRelation> distinctManyToOneRelations;
-  @NonNull private ImmutableList<DxdFieldRelation> distinctOneToManyRelations;
-  @NonNull private ImmutableList<DxdFieldRelation> distinctOneToOneRelations;
+  @NonNull
+  private ImmutableList<DxdFieldRelation> distinctRelations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> distinctManyToManyRelations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> distinctManyToOneRelations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> distinctOneToManyRelations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> distinctOneToOneRelations;
 
   // Distinct bi-directional relation mappings
-  @NonNull private ImmutableList<DxdFieldRelation> distinctBiDirectionalRelations;
-  @NonNull private ImmutableList<DxdFieldRelation> distinctBiDirectionalManyToManyRelations;
-  @NonNull private ImmutableList<DxdFieldRelation> distinctBiDirectionalManyToOneRelations;
-  @NonNull private ImmutableList<DxdFieldRelation> distinctBiDirectionalOneToManyRelations;
-  @NonNull private ImmutableList<DxdFieldRelation> distinctBiDirectionalOneToOneRelations;
+  @NonNull
+  private ImmutableList<DxdFieldRelation> distinctBiDirectionalRelations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> distinctBiDirectionalManyToManyRelations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> distinctBiDirectionalManyToOneRelations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> distinctBiDirectionalOneToManyRelations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> distinctBiDirectionalOneToOneRelations;
 
   // Distinct on-directional relation mappings
-  @NonNull private ImmutableList<DxdFieldRelation> oneDirectionalRelations;
-  @NonNull private ImmutableList<DxdFieldRelation> oneDirectionalManyToManyRelations;
-  @NonNull private ImmutableList<DxdFieldRelation> oneDirectionalManyToOneRelations;
-  @NonNull private ImmutableList<DxdFieldRelation> oneDirectionalOneToManyRelations;
-  @NonNull private ImmutableList<DxdFieldRelation> oneDirectionalOneToOneRelations;
+  @NonNull
+  private ImmutableList<DxdFieldRelation> oneDirectionalRelations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> oneDirectionalManyToManyRelations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> oneDirectionalManyToOneRelations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> oneDirectionalOneToManyRelations;
+
+  @NonNull
+  private ImmutableList<DxdFieldRelation> oneDirectionalOneToOneRelations;
 
   private void prepare() {
-    classNameToClassMap = DxdModelFactory.createClassNameToClassMap(classes);
-    fieldToClassMap = DxdModelFactory.createFieldToClassMap(classes);
-    classToFieldsMap = DxdModelFactory.createClassToFieldsMap(classes);
-    classNameToFieldsMap = DxdModelFactory.createClassNameToFieldsMap(classes);
-    fieldNameToFieldMap = DxdModelFactory.createFieldNameToFieldMap(classes);
-    relations = DxdModelFactory.createRelations(classes);
-    manyToManyRelations = DxdModelFactory.createManyToManyRelations(relations);
-    manyToOneRelations = DxdModelFactory.createManyToOneRelations(relations);
-    oneToManyRelations = DxdModelFactory.createOneToManyRelations(relations);
-    oneToOneRelations = DxdModelFactory.createOneToOneRelations(relations);
-    distinctRelations = DxdModelFactory.createDistinctRelations(relations);
-    distinctManyToManyRelations = DxdModelFactory.createDistinctManyToManyRelations(relations);
-    distinctManyToOneRelations = DxdModelFactory.createDistinctManyToOneRelations(relations);
-    distinctOneToManyRelations = DxdModelFactory.createDistinctOneToManyRelations(relations);
-    distinctOneToOneRelations = DxdModelFactory.createDistinctOneToOneRelations(relations);
+    classNameToClassMap
+        = DxdModelFactory.createClassNameToClassMap(classes);
+    fieldToClassMap
+        = DxdModelFactory.createFieldToClassMap(classes);
+    classToFieldsMap
+        = DxdModelFactory.createClassToFieldsMap(classes);
+    classNameToFieldsMap
+        = DxdModelFactory.createClassNameToFieldsMap(classes);
+    fieldNameToFieldMap
+        = DxdModelFactory.createFieldNameToFieldMap(classes);
+    relations
+        = DxdModelFactory.createRelations(classes);
+    manyToManyRelations
+        = DxdModelFactory.createManyToManyRelations(relations);
+    manyToOneRelations
+        = DxdModelFactory.createManyToOneRelations(relations);
+    oneToManyRelations
+        = DxdModelFactory.createOneToManyRelations(relations);
+    oneToOneRelations
+        = DxdModelFactory.createOneToOneRelations(relations);
+    distinctRelations
+        = DxdModelFactory.createDistinctRelations(relations);
+    distinctManyToManyRelations
+        = DxdModelFactory.createDistinctManyToManyRelations(relations);
+    distinctManyToOneRelations
+        = DxdModelFactory.createDistinctManyToOneRelations(relations);
+    distinctOneToManyRelations
+        = DxdModelFactory.createDistinctOneToManyRelations(relations);
+    distinctOneToOneRelations
+        = DxdModelFactory.createDistinctOneToOneRelations(relations);
     distinctBiDirectionalRelations
         = DxdModelFactory.createDistinctBiDirectionalRelations(relations);
     distinctBiDirectionalManyToManyRelations
