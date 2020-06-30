@@ -167,4 +167,13 @@ public final class DxdModel {
     oneDirectionalOneToOneRelations
         = DxdModelFactory.createOneDirectionalOneToOneRelations(relations);
   }
+
+  public String toString() {
+    StringBuffer output = new StringBuffer()
+        .append(String.format("\t%s - Name: %s\n", DxdModel.class.getSimpleName(), name))
+        .append(config.toString("\t\t"));
+    classes.forEach(aClass
+        -> output.append(aClass.toString("\t\t")));
+    return output.toString();
+  }
 }

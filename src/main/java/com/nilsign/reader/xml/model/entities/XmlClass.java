@@ -1,6 +1,7 @@
 package com.nilsign.reader.xml.model.entities;
 
 import lombok.Data;
+import lombok.NonNull;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
@@ -17,7 +18,7 @@ public class XmlClass {
   @ElementList(inline = true, entry = "field")
   private List<XmlField> fields;
 
-  public String toString(String indentation) {
+  public String toString(@NonNull String indentation) {
     StringBuffer output = new StringBuffer()
         .append(String.format("%s%s [%s: %s]\n",
             indentation,

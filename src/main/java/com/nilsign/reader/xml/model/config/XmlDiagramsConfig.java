@@ -1,6 +1,7 @@
 package com.nilsign.reader.xml.model.config;
 
 import lombok.Data;
+import lombok.NonNull;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 
@@ -20,7 +21,7 @@ public class XmlDiagramsConfig {
   @Attribute(required = false)
   private boolean diagramDatabaseForeignKeyFieldPorts;
 
-  public String toString(String indentation) {
+  public String toString(@NonNull String indentation) {
     return new StringBuffer()
         .append(String.format("%s%s\n", indentation, XmlDiagramsConfig.class.getSimpleName()))
         .append(String.format("%s\t%s: %s\n",

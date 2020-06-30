@@ -10,30 +10,42 @@ import com.nilsign.generators.diagrams.database.dot.DotGeneratorException;
 import com.nilsign.reader.xml.XmlReader;
 import com.nilsign.reader.xml.XmlReaderException;
 import com.nilsign.reader.xml.model.XmlModel;
+import lombok.AccessLevel;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 
-public class Dabacog {
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public final class Dabacog {
 
+  @NonNull
   private static final String DABACOG_VERSION = "0.0.1";
+
+  @NonNull
   private static final String DXD_FILE_PATH = "./src/main/resources/dev/library.dxd";
 
+  @NonNull
   private static boolean flagDebug = false;
+
+  @NonNull
   private static boolean flagShowVersion = false;
 
+  @NonNull
   private static XmlModel xmlModel;
+
+  @NonNull
   private static DxdModel dxdModel;
 
   // TODO(nilsheumer): User picocli as framework to create the CLI.
   // https://github.com/remkop/picocli
   public static void main(String[] arguments) {
     try {
-      Dabacog.printDabacog();
       extractFlagsFromArguments(arguments);
       if (arguments != null && arguments.length > 0 && arguments[0].equals("-v")) {
         System.exit(0);;
       }
+      Dabacog.printDabacog();
       Dabacog.readXmlFile();
       Dabacog.buildDxdModel();
       Dabacog.generateDotDatabaseDiagram();
@@ -48,6 +60,19 @@ public class Dabacog {
     }
   }
 
+  private static void extractFlagsFromArguments(@NonNull String[] arguments) {
+    flagShowVersion = extractFlagFromArguments(arguments, "-v", "--version");
+    flagDebug = extractFlagFromArguments(arguments, "-d", "--debug");
+  }
+
+  private static boolean extractFlagFromArguments(
+      @NonNull String[] arguments,
+      @NonNull String shortArgument,
+      @NonNull String longArgument) {
+    return Arrays.stream(arguments).anyMatch(argument
+        -> argument.equalsIgnoreCase(shortArgument) || argument.equalsIgnoreCase(longArgument));
+  }
+
   private static void printDabacog() {
     System.out.println("    ____        __");
     System.out.println("   / __ \\____ _/ /_  ____ __________  ____ _");
@@ -59,23 +84,12 @@ public class Dabacog {
     System.out.println();
   }
 
-  private static void extractFlagsFromArguments(@NonNull String[] arguments) {
-    flagShowVersion = extractFlagFromArguments(arguments, "-v", "--version");
-    flagDebug = extractFlagFromArguments(arguments, "-d", "--debug");
-  }
-
-  private static boolean extractFlagFromArguments(
-      @NonNull String[] arguments, @NonNull String shortArgument, @NonNull String longArgument) {
-    return Arrays.stream(arguments).anyMatch(argument
-        -> argument.equalsIgnoreCase(shortArgument) || argument.equalsIgnoreCase(longArgument));
-  }
-
   private static void readXmlFile() throws XmlReaderException {
-    System.out.println(String.format("Parsing DXD (Xml) file '%s'...", DXD_FILE_PATH));
+    System.out.println(String.format("Parsing DXD file '%s'...", DXD_FILE_PATH));
     xmlModel = XmlReader.run(Dabacog.DXD_FILE_PATH);
-    System.out.println(String.format("Parsing DXD (Xml) file -> [DONE]", DXD_FILE_PATH)) ;
+    System.out.println(String.format("Parsing DXD file -> [DONE]", DXD_FILE_PATH)) ;
     if (flagDebug) {
-      System.out.print(String.format("DXD (Xml) Model\n%s", xmlModel.toString()));
+      System.out.print(String.format("XML Model\n%s", xmlModel.toString()));
     }
   }
 
@@ -83,6 +97,9 @@ public class Dabacog {
     System.out.println(String.format("Preparing Dxd Model..."));
     dxdModel = XmlToDxdConverter.of(xmlModel).convert();
     System.out.println(String.format("Preparing Dxd Model -> [DONE]"));
+    if (flagDebug) {
+      System.out.print(String.format("DXD Model\n%s", dxdModel.toString()));
+    }
   }
 
   private static void generateDotDatabaseDiagram() throws DotGeneratorException {

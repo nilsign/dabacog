@@ -19,7 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor(staticName = "of")
 public class XmlToDxdConverter {
 
-  @NonNull private final XmlModel xmlModel;
+  @NonNull
+  private final XmlModel xmlModel;
 
   public DxdModel convert() {
     return DxdModel.of(

@@ -1,6 +1,7 @@
 package com.nilsign.reader.xml.model.entities;
 
 import lombok.Data;
+import lombok.NonNull;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 
@@ -34,7 +35,7 @@ public class XmlField {
   @Attribute(name = "default", required = false)
   private String defaultValue;
 
-  public String toString(String indentation) {
+  public String toString(@NonNull String indentation) {
     return new StringBuffer()
         .append(String.format("%s%s [%s: %s - %s: %s]\n",
             indentation,
