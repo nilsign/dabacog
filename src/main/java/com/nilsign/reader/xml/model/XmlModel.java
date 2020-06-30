@@ -12,7 +12,7 @@ import org.simpleframework.xml.Root;
 public class XmlModel {
 
   @Attribute
-  private String name = "Dabacog XML Description Model";
+  private String name = "Dabacog Xml Description Model";
 
   @Element
   private XmlConfig config;

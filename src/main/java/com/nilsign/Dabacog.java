@@ -85,11 +85,11 @@ public final class Dabacog {
   }
 
   private static void readXmlFile() throws XmlReaderException {
-    System.out.println(String.format("Parsing DXD file '%s'...", DXD_FILE_PATH));
+    System.out.println(String.format("Parsing Dxd file '%s'...", DXD_FILE_PATH));
     xmlModel = XmlReader.run(Dabacog.DXD_FILE_PATH);
-    System.out.println(String.format("Parsing DXD file -> [DONE]", DXD_FILE_PATH)) ;
+    System.out.println(String.format("Parsing Dxd file -> [DONE]", DXD_FILE_PATH)) ;
     if (flagDebug) {
-      System.out.print(String.format("XML Model\n%s", xmlModel.toString()));
+      System.out.print(xmlModel.toString());
     }
   }
 
@@ -98,7 +98,7 @@ public final class Dabacog {
     dxdModel = XmlToDxdConverter.of(xmlModel).convert();
     System.out.println(String.format("Preparing Dxd Model -> [DONE]"));
     if (flagDebug) {
-      System.out.print(String.format("DXD Model\n%s", dxdModel.toString()));
+      System.out.print(dxdModel.toString());
     }
   }
 

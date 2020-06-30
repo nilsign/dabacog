@@ -22,7 +22,7 @@ languages are planned to be supported.
 
 # SIMPLIFIED USAGE DEMONSTRATION 
 
-1. Create an XML file (also called DXD for <ins>D</ins>abacog <ins>X</ins>ML <ins>D</ins>escription):
+1. Create an Xml file (also called Dxd for <ins>D</ins>abacog <ins>X</ins>ML <ins>D</ins>escription):
 
         <dxd>
 
@@ -50,8 +50,8 @@ languages are planned to be supported.
 
         </dxd>
 
-2. Execute the corresponding Dabacog CLI generation command from the directory that contains the DXD
-file or just append the DXD file path as CLI argument.
+2. Execute the corresponding Dabacog CLI generation command from the directory that contains the Dxd
+file or just append the Dxd file path as CLI argument.
 
         $ dabacog run
 
@@ -79,7 +79,7 @@ or progress. Anyhow, here are the major milestones of my projects vision includi
 progress status (DONE, DEV, PLANNED).
 
 1. Setup project. [DONE]
-2. Create an XML Parser and read the Dxd model. [DONE]
+2. Create an Xml Parser and read the Dxd model. [DONE]
 3. Generate a relational database diagram, and an entity class diagram (code) with
 [Graphviz](https://www.graphviz.org/). [DEV]
 4. Generate a Postgres database scheme from the Dxd model. [PLANNED]

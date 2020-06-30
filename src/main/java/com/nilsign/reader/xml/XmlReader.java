@@ -8,7 +8,7 @@ import org.simpleframework.xml.core.Persister;
 import java.io.File;
 
 /**
- * A class that reads the Dabacog XML description files.
+ * A class that reads the Dabacog Xml description files.
  */
 public class XmlReader {
 
