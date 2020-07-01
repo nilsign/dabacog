@@ -174,6 +174,77 @@ public final class DxdModel {
         .append(config.toString("\t\t"));
     classes.forEach(aClass
         -> output.append(aClass.toString("\t\t")));
+    return output
+        .append(convertRelationsToString(
+            "Relations",
+            relations))
+        .append(convertRelationsToString(
+            "n..n Relations",
+            manyToManyRelations))
+        .append(convertRelationsToString(
+            "n..1 Relations",
+            manyToOneRelations))
+        .append(convertRelationsToString(
+            "1..n Relations",
+            oneToManyRelations))
+        .append(convertRelationsToString(
+            "1..1 Relations",
+            oneToOneRelations))
+        .append(convertRelationsToString(
+            "Distinct Relations",
+            distinctRelations))
+        .append(convertRelationsToString(
+            "n..n Distinct Relations",
+            distinctManyToManyRelations))
+        .append(convertRelationsToString(
+            "n..1 Distinct Relations",
+            distinctManyToOneRelations))
+        .append(convertRelationsToString(
+            "1..n Distinct Relations",
+            distinctOneToManyRelations))
+        .append(convertRelationsToString(
+            "1..1 Distinct Relations",
+            distinctOneToOneRelations))
+        .append(convertRelationsToString(
+            "Distinct Bi-Directional Relations",
+            distinctBiDirectionalRelations))
+        .append(convertRelationsToString(
+            "n..n Distinct Bi-Directional Relations",
+            distinctBiDirectionalManyToManyRelations))
+        .append(convertRelationsToString(
+            "n..1 Distinct Bi-Directional Relations",
+            distinctBiDirectionalManyToOneRelations))
+        .append(convertRelationsToString(
+            "1..n Distinct Bi-Directional Relations",
+            distinctBiDirectionalOneToManyRelations))
+        .append(convertRelationsToString(
+            "1..1 Distinct Bi-Directional Relations",
+            distinctBiDirectionalOneToOneRelations))
+        .append(convertRelationsToString(
+            "One-Directional Relations",
+            oneDirectionalRelations))
+        .append(convertRelationsToString(
+            "n..n One-Directional Relations",
+            oneDirectionalManyToManyRelations))
+        .append(convertRelationsToString(
+            "n..1 One-Directional Relations",
+            oneDirectionalManyToOneRelations))
+        .append(convertRelationsToString(
+            "1..n One-Directional Relations",
+            oneDirectionalOneToManyRelations))
+        .append(convertRelationsToString(
+            "1..1 One-Directional Relations",
+            oneDirectionalOneToOneRelations))
+        .toString();
+  }
+
+  private String convertRelationsToString(
+      @NonNull String name,
+      @NonNull List<DxdFieldRelation> relations) {
+    StringBuffer output = new StringBuffer()
+        .append(String.format("\t\t%s\n", name));
+    relations.forEach(relation
+        -> output.append(String.format("\t\t\t%s", relation.toString())));
     return output.toString();
   }
 }

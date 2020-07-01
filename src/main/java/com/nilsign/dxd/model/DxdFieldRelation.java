@@ -47,4 +47,17 @@ public final class DxdFieldRelation {
   public boolean isSelfReference() {
     return firstClass == secondClass;
   }
+
+  public String toString(@NonNull String indentation) {
+    return String.format("%s%s %s== %s ==> %s\n",
+        indentation,
+        firstClass.getName(),
+        isBiDirectional() ? "<" : "=",
+        type.getShortForm(),
+        secondClass.getName());
+  }
+
+  public String toString() {
+    return toString("");
+  }
 }
