@@ -49,11 +49,12 @@ public final class DxdFieldRelation {
   }
 
   public String toString(@NonNull String indentation) {
-    return String.format("%s%s %s== %s ==> %s\n",
+    return String.format("%s%s %s %s %s %s\n",
         indentation,
         firstClass.getName(),
-        isBiDirectional() ? "<" : "=",
+        isBiDirectional() ? "<==" : "---",
         type.getShortForm(),
+        isBiDirectional() ? "==>" : "-->",
         secondClass.getName());
   }
 
