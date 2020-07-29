@@ -7,7 +7,7 @@ import org.simpleframework.xml.Element;
 
 @Data
 @Element(name = "diagrams")
-public class XmlDiagramsConfig {
+public final class XmlDiagramsConfig {
 
   @Attribute(required = false)
   private String diagramDatabaseOutputPath;
@@ -43,6 +43,7 @@ public class XmlDiagramsConfig {
         .toString();
   }
 
+  @Override
   public String toString() {
     return toString("");
   }

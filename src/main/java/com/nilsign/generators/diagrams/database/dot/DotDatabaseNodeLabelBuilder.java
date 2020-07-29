@@ -10,22 +10,10 @@ import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE, staticName = "of")
-public class DotDatabaseNodeLabelBuilder {
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public final class DotDatabaseNodeLabelBuilder {
 
   public static String buildEntityNodeLabel(
-      @NonNull DxdModel dxdModel,
-      @NonNull DxdClass dxdClass) {
-    return of().buildEntityNodeLabelImpl(dxdModel, dxdClass);
-  }
-
-  public static String buildEntityRelationNodeLabel(
-      @NonNull DxdModel dxdModel,
-      @NonNull DxdFieldRelation dxdRelation) {
-    return of().buildEntityRelationNodeLabelImpl(dxdModel, dxdRelation);
-  }
-
-  public String buildEntityNodeLabelImpl(
       @NonNull DxdModel dxdModel,
       @NonNull DxdClass dxdClass) {
     StringBuffer output = new StringBuffer()
@@ -35,7 +23,7 @@ public class DotDatabaseNodeLabelBuilder {
         .append(DotDatabaseNodeLabelRowBuilder.buildEntityNodeColumnNamesRow())
         .append(DotDatabaseNodeLabelRowBuilder.buildEntityNodePrimaryKeyRow(dxdModel));
     // Adds database fields in case of one-directional one-to-many relations. The foreign key is
-    // added to the according referenced table, and not in the referencing table.
+    // added to the according referenced table, but not in the referencing table.
     dxdModel.getManyToOneRelations()
         .stream()
         .filter(dxdFieldRelation
@@ -69,7 +57,7 @@ public class DotDatabaseNodeLabelBuilder {
         .toString();
   }
 
-  public String buildEntityRelationNodeLabelImpl(
+  public static String buildEntityRelationNodeLabel(
       @NonNull DxdModel dxdModel,
       @NonNull DxdFieldRelation dxdRelation) {
     return new StringBuffer()

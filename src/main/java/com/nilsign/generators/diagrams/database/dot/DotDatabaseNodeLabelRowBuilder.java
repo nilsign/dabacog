@@ -14,8 +14,8 @@ import lombok.RequiredArgsConstructor;
 import java.util.Arrays;
 import java.util.List;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE, staticName = "of")
-public class DotDatabaseNodeLabelRowBuilder {
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public final class DotDatabaseNodeLabelRowBuilder {
 
   private static final List<String> ENTITY_NODE_COLUMN_NAMES = Arrays.asList(
       "NAME", "TYPE", "INDEX", "UNIQUE", "NULLABLE", "FTS", "DEFAULT");
@@ -46,30 +46,33 @@ public class DotDatabaseNodeLabelRowBuilder {
     return Dot.addNodeLabelTableColumnNames(ENTITY_RELATION_NODE_COLUMN_NAMES);
   }
 
-  public static String buildEntityNodePrimaryKeyRow(@NonNull DxdModel dxdModel) {
-    // TODO(nilsheumer): Why is the static Ctor used here? Make according functions also static?
-    return of().buildEntityNodePrimaryKeyRowImpl(dxdModel);
-  }
-
   public static String buildEntityNodeFieldRow(
       @NonNull DxdModel dxdModel,
       @NonNull DxdField dxdField) {
-    return of().buildEntityNodeFieldLabelRow(dxdModel, dxdField);
+    StringBuffer output = new StringBuffer()
+        .append(Dot.openNodeLabelTableRow());
+    for (int i = 0; i < ENTITY_NODE_COLUMN_NAMES.size(); ++i) {
+      output.append(dxdField.hasRelation()
+          && i == ENTITY_NODE_COLUMN_NAMES.size() - 1
+          && hasForeignKeyPorts(dxdModel)
+          ? Dot.addNodeLabelTableCell(getCellValue(i, dxdField), String.format("port_%s",
+          SqlSchemaGenerator.buildForeignKeyName(!dxdField.getRelationType().isManyToOne()
+              ? dxdField.getType().getObjectName()
+              : dxdField.getName())))
+          : Dot.addNodeLabelTableCell(getCellValue(i, dxdField)));
+    }
+    return output
+        .append(Dot.closeNodeLabelTableRow())
+        .toString();
   }
 
-  public static String buildEntityRelationNodeFieldsRow(
-      @NonNull DxdModel dxdModel,
-      @NonNull DxdFieldRelation dxdRelation) {
-    return of().buildEntityRelationNodeFieldsRowImpl(dxdModel, dxdRelation);
-  }
-
-  private String buildEntityNodePrimaryKeyRowImpl(@NonNull DxdModel dxdModel) {
+  public static String buildEntityNodePrimaryKeyRow(@NonNull DxdModel dxdModel) {
     return new StringBuffer()
         .append(Dot.openNodeLabelTableRow())
         .append(hasPrimaryKeyPorts(dxdModel)
             ? Dot.addNodeLabelTableCell(
-                SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME,
-                String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME))
+            SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME,
+            String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME))
             : Dot.addNodeLabelTableCell(SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME))
         .append(Dot.addNodeLabelTableCell(DxdFieldType.LONG_TYPE_NAME))
         .append(Dot.addNodeLabelTableCell(YES))
@@ -81,27 +84,7 @@ public class DotDatabaseNodeLabelRowBuilder {
         .toString();
   }
 
-  private String buildEntityNodeFieldLabelRow(
-      @NonNull DxdModel dxdModel,
-      @NonNull DxdField dxdField) {
-    StringBuffer output = new StringBuffer()
-        .append(Dot.openNodeLabelTableRow());
-    for (int i = 0; i < ENTITY_NODE_COLUMN_NAMES.size(); ++i) {
-      output.append(dxdField.hasRelation()
-          && i == ENTITY_NODE_COLUMN_NAMES.size() - 1
-          && hasForeignKeyPorts(dxdModel)
-              ? Dot.addNodeLabelTableCell(getCellValue(i, dxdField), String.format("port_%s",
-                  SqlSchemaGenerator.buildForeignKeyName(!dxdField.getRelationType().isManyToOne()
-                      ? dxdField.getType().getObjectName()
-                      : dxdField.getName())))
-              : Dot.addNodeLabelTableCell(getCellValue(i, dxdField)));
-    }
-    return output
-        .append(Dot.closeNodeLabelTableRow())
-        .toString();
-  }
-
-  private String buildEntityRelationNodeFieldsRowImpl(
+  public static String buildEntityRelationNodeFieldsRow(
       @NonNull DxdModel dxdModel,
       @NonNull DxdFieldRelation dxdRelation) {
     Pair<String, String> foreignKeyName = SqlSchemaGenerator.buildForeignKeyNames(dxdRelation);
@@ -121,7 +104,7 @@ public class DotDatabaseNodeLabelRowBuilder {
         .toString();
   }
 
-  private String getCellValue(@NonNull int index, @NonNull DxdField dxdField) {
+  private static String getCellValue(@NonNull int index, @NonNull DxdField dxdField) {
     switch (index) {
       case 0: return getFieldNameCellValue(dxdField);
       case 1: return getFieldTypeCellValue(dxdField);
@@ -134,42 +117,41 @@ public class DotDatabaseNodeLabelRowBuilder {
     }
   }
 
-  private String getFieldNameCellValue(@NonNull DxdField dxdField) {
+  private static String getFieldNameCellValue(@NonNull DxdField dxdField) {
     return dxdField.hasRelation()
         ? SqlSchemaGenerator.buildForeignKeyName(dxdField.getType().getObjectName())
         : SqlSchemaGenerator.buildFieldName(dxdField);
   }
 
-  private String getFieldTypeCellValue(@NonNull DxdField dxdField) {
-    return (!dxdField.hasRelation()
-        ? DxdFieldType.LONG_TYPE_NAME
-        : dxdField.getType().getObjectName())
-        .toLowerCase();
+  private static String getFieldTypeCellValue(@NonNull DxdField dxdField) {
+    return dxdField.hasRelation()
+        ? dxdField.getType().getObjectName().toLowerCase()
+        : DxdFieldType.LONG_TYPE_NAME.toLowerCase();
   }
 
-  private String getFieldIndexCellValue(@NonNull DxdField dxdField) {
+  private static String getFieldIndexCellValue(@NonNull DxdField dxdField) {
     return dxdField.hasRelation()
         || dxdField.isIndexed()
         || dxdField.isUnique()
         || dxdField.isFts() ? YES : NO;
   }
 
-  private String getFieldUniqueCellValue(@NonNull DxdField dxdField) {
+  private static String getFieldUniqueCellValue(@NonNull DxdField dxdField) {
     return dxdField.isUnique()
         || dxdField.hasRelation()
         && dxdField.getRelationType().isOneToOne()
         && !dxdField.isNullable() ? YES : NO;
   }
 
-  private String getFieldNullableCellValue(@NonNull DxdField dxdField) {
+  private static String getFieldNullableCellValue(@NonNull DxdField dxdField) {
     return dxdField.isNullable() ? YES : NO;
   }
 
-  private String getFieldFtsCellValue(@NonNull DxdField dxdField) {
+  private static String getFieldFtsCellValue(@NonNull DxdField dxdField) {
     return dxdField.isFts() ? YES : NO;
   }
 
-  private String getFieldDefaultCellValue(@NonNull DxdField dxdField) {
+  private static String getFieldDefaultCellValue(@NonNull DxdField dxdField) {
     if (dxdField.hasRelation()
         || dxdField.getType().isBlob()
         || dxdField.getType().isDate()) {
@@ -186,13 +168,13 @@ public class DotDatabaseNodeLabelRowBuilder {
         : String.format("'%s...'", dxdField.getDefaultValue().substring(0, 8));
   }
 
-  private boolean hasPrimaryKeyPorts(@NonNull DxdModel dxdModel) {
+  private static boolean hasPrimaryKeyPorts(@NonNull DxdModel dxdModel) {
     return dxdModel
         .getConfig()
         .isDiagramDatabasePrimaryKeyFieldPorts();
   }
 
-  private boolean hasForeignKeyPorts(@NonNull DxdModel dxdModel) {
+  private static boolean hasForeignKeyPorts(@NonNull DxdModel dxdModel) {
     return dxdModel
         .getConfig()
         .isDiagramDatabaseForeignKeyFieldPorts();

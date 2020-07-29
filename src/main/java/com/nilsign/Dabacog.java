@@ -39,7 +39,7 @@ public final class Dabacog {
 
   // TODO(nilsheumer): User picocli as framework to create the CLI.
   // https://github.com/remkop/picocli
-  public static void main(String[] arguments) {
+  public static void main(@NonNull String[] arguments) {
     try {
       extractFlagsFromArguments(arguments);
       if (arguments != null && arguments.length > 0 && arguments[0].equals("-v")) {

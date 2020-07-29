@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @Element(name = "class")
-public class XmlClass {
+public final class XmlClass {
 
   @Attribute
   private String name;
@@ -30,6 +30,7 @@ public class XmlClass {
     return output.toString();
   }
 
+  @Override
   public String toString() {
     return toString("");
   }

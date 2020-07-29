@@ -7,7 +7,7 @@ import org.simpleframework.xml.Element;
 
 @Data
 @Element(name = "field")
-public class XmlField {
+public final class XmlField {
 
   @Attribute
   private String type;
@@ -27,7 +27,7 @@ public class XmlField {
   @Attribute(required = false)
   private boolean nullable;
 
-  // TODO(nilsheumer): Add support for full test search.
+  // TODO(nilsheumer): Add support for full text search.
   // https://hackernoon.com/how-useful-is-postgresql-full-text-search-u39242fi
   @Attribute(required = false)
   private boolean fts;
@@ -47,6 +47,7 @@ public class XmlField {
         .toString();
   }
 
+  @Override
   public String toString() {
     return toString("");
   }

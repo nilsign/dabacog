@@ -2,7 +2,7 @@ package com.nilsign.reader.xml;
 
 import lombok.NonNull;
 
-public class XmlReaderException extends RuntimeException {
+public final class XmlReaderException extends RuntimeException {
 
   private static final String ERROR_CLASS_MESSAGE = "Failed to read the input Xml file.";
 

@@ -8,22 +8,12 @@ import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE, staticName = "of")
-public class DotDatabaseNodeBuilder {
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public final class DotDatabaseNodeBuilder {
 
   public static String buildEntityNode(
       @NonNull DxdModel dxdModel,
       @NonNull DxdClass dxdClass) {
-    return of().buildEntityNodeImpl(dxdModel, dxdClass);
-  }
-
-  public static String buildEntityRelationNode(
-      @NonNull DxdModel dxdModel,
-      @NonNull DxdFieldRelation dxdRelation) {
-    return of().buildEntityRelationNodeImpl(dxdModel, dxdRelation);
-  }
-
-  private String buildEntityNodeImpl(@NonNull DxdModel dxdModel, @NonNull DxdClass dxdClass) {
     return new StringBuffer()
         .append(Dot.openNode(SqlSchemaGenerator.buildTableName(dxdClass)))
         .append(DotDatabaseNodeLabelBuilder.buildEntityNodeLabel(dxdModel, dxdClass))
@@ -31,7 +21,7 @@ public class DotDatabaseNodeBuilder {
         .toString();
   }
 
-  private String buildEntityRelationNodeImpl(
+  public static String buildEntityRelationNode(
       @NonNull DxdModel dxdModel,
       @NonNull DxdFieldRelation dxdRelation) {
     return new StringBuffer()

@@ -3,18 +3,18 @@ package com.nilsign.generators;
 import com.nilsign.dxd.model.DxdModel;
 import com.nilsign.generators.diagrams.database.dot.DotGeneratorException;
 import com.nilsign.helper.FileHelper;
+import lombok.AccessLevel;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.io.File;
 import java.io.IOException;
 
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Generator {
 
+  @NonNull
   protected final DxdModel dxdModel;
-
-  protected Generator(@NonNull DxdModel dxdModel) {
-    this.dxdModel = dxdModel;
-  }
 
   protected abstract String getOutputDirectory();
   protected abstract String getOutputFileName();

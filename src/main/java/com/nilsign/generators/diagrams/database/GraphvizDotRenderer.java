@@ -10,19 +10,23 @@ import lombok.NonNull;
 
 import java.io.File;
 
-public class GraphvizDotRenderer extends Generator {
+public final class GraphvizDotRenderer extends Generator {
 
   private static final String TARGET_FILE_NAME = "dabacog-db-diagram.png";
 
-  protected GraphvizDotRenderer(@NonNull DxdModel dxdModel) {
+  private GraphvizDotRenderer(@NonNull DxdModel dxdModel) {
     super(dxdModel);
   }
 
-  public static void run(@NonNull DxdModel dxdModel) throws GraphvizDotRendererException {
-    new GraphvizDotRenderer(dxdModel).render();
+  private static GraphvizDotRenderer of(@NonNull DxdModel dxdModel) {
+    return new GraphvizDotRenderer(dxdModel);
   }
 
-  private void render() throws GraphvizDotRendererException {
+  public static void run(@NonNull DxdModel dxdModel) throws GraphvizDotRendererException {
+    GraphvizDotRenderer.of(dxdModel).run();
+  }
+
+  private void run() throws GraphvizDotRendererException {
     File outputFile;
     try {
       outputFile = super.createOutputFile();

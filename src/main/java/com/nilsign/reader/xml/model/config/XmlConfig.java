@@ -6,7 +6,7 @@ import org.simpleframework.xml.Element;
 
 @Data
 @Element(name = "config")
-public class XmlConfig {
+public final class XmlConfig {
 
   @Element(required = false)
   private XmlDiagramsConfig diagramsConfig;
@@ -18,6 +18,7 @@ public class XmlConfig {
           .toString();
   }
 
+  @Override
   public String toString() {
     return toString("");
   }

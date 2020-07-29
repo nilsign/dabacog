@@ -2,7 +2,7 @@ package com.nilsign.generators.diagrams.database;
 
 import lombok.NonNull;
 
-public class GraphvizDotRendererException extends RuntimeException {
+public final class GraphvizDotRendererException extends RuntimeException {
 
   private static final String ERROR_CLASS_MESSAGE = "Failed to render graphml.";
 

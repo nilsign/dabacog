@@ -8,16 +8,20 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class DotDatabaseDiagramGenerator extends Generator {
+public final class DotDatabaseDiagramGenerator extends Generator {
 
   public static final String OUTPUT_FILE_NAME = "dabacog-db-diagram.pot";
 
-  public static void run(@NonNull DxdModel model) throws DotGeneratorException {
-     new DotDatabaseDiagramGenerator(model).generate();
-  }
-
   private DotDatabaseDiagramGenerator(@NonNull DxdModel dxdModel) {
     super(dxdModel);
+  }
+
+  private static DotDatabaseDiagramGenerator of(@NonNull DxdModel dxdModel) {
+    return new DotDatabaseDiagramGenerator(dxdModel);
+  }
+
+  public static void run(@NonNull DxdModel model) throws DotGeneratorException {
+    DotDatabaseDiagramGenerator.of(model).generate();
   }
 
   @Override
@@ -51,18 +55,17 @@ public class DotDatabaseDiagramGenerator extends Generator {
 
   private String addDatabaseEntityNodes() {
     StringBuffer output = new StringBuffer();
-    super.dxdModel.getClasses().forEach(dxdEntityClass -> {
-      output.append(DotDatabaseNodeBuilder.buildEntityNode(dxdModel, dxdEntityClass));
-    });
-    super.dxdModel.getDistinctManyToManyRelations().forEach(dxdRelation ->
-       output.append(DotDatabaseNodeBuilder.buildEntityRelationNode(dxdModel, dxdRelation)));
+    super.dxdModel.getClasses().forEach(dxdEntityClass
+        -> output.append(DotDatabaseNodeBuilder.buildEntityNode(dxdModel, dxdEntityClass)));
+    super.dxdModel.getDistinctManyToManyRelations().forEach(dxdRelation
+        -> output.append(DotDatabaseNodeBuilder.buildEntityRelationNode(dxdModel, dxdRelation)));
     return output.toString();
   }
 
   private String addDatabaseEntityRelationEdges() {
     StringBuffer output = new StringBuffer();
-    super.dxdModel.getDistinctRelations().forEach(dxdRelation ->
-        output.append(DotDatabaseEdgeBuilder.buildEntityRelationEdge(dxdRelation)));
+    super.dxdModel.getDistinctRelations().forEach(dxdRelation
+        -> output.append(DotDatabaseEdgeBuilder.buildEntityRelationEdge(dxdRelation)));
     return output.toString();
   }
 }

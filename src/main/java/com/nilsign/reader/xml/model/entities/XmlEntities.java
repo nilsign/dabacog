@@ -22,6 +22,7 @@ public final class XmlEntities {
     return output.toString();
   }
 
+  @Override
   public String toString() {
     return toString("");
   }
