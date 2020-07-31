@@ -4,10 +4,12 @@ import com.nilsign.dxd.model.DxdClass;
 import com.nilsign.dxd.model.DxdField;
 import com.nilsign.dxd.model.DxdFieldRelation;
 import com.nilsign.misc.Pair;
+import lombok.AccessLevel;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
-
-public class SqlSchemaGenerator {
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+public final class SqlSchemaGenerator {
 
   public static final String SQL_PRIMARY_KEY_NAME = "id";
   private static final String SQL_TABLE_PREFIX = "tbl";

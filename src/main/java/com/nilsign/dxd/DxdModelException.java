@@ -2,7 +2,7 @@ package com.nilsign.dxd;
 
 import lombok.NonNull;
 
-public class DxdModelException extends RuntimeException {
+public final class DxdModelException extends RuntimeException {
 
   private static final String ERROR_CLASS_MESSAGE = "Failed to build the Dxd model.";
 

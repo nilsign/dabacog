@@ -3,7 +3,6 @@ package com.nilsign.generators.diagrams.database.dot;
 import com.nilsign.dxd.model.DxdModel;
 import com.nilsign.generators.Generator;
 import lombok.NonNull;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

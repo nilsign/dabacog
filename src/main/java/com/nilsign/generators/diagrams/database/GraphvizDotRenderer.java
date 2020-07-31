@@ -7,7 +7,6 @@ import com.nilsign.helper.FileHelper;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import lombok.NonNull;
-
 import java.io.File;
 
 public final class GraphvizDotRenderer extends Generator {

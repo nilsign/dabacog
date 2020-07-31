@@ -10,26 +10,23 @@ import com.nilsign.dxd.model.DxdModel;
 import com.nilsign.reader.xml.model.XmlModel;
 import com.nilsign.reader.xml.model.config.XmlDiagramsConfig;
 import com.nilsign.reader.xml.model.entities.XmlField;
+import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor(staticName = "of")
-public class XmlToDxdConverter {
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE, staticName = "of")
+public final class XmlToDxdConverter {
 
-  @NonNull
-  private final XmlModel xmlModel;
-
-  public DxdModel convert() {
+  public static DxdModel run(@NonNull XmlModel xmlModel) {
     return DxdModel.of(
         xmlModel.getName(),
-        buildDxdConfig(),
-        buildDxdClasses());
+        buildDxdConfig(xmlModel),
+        buildDxdClasses(xmlModel));
   }
 
-  private DxdConfig buildDxdConfig() {
+  private static DxdConfig buildDxdConfig(@NonNull XmlModel xmlModel) {
     XmlDiagramsConfig diagramsConfig = xmlModel.getConfig().getDiagramsConfig();
     DxdConfig dxdConfig = new DxdConfig();
     if (diagramsConfig.getDiagramDatabaseOutputPath() != null) {
@@ -45,7 +42,7 @@ public class XmlToDxdConverter {
     return dxdConfig;
   }
 
-  private List<DxdClass> buildDxdClasses() {
+  private static List<DxdClass> buildDxdClasses(@NonNull XmlModel xmlModel) {
     List<DxdClass> dxdClasses = new ArrayList<>();
     xmlModel.getEntities().getClasses().forEach(aClass -> {
       List<DxdField> dxdFields = new ArrayList<>();
@@ -55,7 +52,7 @@ public class XmlToDxdConverter {
     return dxdClasses;
   }
 
-  private DxdField buildDxdField(@NonNull XmlField field) {
+  private static DxdField buildDxdField(@NonNull XmlField field) {
     return DxdField.of(
         DxdFieldType.of(field.getType()),
         DxdFieldType.of(field.getType()).isObject()

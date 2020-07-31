@@ -95,7 +95,7 @@ public final class Dabacog {
 
   private static void buildDxdModel() throws DxdModelException {
     System.out.println(String.format("Preparing Dxd Model..."));
-    dxdModel = XmlToDxdConverter.of(xmlModel).convert();
+    dxdModel = XmlToDxdConverter.run(xmlModel);
     System.out.println(String.format("Preparing Dxd Model -> [DONE]"));
     if (flagDebug) {
       System.out.print(dxdModel.toString());

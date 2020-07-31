@@ -168,6 +168,7 @@ public final class DxdModel {
         = DxdModelFactory.createOneDirectionalOneToOneRelations(relations);
   }
 
+  @Override
   public String toString() {
     StringBuffer output = new StringBuffer()
         .append(String.format("\t%s - Name: %s\n", DxdModel.class.getSimpleName(), name))
