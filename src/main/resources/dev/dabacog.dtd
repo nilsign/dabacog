@@ -1,0 +1,26 @@
+<?xml encoding="UTF-8"?>
+
+    <!ELEMENT dxd (config|entities)*>
+    <!ATTLIST dxd
+        name CDATA #REQUIRED>
+    <!ELEMENT config (diagramsConfig)*>
+    <!ELEMENT diagramsConfig (#PCDATA)>
+    <!ATTLIST diagramsConfig
+        diagramDatabaseOutputPath CDATA #REQUIRED
+        diagramDatabaseTitle CDATA #REQUIRED
+        diagramDatabasePrimaryKeyFieldPorts CDATA #REQUIRED
+        diagramDatabaseForeignKeyFieldPorts CDATA #REQUIRED>
+    <!ELEMENT entities (class)*>
+    <!ELEMENT class (field)*>
+    <!ATTLIST class
+        name CDATA #REQUIRED>
+    <!ELEMENT field (#PCDATA)>
+    <!ATTLIST field
+        default CDATA #IMPLIED
+        fts CDATA #IMPLIED
+        indexed CDATA #IMPLIED
+        name CDATA #IMPLIED
+        nullable CDATA #IMPLIED
+        relation CDATA #IMPLIED
+        type CDATA #REQUIRED
+        unique CDATA #IMPLIED>

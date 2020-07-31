@@ -1,13 +1,13 @@
 digraph G {
-	graph [pad="0.5", nodesep="2", ranksep="1.5", ordering="in"];
+	graph [pad="0.5" nodesep="2" ranksep="2" ordering="in" fontname=Arial, fontsize=24 ];
 	node [shape=plaintext fontname="Arial" fontsize="12"];
 	rankdir="LT";
-	label = "Dabacog - Demo Database Diagram";
+	label = "Dabacog - Database Diagram - Book Library Demo";
 	labelloc = "t";
-	node_tbl_Genre [
+	node_tbl_genre [
 		label=<
 			<table border="1" cellborder="1" cellspacing="1">
-				<tr><td colspan="7" port="port_top">tbl_Genre</td></tr>
+				<tr><td colspan="7" port="port_top">tbl_genre</td></tr>
 				<tr>
 					<td>NAME</td>
 					<td>TYPE</td>
@@ -19,7 +19,7 @@ digraph G {
 				</tr>
 				<tr>
 					<td>id</td>
-					<td>yes</td>
+					<td>long</td>
 					<td>yes</td>
 					<td>no</td>
 					<td>no</td>
@@ -28,7 +28,7 @@ digraph G {
 				</tr>
 				<tr>
 					<td>name</td>
-					<td>string</td>
+					<td>long</td>
 					<td>yes</td>
 					<td>yes</td>
 					<td>no</td>
@@ -39,10 +39,10 @@ digraph G {
 		>
 	];
 
-	node_tbl_Loan [
+	node_tbl_author [
 		label=<
 			<table border="1" cellborder="1" cellspacing="1">
-				<tr><td colspan="7" port="port_top">tbl_Loan</td></tr>
+				<tr><td colspan="7" port="port_top">tbl_author</td></tr>
 				<tr>
 					<td>NAME</td>
 					<td>TYPE</td>
@@ -54,43 +54,78 @@ digraph G {
 				</tr>
 				<tr>
 					<td>id</td>
-					<td>yes</td>
-					<td>yes</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-				</tr>
-				<tr>
-					<td>id_Book</td>
 					<td>long</td>
 					<td>yes</td>
 					<td>no</td>
 					<td>no</td>
 					<td>no</td>
-					<td port="port_id_Book">no</td>
+					<td>no</td>
 				</tr>
 				<tr>
-					<td>id_Customer</td>
+					<td>name</td>
+					<td>long</td>
+					<td>yes</td>
+					<td>no</td>
+					<td>no</td>
+					<td>yes</td>
+					<td>no</td>
+				</tr>
+			</table>
+		>
+	];
+
+	node_tbl_loan [
+		label=<
+			<table border="1" cellborder="1" cellspacing="1">
+				<tr><td colspan="7" port="port_top">tbl_loan</td></tr>
+				<tr>
+					<td>NAME</td>
+					<td>TYPE</td>
+					<td>INDEX</td>
+					<td>UNIQUE</td>
+					<td>NULLABLE</td>
+					<td>FTS</td>
+					<td>DEFAULT</td>
+				</tr>
+				<tr>
+					<td>id</td>
 					<td>long</td>
 					<td>yes</td>
 					<td>no</td>
 					<td>no</td>
 					<td>no</td>
-					<td port="port_id_Customer">no</td>
-				</tr>
-				<tr>
-					<td>Start</td>
-					<td>date</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
 					<td>no</td>
 				</tr>
 				<tr>
-					<td>End</td>
-					<td>date</td>
+					<td>id_book</td>
+					<td>book</td>
+					<td>yes</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td port="port_id_book">no</td>
+				</tr>
+				<tr>
+					<td>id_customer</td>
+					<td>customer</td>
+					<td>yes</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td port="port_id_customer">no</td>
+				</tr>
+				<tr>
+					<td>start</td>
+					<td>long</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+				</tr>
+				<tr>
+					<td>end</td>
+					<td>long</td>
 					<td>yes</td>
 					<td>no</td>
 					<td>no</td>
@@ -98,8 +133,8 @@ digraph G {
 					<td>no</td>
 				</tr>
 				<tr>
-					<td>Return</td>
-					<td>date</td>
+					<td>return</td>
+					<td>long</td>
 					<td>no</td>
 					<td>no</td>
 					<td>yes</td>
@@ -107,8 +142,8 @@ digraph G {
 					<td>no</td>
 				</tr>
 				<tr>
-					<td>DunningLetter</td>
-					<td>boolean</td>
+					<td>dunning_letter</td>
+					<td>long</td>
 					<td>no</td>
 					<td>no</td>
 					<td>no</td>
@@ -119,10 +154,10 @@ digraph G {
 		>
 	];
 
-	node_tbl_Book [
+	node_tbl_book [
 		label=<
 			<table border="1" cellborder="1" cellspacing="1">
-				<tr><td colspan="7" port="port_top">tbl_Book</td></tr>
+				<tr><td colspan="7" port="port_top">tbl_book</td></tr>
 				<tr>
 					<td>NAME</td>
 					<td>TYPE</td>
@@ -134,34 +169,43 @@ digraph G {
 				</tr>
 				<tr>
 					<td>id</td>
-					<td>yes</td>
-					<td>yes</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-				</tr>
-				<tr>
-					<td>id_Location</td>
 					<td>long</td>
 					<td>yes</td>
 					<td>no</td>
 					<td>no</td>
 					<td>no</td>
-					<td port="port_id_Location">no</td>
-				</tr>
-				<tr>
-					<td>Name</td>
-					<td>string</td>
-					<td>yes</td>
-					<td>no</td>
-					<td>no</td>
-					<td>yes</td>
 					<td>no</td>
 				</tr>
 				<tr>
-					<td>Isbn</td>
-					<td>string</td>
+					<td>id_book_order</td>
+					<td>bookorder</td>
+					<td>yes</td>
+					<td>yes</td>
+					<td>no</td>
+					<td>no</td>
+					<td port="port_id_book_order">no</td>
+				</tr>
+				<tr>
+					<td>id_location</td>
+					<td>location</td>
+					<td>yes</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td port="port_id_location">no</td>
+				</tr>
+				<tr>
+					<td>name</td>
+					<td>long</td>
+					<td>yes</td>
+					<td>no</td>
+					<td>no</td>
+					<td>yes</td>
+					<td>no</td>
+				</tr>
+				<tr>
+					<td>isbn</td>
+					<td>long</td>
 					<td>yes</td>
 					<td>yes</td>
 					<td>no</td>
@@ -169,8 +213,8 @@ digraph G {
 					<td>no</td>
 				</tr>
 				<tr>
-					<td>Price</td>
-					<td>double</td>
+					<td>price</td>
+					<td>long</td>
 					<td>no</td>
 					<td>no</td>
 					<td>yes</td>
@@ -181,10 +225,10 @@ digraph G {
 		>
 	];
 
-	node_tbl_Customer [
+	node_tbl_customer [
 		label=<
 			<table border="1" cellborder="1" cellspacing="1">
-				<tr><td colspan="7" port="port_top">tbl_Customer</td></tr>
+				<tr><td colspan="7" port="port_top">tbl_customer</td></tr>
 				<tr>
 					<td>NAME</td>
 					<td>TYPE</td>
@@ -196,34 +240,34 @@ digraph G {
 				</tr>
 				<tr>
 					<td>id</td>
-					<td>yes</td>
-					<td>yes</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-				</tr>
-				<tr>
-					<td>id_Address</td>
 					<td>long</td>
 					<td>yes</td>
 					<td>no</td>
-					<td>yes</td>
 					<td>no</td>
-					<td port="port_id_Address">no</td>
+					<td>no</td>
+					<td>no</td>
 				</tr>
 				<tr>
-					<td>id_Contact</td>
+					<td>id_address</td>
+					<td>address</td>
+					<td>yes</td>
+					<td>no</td>
+					<td>yes</td>
+					<td>no</td>
+					<td port="port_id_address">no</td>
+				</tr>
+				<tr>
+					<td>id_contact</td>
+					<td>contact</td>
+					<td>yes</td>
+					<td>yes</td>
+					<td>no</td>
+					<td>no</td>
+					<td port="port_id_contact">no</td>
+				</tr>
+				<tr>
+					<td>first_name</td>
 					<td>long</td>
-					<td>yes</td>
-					<td>yes</td>
-					<td>no</td>
-					<td>no</td>
-					<td port="port_id_Contact">no</td>
-				</tr>
-				<tr>
-					<td>FirstName</td>
-					<td>string</td>
 					<td>no</td>
 					<td>no</td>
 					<td>no</td>
@@ -231,8 +275,8 @@ digraph G {
 					<td>no</td>
 				</tr>
 				<tr>
-					<td>LastName</td>
-					<td>string</td>
+					<td>last_name</td>
+					<td>long</td>
 					<td>no</td>
 					<td>no</td>
 					<td>no</td>
@@ -243,10 +287,10 @@ digraph G {
 		>
 	];
 
-	node_tbl_Address [
+	node_tbl_address [
 		label=<
 			<table border="1" cellborder="1" cellspacing="1">
-				<tr><td colspan="7" port="port_top">tbl_Address</td></tr>
+				<tr><td colspan="7" port="port_top">tbl_address</td></tr>
 				<tr>
 					<td>NAME</td>
 					<td>TYPE</td>
@@ -258,25 +302,16 @@ digraph G {
 				</tr>
 				<tr>
 					<td>id</td>
+					<td>long</td>
 					<td>yes</td>
-					<td>yes</td>
 					<td>no</td>
 					<td>no</td>
 					<td>no</td>
 					<td>no</td>
 				</tr>
 				<tr>
-					<td>Street</td>
-					<td>string</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-				</tr>
-				<tr>
-					<td>Zipcode</td>
-					<td>string</td>
+					<td>street</td>
+					<td>long</td>
 					<td>no</td>
 					<td>no</td>
 					<td>no</td>
@@ -284,8 +319,17 @@ digraph G {
 					<td>no</td>
 				</tr>
 				<tr>
-					<td>City</td>
-					<td>string</td>
+					<td>zipcode</td>
+					<td>long</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+				</tr>
+				<tr>
+					<td>city</td>
+					<td>long</td>
 					<td>no</td>
 					<td>no</td>
 					<td>no</td>
@@ -296,10 +340,10 @@ digraph G {
 		>
 	];
 
-	node_tbl_Location [
+	node_tbl_location [
 		label=<
 			<table border="1" cellborder="1" cellspacing="1">
-				<tr><td colspan="7" port="port_top">tbl_Location</td></tr>
+				<tr><td colspan="7" port="port_top">tbl_location</td></tr>
 				<tr>
 					<td>NAME</td>
 					<td>TYPE</td>
@@ -311,7 +355,7 @@ digraph G {
 				</tr>
 				<tr>
 					<td>id</td>
-					<td>yes</td>
+					<td>long</td>
 					<td>yes</td>
 					<td>no</td>
 					<td>no</td>
@@ -319,8 +363,8 @@ digraph G {
 					<td>no</td>
 				</tr>
 				<tr>
-					<td>Floor</td>
-					<td>string</td>
+					<td>floor</td>
+					<td>long</td>
 					<td>no</td>
 					<td>no</td>
 					<td>no</td>
@@ -328,8 +372,8 @@ digraph G {
 					<td>'warehouse'</td>
 				</tr>
 				<tr>
-					<td>Shelf</td>
-					<td>string</td>
+					<td>shelf</td>
+					<td>long</td>
 					<td>no</td>
 					<td>no</td>
 					<td>no</td>
@@ -337,8 +381,8 @@ digraph G {
 					<td>''</td>
 				</tr>
 				<tr>
-					<td>Position</td>
-					<td>int</td>
+					<td>position</td>
+					<td>long</td>
 					<td>no</td>
 					<td>no</td>
 					<td>no</td>
@@ -349,10 +393,10 @@ digraph G {
 		>
 	];
 
-	node_tbl_Author [
+	node_tbl_book_order [
 		label=<
 			<table border="1" cellborder="1" cellspacing="1">
-				<tr><td colspan="7" port="port_top">tbl_Author</td></tr>
+				<tr><td colspan="7" port="port_top">tbl_book_order</td></tr>
 				<tr>
 					<td>NAME</td>
 					<td>TYPE</td>
@@ -364,7 +408,7 @@ digraph G {
 				</tr>
 				<tr>
 					<td>id</td>
-					<td>yes</td>
+					<td>long</td>
 					<td>yes</td>
 					<td>no</td>
 					<td>no</td>
@@ -372,22 +416,102 @@ digraph G {
 					<td>no</td>
 				</tr>
 				<tr>
-					<td>Name</td>
-					<td>string</td>
+					<td>floor</td>
+					<td>long</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td>'warehouse'</td>
+				</tr>
+				<tr>
+					<td>shelf</td>
+					<td>long</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td>''</td>
+				</tr>
+				<tr>
+					<td>position</td>
+					<td>long</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td>-1</td>
+				</tr>
+			</table>
+		>
+	];
+
+	node_tbl_employee [
+		label=<
+			<table border="1" cellborder="1" cellspacing="1">
+				<tr><td colspan="7" port="port_top">tbl_employee</td></tr>
+				<tr>
+					<td>NAME</td>
+					<td>TYPE</td>
+					<td>INDEX</td>
+					<td>UNIQUE</td>
+					<td>NULLABLE</td>
+					<td>FTS</td>
+					<td>DEFAULT</td>
+				</tr>
+				<tr>
+					<td>id</td>
+					<td>long</td>
 					<td>yes</td>
 					<td>no</td>
 					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+				</tr>
+				<tr>
+					<td>id_employee</td>
+					<td>employee</td>
 					<td>yes</td>
+					<td>no</td>
+					<td>yes</td>
+					<td>no</td>
+					<td port="port_id_employee">no</td>
+				</tr>
+				<tr>
+					<td>id_address</td>
+					<td>address</td>
+					<td>yes</td>
+					<td>yes</td>
+					<td>no</td>
+					<td>no</td>
+					<td port="port_id_address">no</td>
+				</tr>
+				<tr>
+					<td>first_name</td>
+					<td>long</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+				</tr>
+				<tr>
+					<td>last_name</td>
+					<td>long</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
+					<td>no</td>
 					<td>no</td>
 				</tr>
 			</table>
 		>
 	];
 
-	node_tbl_Employee [
+	node_tbl_contact [
 		label=<
 			<table border="1" cellborder="1" cellspacing="1">
-				<tr><td colspan="7" port="port_top">tbl_Employee</td></tr>
+				<tr><td colspan="7" port="port_top">tbl_contact</td></tr>
 				<tr>
 					<td>NAME</td>
 					<td>TYPE</td>
@@ -399,87 +523,25 @@ digraph G {
 				</tr>
 				<tr>
 					<td>id</td>
-					<td>yes</td>
-					<td>yes</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-				</tr>
-				<tr>
-					<td>id_Employee</td>
 					<td>long</td>
 					<td>yes</td>
 					<td>no</td>
-					<td>yes</td>
 					<td>no</td>
-					<td port="port_id_Employee">no</td>
+					<td>no</td>
+					<td>no</td>
 				</tr>
 				<tr>
-					<td>id_Address</td>
+					<td>id_customer</td>
+					<td>customer</td>
+					<td>yes</td>
+					<td>yes</td>
+					<td>no</td>
+					<td>no</td>
+					<td port="port_id_customer">no</td>
+				</tr>
+				<tr>
+					<td>mobile</td>
 					<td>long</td>
-					<td>yes</td>
-					<td>yes</td>
-					<td>no</td>
-					<td>no</td>
-					<td port="port_id_Address">no</td>
-				</tr>
-				<tr>
-					<td>FirstName</td>
-					<td>string</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-				</tr>
-				<tr>
-					<td>LastName</td>
-					<td>string</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-				</tr>
-			</table>
-		>
-	];
-
-	node_tbl_Contact [
-		label=<
-			<table border="1" cellborder="1" cellspacing="1">
-				<tr><td colspan="7" port="port_top">tbl_Contact</td></tr>
-				<tr>
-					<td>NAME</td>
-					<td>TYPE</td>
-					<td>INDEX</td>
-					<td>UNIQUE</td>
-					<td>NULLABLE</td>
-					<td>FTS</td>
-					<td>DEFAULT</td>
-				</tr>
-				<tr>
-					<td>id</td>
-					<td>yes</td>
-					<td>yes</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-					<td>no</td>
-				</tr>
-				<tr>
-					<td>id_Customer</td>
-					<td>long</td>
-					<td>yes</td>
-					<td>yes</td>
-					<td>no</td>
-					<td>no</td>
-					<td port="port_id_Customer">no</td>
-				</tr>
-				<tr>
-					<td>Mobile</td>
-					<td>string</td>
 					<td>no</td>
 					<td>no</td>
 					<td>yes</td>
@@ -487,8 +549,8 @@ digraph G {
 					<td>null</td>
 				</tr>
 				<tr>
-					<td>Home</td>
-					<td>string</td>
+					<td>home</td>
+					<td>long</td>
 					<td>no</td>
 					<td>no</td>
 					<td>yes</td>
@@ -496,8 +558,8 @@ digraph G {
 					<td>null</td>
 				</tr>
 				<tr>
-					<td>Email</td>
-					<td>string</td>
+					<td>email</td>
+					<td>long</td>
 					<td>no</td>
 					<td>no</td>
 					<td>no</td>
@@ -508,48 +570,49 @@ digraph G {
 		>
 	];
 
-	node_tbl_Book_tbl_Genre [
+	node_tbl_author_tbl_book [
 		label=<
 			<table border="1" cellborder="1" cellspacing="1">
-				<tr><td colspan="2" port="port_top">tbl_Book_tbl_Genre</td></tr>
+				<tr><td colspan="2" port="port_top">tbl_author_tbl_book</td></tr>
 				<tr>
 					<td>FK_1</td>
 					<td>FK_2</td>
 				</tr>
 				<tr>
-					<td port="port_id_Genre">id_Genre</td>
-					<td port="port_id_Book">id_Book</td>
+					<td port="port_id_author">id_author</td>
+					<td port="port_id_book">id_book</td>
 				</tr>
 			</table>
 		>
 	];
 
-	node_tbl_Book_tbl_Author [
+	node_tbl_book_tbl_genre [
 		label=<
 			<table border="1" cellborder="1" cellspacing="1">
-				<tr><td colspan="2" port="port_top">tbl_Book_tbl_Author</td></tr>
+				<tr><td colspan="2" port="port_top">tbl_book_tbl_genre</td></tr>
 				<tr>
 					<td>FK_1</td>
 					<td>FK_2</td>
 				</tr>
 				<tr>
-					<td port="port_id_Author">id_Author</td>
-					<td port="port_id_Book">id_Book</td>
+					<td port="port_id_book">id_book</td>
+					<td port="port_id_genre">id_genre</td>
 				</tr>
 			</table>
 		>
 	];
 
-	node_tbl_Loan:port_id_Book:e -> node_tbl_Book:port_id:w [style="dashed"]
-	node_tbl_Loan:port_id_Customer:e -> node_tbl_Customer:port_id:w [style="dashed"]
-	node_tbl_Book_tbl_Genre:port_id_Genre:w -> node_tbl_Book:port_id:w
-	node_tbl_Book_tbl_Genre:port_id_Book:e -> node_tbl_Genre:port_id:w
-	node_tbl_Book_tbl_Author:port_id_Author:w -> node_tbl_Book:port_id:w
-	node_tbl_Book_tbl_Author:port_id_Book:e -> node_tbl_Author:port_id:w
-	node_tbl_Book:port_id_Location:e -> node_tbl_Location:port_id:w [style="dashed"]
-	node_tbl_Customer:port_id_Address:e -> node_tbl_Address:port_id:w [style="dotted"]
-	node_tbl_Customer:port_id_Contact:e -> node_tbl_Contact:port_id:w [style="dotted"]
-	node_tbl_Contact:port_id_Customer:e -> node_tbl_Customer:port_id:w [style="dotted"]
-	node_tbl_Employee:port_id_Address:e -> node_tbl_Address:port_id:w [style="dotted"]
-	node_tbl_Employee:port_id_Employee:e -> node_tbl_Employee:port_top:n [style="dotted"]
+	node_tbl_author_tbl_book:port_id_author:w -> node_tbl_author:port_id:w
+	node_tbl_author_tbl_book:port_id_book:e -> node_tbl_book:port_id:w
+	node_tbl_book:port_id_location:e -> node_tbl_location:port_id:w [style="dashed"]
+	node_tbl_customer:port_id_contact:e -> node_tbl_contact:port_id:w [style="dotted"]
+	node_tbl_contact:port_id_customer:e -> node_tbl_customer:port_id:w [style="dotted"]
+	node_tbl_employee:port_id_employee:e -> node_tbl_employee:port_top:n [style="dotted"]
+	node_tbl_loan:port_id_book:e -> node_tbl_book:port_id:w [style="dashed"]
+	node_tbl_loan:port_id_customer:e -> node_tbl_customer:port_id:w [style="dashed"]
+	node_tbl_book_tbl_genre:port_id_book:w -> node_tbl_book:port_id:w
+	node_tbl_book_tbl_genre:port_id_genre:e -> node_tbl_genre:port_id:w
+	node_tbl_customer:port_id_address:e -> node_tbl_address:port_id:w [style="dotted"]
+	node_tbl_book:port_id_book_order:e -> node_tbl_book_order:port_id:w [style="dashed"]
+	node_tbl_employee:port_id_address:e -> node_tbl_address:port_id:w [style="dotted"]
 }
