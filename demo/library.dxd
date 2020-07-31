@@ -1,82 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE dxd SYSTEM "dabacog.dtd">
+
 <dxd name="Dabacog - Book Library Demo">
 
-  <meta>
-    <diagrams
-        outputPath="./generated">
-        <database
-            diagramName="Dabacog - Demo Database Diagram"
-            primaryKeyFieldPorts="false"
-            foreignKeyFieldPorts="true"/>
-    </diagrams>
-    <database
-        system="postgres"
-        location="localhost:5434"/>
-    <codeGeneration
-        outputLanguage="java"
-        outputPath="./generated"/>
-  </meta>
+  <config>
+    <diagramsConfig
+        diagramDatabaseOutputPath="./generated"
+        diagramDatabaseTitle="Dabacog - Database Diagram - Book Library Demo"
+        diagramDatabasePrimaryKeyFieldPorts="false"
+        diagramDatabaseForeignKeyFieldPorts="true"/>
+  </config>
 
   <entities>
+
     <class name="Genre">
-      <field type="string" name="name" unique="true" />
+      <field type="string" name="Name" unique="true" />
+    </class>
+
+    <class name="Author">
+      <field type="Book" relation="n..n"/>
+      <field type="string" name="Name" fts="true"/>
     </class>
 
     <class name="Loan">
-      <field type="Book" multiplicity="one"/>
-      <field type="Customer" multiplicity="one"/>
-      <field type="date" name="Start" />
+      <field type="Book" relation="1..n"/>
+      <field type="Customer" relation="1..n"/>
+      <field type="date" name="Start"/>
       <field type="date" name="End" indexed="true"/>
       <field type="date" name="Return" nullable="true"/>
       <field type="boolean" name="DunningLetter" default="false"/>
     </class>
 
     <class name="Book">
-      <field type="Author" multiplicity="many"/>
-      <field type="Genre" multiplicity="many"/>
-      <field type="Loan" multiplicity="many" hidden="true"/>
-      <field type="Location" multiplicity="one"/>
+      <field type="Author" relation="n..n"/>
+      <field type="Genre" relation="n..n"/>
+      <field type="Location" relation="1..n"/>
       <field type="string" name="Name" fts="true"/>
       <field type="string" name="Isbn" unique="true"/>
       <field type="double" name="Price" nullable="true"/>
     </class>
 
     <class name="Customer">
-      <field type="Address" multiplicity="one" nullable="true"/>
-      <field type="Contact" multiplicity="one"/>
-      <field type="string" name="FirstName"/>
-      <field type="string" name="LastName"/>
+        <field type="Address" relation="1..1" nullable="true"/>
+      <field type="Contact" relation="1..1"/>
+        <field type="string" name="FirstName"/>
+        <field type="string" name="LastName"/>
     </class>
 
     <class name="Address">
-      <field type="Customer" multiplicity="one" hidden="true"/>
-      <field type="Employee" multiplicity="one" hidden="true"/>
-      <field type="string" name="Street"/>
-      <field type="string" name="Zipcode"/>
-      <field type="string" name="City"/>
+        <field type="string" name="Street"/>
+        <field type="string" name="Zipcode"/>
+        <field type="string" name="City"/>
     </class>
 
     <class name="Location">
-      <field type="Book" multiplicity="many"/>
+      <field type="Book" relation="n..1"/>
       <field type="string" name="Floor" default="warehouse"/>
       <field type="string" name="Shelf" default=""/>
       <field type="int" name="Position" default="-1"/>
     </class>
 
-    <class name="Author">
-      <field type="Book" multiplicity="many"/>
-      <field type="string" name="Name" fts="true"/>
+    <class name="BookOrder">
+      <field type="Book" relation="n..1" nullable="true"/>
+      <field type="string" name="Floor" default="warehouse"/>
+      <field type="string" name="Shelf" default=""/>
+      <field type="int" name="Position" default="-1"/>
     </class>
 
     <class name="Employee">
-      <field type="Employee" multiplicity="one" nullable="true"/>
-      <field type="Address" multiplicity="one"/>
+      <field type="Employee" relation="1..1" nullable="true"/>
+      <field type="Address" relation="1..1"/>
       <field type="string" name="FirstName" />
       <field type="string" name="LastName"/>
     </class>
 
     <class name="Contact">
-      <field type="Customer" multiplicity="one"/>
+      <field type="Customer" relation="1..1"/>
       <field type="string" name="Mobile" nullable="true"/>
       <field type="string" name="Home" nullable="true"/>
       <field type="string" name="Email"/>
