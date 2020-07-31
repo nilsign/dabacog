@@ -26,6 +26,7 @@ public final class DxdClass {
     return output.toString();
   }
 
+  @Override
   public String toString() {
     return toString("");
   }

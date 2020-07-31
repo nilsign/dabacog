@@ -58,6 +58,7 @@ public final class DxdFieldRelation {
         secondClass.getName());
   }
 
+  @Override
   public String toString() {
     return toString("");
   }

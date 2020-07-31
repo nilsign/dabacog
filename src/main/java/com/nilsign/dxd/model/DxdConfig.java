@@ -1,11 +1,9 @@
 package com.nilsign.dxd.model;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NonNull;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 public final class DxdConfig {
 
   private static final String DEFAULT_OUTPUT_PATH = "./generated";
@@ -49,6 +47,7 @@ public final class DxdConfig {
         .toString();
   }
 
+  @Override
   public String toString() {
     return toString("");
   }
