@@ -7,3 +7,6 @@
 /out/*
 /target/*
 /generated/*
+
+# Maven Shade Plugin (auto-generated on maven package)
+dependency-reduced-pom.xml
