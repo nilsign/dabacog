@@ -24,9 +24,7 @@ import java.util.concurrent.Callable;
       + "Dabacog CLI arguments:\n",
     name="dabacog",
     mixinStandardHelpOptions = true,
-    version = Dabacog.DABACOG_VERSION
-
-    )
+    version = Dabacog.DABACOG_VERSION)
 public class RootCommand implements Callable<Integer> {
 
   private static final String TARGET_VALUE_DIAGRAM_SHORT = "d";
