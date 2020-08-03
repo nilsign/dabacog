@@ -11,11 +11,14 @@
     <description>Database related code generation CLI</description>
 
     <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <java.version>13</java.version>
       <maven.compiler.source>${java.version}</maven.compiler.source>
       <maven.compiler.target>${java.version}</maven.compiler.target>
       <maven.compiler.pluginVersion>3.8.1</maven.compiler.pluginVersion>
-      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <picocli.version>4.2.0</picocli.version>
+      <lombok.version>1.18.12</lombok.version>
+
     </properties>
 
     <dependencies>
@@ -23,14 +26,14 @@
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
-        <version>1.18.12</version>
+        <version>${lombok.version}</version>
         <scope>provided</scope>
       </dependency>
 
       <dependency>
         <groupId>info.picocli</groupId>
         <artifactId>picocli</artifactId>
-        <version>4.2.0</version>
+        <version>${picocli.version}</version>
       </dependency>
 
       <dependency>
@@ -54,7 +57,7 @@
     </dependencies>
 
     <build>
-
+      <finalName>dabacog</finalName>
       <plugins>
 
         <plugin>
@@ -62,19 +65,42 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>${maven.compiler.pluginVersion}</version>
           <configuration>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
             <annotationProcessorPaths>
               <path>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.12</version>
+                <version>${lombok.version}</version>
               </path>
               <path>
                 <groupId>info.picocli</groupId>
                 <artifactId>picocli-codegen</artifactId>
-                <version>4.2.0</version>
+                <version>${picocli.version}</version>
               </path>
             </annotationProcessorPaths>
           </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>shade</goal>
+              </goals>
+              <configuration>
+                <transformers>
+                  <!-- Adds Main-Class to manifest file. -->
+                  <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                    <mainClass>com.nilsign.Dabacog</mainClass>
+                  </transformer>
+                </transformers>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
 
     </plugins>

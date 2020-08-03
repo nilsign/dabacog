@@ -61,7 +61,7 @@ file or just append the Dxd file path as CLI argument.
     kind of attributes can be also displayed in the graph.
 
     - A graph as png showing all java entities and their relations. Each entity represents all
-    field of a SQL table.
+    field of an SQL table.
 
     - The database with all tables, fields and attributes.
 
@@ -92,3 +92,19 @@ data migration strategies, by the use of [Flyway](https://flywaydb.org) and/or
 9. Support to migrate to DABACOG for already existing projects. [PLANNED]
 10. Support for MySQL, MariaDB, Oracle, Microsoft SQL Server. [PLANNED]
 11. Support for C#, Kotlin, C++, C, Python, Dart, Go, and more. [PLANNED]
+
+# DEVELOPMENT
+
+Starting the Dabacog CLI within a DEV environment requires the according command line arguments. To
+use the provided sample dxd file with verbose-logging enabled add the following command line
+arguments to the Dabacog Run/Debug environment configuration in your IDE. 
+
+    --source ./src/main/resources/dev/library.dxd --verbose-logging
+
+Execute the maven package phase to build a dabacog fat jar including a valid manifest. The build
+dabacog.jar can be found in your projects target folder. To run the build dabacog fat jar from a
+command line navigate into the Dabacog project root folder and execute:
+
+    java -jar target/dabacog.jar -verbose-logging --source ./src/main/resources/dev/library.dxd
+
+Ensure that the Java version is the same as used in the pom file.
