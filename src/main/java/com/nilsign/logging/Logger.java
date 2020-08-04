@@ -14,16 +14,22 @@ public final class Logger {
   private static Logger instance;
 
   @NonNull
-  private boolean isActive;
+  private boolean isActive = true;
 
   @NonNull
-  private LogLevel logLevel;
+  private LogLevel logLevel = LogLevel.DEFAULT;
 
-  public static void init(boolean isActive, LogLevel logLevel) {
+  public static void init() {
     if (instance == null) {
-      instance = new Logger(isActive, logLevel);
+      instance = new Logger();
     }
-    instance.isActive = isActive;
+  }
+
+  public static void stop() {
+    instance.isActive = false;
+  }
+
+  public static void setLogLevel(LogLevel logLevel) {
     instance.logLevel = logLevel;
   }
 

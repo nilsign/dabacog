@@ -1,7 +1,6 @@
 package com.nilsign;
 
 import com.nilsign.cli.RootCommand;
-import com.nilsign.logging.LogLevel;
 import com.nilsign.logging.Logger;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -17,7 +16,7 @@ public final class Dabacog {
 
   public static void main(@NonNull String[] arguments) {
     int exitCode = -1;
-    Logger.init(true, LogLevel.DEFAULT);
+    Logger.init();
     try {
       CLI.parseArgs(arguments);
     } catch(Exception e) {
@@ -35,4 +34,4 @@ public final class Dabacog {
     }
   }
  }
- 
+

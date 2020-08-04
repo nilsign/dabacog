@@ -8,6 +8,7 @@ import com.nilsign.generators.diagrams.database.GraphvizDotRenderer;
 import com.nilsign.generators.diagrams.database.GraphvizDotRendererException;
 import com.nilsign.generators.diagrams.database.dot.DotDatabaseDiagramGenerator;
 import com.nilsign.generators.diagrams.database.dot.DotGeneratorException;
+import com.nilsign.logging.LogLevel;
 import com.nilsign.logging.Logger;
 import com.nilsign.reader.xml.XmlReader;
 import com.nilsign.reader.xml.XmlReaderException;
@@ -77,32 +78,34 @@ public class RootCommand implements Callable<Integer> {
 
   @Override
   public Integer call() {
+    updateLoggerConfiguration();
     printDabacogVersionInfo();
     if (Dabacog.CLI.isVersionHelpRequested()) {
       return 0;
     }
-      if (Dabacog.CLI.isUsageHelpRequested()) {
+    if (Dabacog.CLI.isUsageHelpRequested()) {
       Dabacog.CLI.usage(Logger.LOG_STREAM);
       return 0;
     }
     try {
       readXmlFile();
       buildDxdModel();
-      if (isDiagramGenerationIncluded()) {
-        generateDotDatabaseDiagram();
-        renderDotDatabaseDiagram();
-      }
-      if (isSqlGenerationIncluded()) {
-        generateSql();
-      }
-      if (isCodeGenerationIncluded()) {
-        generateCode();
-      }
+      generateDotDatabaseDiagram();
+      renderDotDatabaseDiagram();
+      generateSql();
+      generateCode();
       return 0;
     } catch (Exception e) {
         Logger.log(e.getMessage());
         Logger.printStackTrace(e);
       return 1;
+    }
+  }
+
+  private void updateLoggerConfiguration() {
+    Logger.setLogLevel(isVerboseLogging ? LogLevel.VERBOSE : LogLevel.DEFAULT);
+    if (isNoLogging) {
+      Logger.stop();
     }
   }
 
@@ -120,7 +123,7 @@ public class RootCommand implements Callable<Integer> {
   private void readXmlFile() throws XmlReaderException {
     Logger.log(String.format("Parsing Dxd file '%s'...", source.getPath()));
     xmlModel = XmlReader.run(source.getPath());
-    Logger.log(String.format("Parsing Dxd file -> [DONE]", source.getPath())) ;
+    Logger.log(String.format("Parsing Dxd file -> [DONE]", source.getPath()));
     Logger.verbose(xmlModel.toString());
   }
 
@@ -131,43 +134,51 @@ public class RootCommand implements Callable<Integer> {
     Logger.verbose(dxdModel.toString());
   }
 
-  private boolean isDiagramGenerationIncluded() {
+  private boolean hasDiagramTarget() {
     return targets == null
         || targets.contains(TARGET_VALUE_DIAGRAM)
         || targets.contains(TARGET_VALUE_DIAGRAM_SHORT);
   }
 
   private void generateDotDatabaseDiagram() throws DotGeneratorException {
-    Logger.log(String.format("Generating database diagram description..."));
-    DotDatabaseDiagramGenerator.run(dxdModel);
-    Logger.log(String.format("Generating database diagram description -> [DONE]"));
+    if (hasDiagramTarget()) {
+      Logger.log(String.format("Generating database diagram description..."));
+      DotDatabaseDiagramGenerator.run(dxdModel);
+      Logger.log(String.format("Generating database diagram description -> [DONE]"));
+    }
   }
 
   private void renderDotDatabaseDiagram() throws GraphvizDotRendererException {
-    Logger.log(String.format("Rendering database diagram..."));
-    GraphvizDotRenderer.run(dxdModel);
-    Logger.log(String.format("Rendering database diagram -> [DONE]"));
+    if (hasDiagramTarget()) {
+      Logger.log(String.format("Rendering database diagram..."));
+      GraphvizDotRenderer.run(dxdModel);
+      Logger.log(String.format("Rendering database diagram -> [DONE]"));
+    }
   }
 
-  private boolean isSqlGenerationIncluded() {
+  private boolean hasSqlTarget() {
     return targets == null
         || targets.contains(TARGET_VALUE_SQL)
         || targets.contains(TARGET_VALUE_SQL_SHORT);
   }
 
   private void generateSql() {
-    Logger.log(String.format("Generating SQL..."));
-    Logger.log(String.format("WARNING: Not implemented yet."));
+    if (hasSqlTarget()) {
+      Logger.log(String.format("Generating SQL..."));
+      Logger.log(String.format("WARNING: Not implemented yet."));
+    }
   }
 
-  private boolean isCodeGenerationIncluded() {
+  private boolean hasCodeTarget() {
     return targets == null
         || targets.contains(TARGET_VALUE_CODE)
         || targets.contains(TARGET_VALUE_CODE_SHORT);
   }
 
   private void generateCode() {
-    Logger.log(String.format("Generating code..."));
-    Logger.log(String.format("WARNING: Not implemented yet."));
+    if (hasCodeTarget()) {
+      Logger.log(String.format("Generating code..."));
+      Logger.log(String.format("WARNING: Not implemented yet."));
+     }
   }
 }
