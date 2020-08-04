@@ -11,6 +11,7 @@ public final class Logger {
 
   public static final PrintStream LOG_STREAM = System.out;
 
+  @NonNull
   private static Logger instance;
 
   @NonNull
@@ -29,7 +30,7 @@ public final class Logger {
     instance.isActive = false;
   }
 
-  public static void setLogLevel(LogLevel logLevel) {
+  public static void setLogLevel(@NonNull LogLevel logLevel) {
     instance.logLevel = logLevel;
   }
 
@@ -39,19 +40,19 @@ public final class Logger {
     }
   }
 
-  public static void log(String text) {
+  public static void log(@NonNull String text) {
     if (instance != null && instance.isActive) {
       LOG_STREAM.println(text);;
     }
   }
 
-  public static void verbose(String text) {
+  public static void verbose(@NonNull String text) {
     if (instance != null && instance.isActive && instance.logLevel == LogLevel.VERBOSE) {
       LOG_STREAM.println(text);;
     }
   }
 
-  public static void printStackTrace(Exception e) {
+  public static void printStackTrace(@NonNull Exception e) {
     if (e != null
         && instance != null
         && instance.isActive
