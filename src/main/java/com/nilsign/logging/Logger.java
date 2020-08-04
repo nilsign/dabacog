@@ -46,6 +46,12 @@ public final class Logger {
     }
   }
 
+  public static void print(@NonNull String text) {
+    if (instance != null && instance.isActive) {
+      LOG_STREAM.print(text);;
+    }
+  }
+
   public static void verbose(@NonNull String text) {
     if (instance != null && instance.isActive && instance.logLevel == LogLevel.VERBOSE) {
       LOG_STREAM.println(text);;

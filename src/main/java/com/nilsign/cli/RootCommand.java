@@ -121,16 +121,16 @@ public class RootCommand implements Callable<Integer> {
   }
 
   private void readXmlFile() throws XmlReaderException {
-    Logger.log(String.format("Parsing Dxd file '%s'...", source.getPath()));
+    Logger.print(String.format("Parsing Dxd file '%s' ... ", source.getPath()));
     xmlModel = XmlReader.run(source.getPath());
-    Logger.log(String.format("Parsing Dxd file -> [DONE]", source.getPath()));
+    Logger.log(String.format("[DONE]", source.getPath()));
     Logger.verbose(xmlModel.toString());
   }
 
   private void buildDxdModel() throws DxdModelException {
-    Logger.log(String.format("Preparing Dxd Model..."));
+    Logger.print(String.format("Preparing Dxd Model ..."));
     dxdModel = XmlToDxdConverter.run(xmlModel);
-    Logger.log(String.format("Preparing Dxd Model -> [DONE]"));
+    Logger.log(String.format("[DONE]"));
     Logger.verbose(dxdModel.toString());
   }
 
@@ -142,17 +142,17 @@ public class RootCommand implements Callable<Integer> {
 
   private void generateDotDatabaseDiagram() throws DotGeneratorException {
     if (hasDiagramTarget()) {
-      Logger.log(String.format("Generating database diagram description..."));
+      Logger.print(String.format("Generating database diagram description ... "));
       DotDatabaseDiagramGenerator.run(dxdModel);
-      Logger.log(String.format("Generating database diagram description -> [DONE]"));
+      Logger.log(String.format("[DONE]"));
     }
   }
 
   private void renderDotDatabaseDiagram() throws GraphvizDotRendererException {
     if (hasDiagramTarget()) {
-      Logger.log(String.format("Rendering database diagram..."));
+      Logger.print(String.format("Rendering database diagram ... "));
       GraphvizDotRenderer.run(dxdModel);
-      Logger.log(String.format("Rendering database diagram -> [DONE]"));
+      Logger.log(String.format("[DONE]"));
     }
   }
 
@@ -164,7 +164,7 @@ public class RootCommand implements Callable<Integer> {
 
   private void generateSql() {
     if (hasSqlTarget()) {
-      Logger.log(String.format("Generating SQL..."));
+      Logger.print(String.format("Generating SQL ... "));
       Logger.log(String.format("WARNING: Not implemented yet."));
     }
   }
@@ -177,8 +177,8 @@ public class RootCommand implements Callable<Integer> {
 
   private void generateCode() {
     if (hasCodeTarget()) {
-      Logger.log(String.format("Generating code..."));
-      Logger.log(String.format("WARNING: Not implemented yet."));
+      Logger.print(String.format("Generating code ... "));
+      Logger.print(String.format("WARNING: Not implemented yet."));
      }
   }
 }
