@@ -54,6 +54,18 @@
         <version>29.0-jre</version>
       </dependency>
 
+      <!--
+        Resolves the following guru.nidi.graphviz engine warning:
+        SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+        SLF4J: Defaulting to no-operation (NOP) logger implementation
+        SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+      -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-nop</artifactId>
+        <version>1.7.30</version>
+      </dependency>
+
     </dependencies>
 
     <build>
