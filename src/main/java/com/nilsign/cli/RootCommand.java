@@ -8,6 +8,7 @@ import com.nilsign.generators.diagrams.database.GraphvizDotRenderer;
 import com.nilsign.generators.diagrams.database.GraphvizDotRendererException;
 import com.nilsign.generators.diagrams.database.dot.DotDatabaseDiagramGenerator;
 import com.nilsign.generators.diagrams.database.dot.DotGeneratorException;
+import com.nilsign.logging.Logger;
 import com.nilsign.reader.xml.XmlReader;
 import com.nilsign.reader.xml.XmlReaderException;
 import com.nilsign.reader.xml.model.XmlModel;
@@ -81,7 +82,7 @@ public class RootCommand implements Callable<Integer> {
       return 0;
     }
       if (Dabacog.CLI.isUsageHelpRequested()) {
-      Dabacog.CLI.usage(System.out);
+      Dabacog.CLI.usage(Logger.LOG_STREAM);
       return 0;
     }
     try {
@@ -99,42 +100,35 @@ public class RootCommand implements Callable<Integer> {
       }
       return 0;
     } catch (Exception e) {
-      if (isVerboseLogging) {
-        e.printStackTrace();
-      } else {
-        System.out.println(e.getMessage());
-      };
+        Logger.log(e.getMessage());
+        Logger.printStackTrace(e);
       return 1;
     }
   }
 
   private void printDabacogVersionInfo() {
-    System.out.println("    ____        __");
-    System.out.println("   / __ \\____ _/ /_  ____ __________  ____ _");
-    System.out.println("  / / / / __ `/ __ \\/ __ `/ ___/ __ \\/ __ `/");
-    System.out.println(" / /_/ / /_/ / /_/ / /_/ / /__/ /_/ / /_/ /");
-    System.out.println("/_____/\\__,_/_,___/\\__,_/\\___/\\____/\\__, /");
-    System.out.println("                                   /____/");
-    System.out.println(String.format("Version %s", Dabacog.DABACOG_VERSION));
-    System.out.println();
+    Logger.log("    ____        __");
+    Logger.log("   / __ \\____ _/ /_  ____ __________  ____ _");
+    Logger.log("  / / / / __ `/ __ \\/ __ `/ ___/ __ \\/ __ `/");
+    Logger.log(" / /_/ / /_/ / /_/ / /_/ / /__/ /_/ / /_/ /");
+    Logger.log("/_____/\\__,_/_,___/\\__,_/\\___/\\____/\\__, /");
+    Logger.log("                                   /____/");
+    Logger.log(String.format("Version %s", Dabacog.DABACOG_VERSION));
+    Logger.log();
   }
 
   private void readXmlFile() throws XmlReaderException {
-    System.out.println(String.format("Parsing Dxd file '%s'...", source.getPath()));
+    Logger.log(String.format("Parsing Dxd file '%s'...", source.getPath()));
     xmlModel = XmlReader.run(source.getPath());
-    System.out.println(String.format("Parsing Dxd file -> [DONE]", source.getPath())) ;
-    if (isVerboseLogging) {
-      System.out.print(xmlModel.toString());
-    }
+    Logger.log(String.format("Parsing Dxd file -> [DONE]", source.getPath())) ;
+    Logger.verbose(xmlModel.toString());
   }
 
   private void buildDxdModel() throws DxdModelException {
-    System.out.println(String.format("Preparing Dxd Model..."));
+    Logger.log(String.format("Preparing Dxd Model..."));
     dxdModel = XmlToDxdConverter.run(xmlModel);
-    System.out.println(String.format("Preparing Dxd Model -> [DONE]"));
-    if (isVerboseLogging) {
-      System.out.print(dxdModel.toString());
-    }
+    Logger.log(String.format("Preparing Dxd Model -> [DONE]"));
+    Logger.verbose(dxdModel.toString());
   }
 
   private boolean isDiagramGenerationIncluded() {
@@ -144,15 +138,15 @@ public class RootCommand implements Callable<Integer> {
   }
 
   private void generateDotDatabaseDiagram() throws DotGeneratorException {
-    System.out.println(String.format("Generating database diagram description..."));
+    Logger.log(String.format("Generating database diagram description..."));
     DotDatabaseDiagramGenerator.run(dxdModel);
-    System.out.println(String.format("Generating database diagram description -> [DONE]"));
+    Logger.log(String.format("Generating database diagram description -> [DONE]"));
   }
 
   private void renderDotDatabaseDiagram() throws GraphvizDotRendererException {
-    System.out.println(String.format("Rendering database diagram..."));
+    Logger.log(String.format("Rendering database diagram..."));
     GraphvizDotRenderer.run(dxdModel);
-    System.out.println(String.format("Rendering database diagram -> [DONE]"));
+    Logger.log(String.format("Rendering database diagram -> [DONE]"));
   }
 
   private boolean isSqlGenerationIncluded() {
@@ -162,8 +156,8 @@ public class RootCommand implements Callable<Integer> {
   }
 
   private void generateSql() {
-    System.out.println(String.format("Generating SQL..."));
-    System.out.println(String.format("WARNING: Not implemented yet."));
+    Logger.log(String.format("Generating SQL..."));
+    Logger.log(String.format("WARNING: Not implemented yet."));
   }
 
   private boolean isCodeGenerationIncluded() {
@@ -173,7 +167,7 @@ public class RootCommand implements Callable<Integer> {
   }
 
   private void generateCode() {
-    System.out.println(String.format("Generating code..."));
-    System.out.println(String.format("WARNING: Not implemented yet."));
+    Logger.log(String.format("Generating code..."));
+    Logger.log(String.format("WARNING: Not implemented yet."));
   }
 }
