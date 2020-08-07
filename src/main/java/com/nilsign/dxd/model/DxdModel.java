@@ -210,7 +210,7 @@ public final class DxdModel {
           "Failed to filter all one-directional Dxd relations from the Dxd relations.", e);
     }
   }
-gi
+
   @Override
   public String toString() {
     StringBuffer output = new StringBuffer()
