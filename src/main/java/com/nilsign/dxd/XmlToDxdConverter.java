@@ -48,7 +48,7 @@ public final class XmlToDxdConverter {
       return dxdConfig;
     } catch(Exception e) {
       throw new RuntimeException(
-          "Xml <config> ... </config> to DxD configuration model failed.",
+          "Xml <config> <diagramsConfig ... </config> to DxD config model conversion failed.",
           e);
     }
   }
@@ -66,7 +66,8 @@ public final class XmlToDxdConverter {
       return dxdClasses;
     } catch(Exception e) {
       throw new RuntimeException(
-          String.format("Xml <class name=\"%s\"> ... </class> to DxD class model creation failed.",
+          String.format(
+              "Xml <class name=\"%s\"> ... </class> to DxD class model conversion failed.",
               className.get()),
           e);
     }
@@ -88,7 +89,7 @@ public final class XmlToDxdConverter {
     } catch (Exception e) {
       throw new RuntimeException(
           String.format(
-              "Xml <field name=\"%s\"> ... </field> to DxD field model creation failed.",
+              "Xml <field name=\"%s\"> ... </field> to DxD field model conversion failed.",
               field.getName()),
           e);
       }
