@@ -19,7 +19,7 @@ public final class DotDatabaseDiagramGenerator extends Generator {
     return new DotDatabaseDiagramGenerator(dxdModel);
   }
 
-  public static void run(@NonNull DxdModel model) throws DotGeneratorException {
+  public static void run(@NonNull DxdModel model) {
     DotDatabaseDiagramGenerator.of(model).generate();
   }
 
@@ -33,7 +33,7 @@ public final class DotDatabaseDiagramGenerator extends Generator {
     return OUTPUT_FILE_NAME;
   }
 
-  public void generate() throws DotGeneratorException {
+  public void generate() {
     File outputFile = super.createOutputFile();
     try (FileWriter writer = new FileWriter(outputFile)) {
       writer.write(

@@ -1,17 +1,13 @@
 package com.nilsign.cli;
 
 import com.nilsign.Dabacog;
-import com.nilsign.dxd.DxdModelException;
 import com.nilsign.dxd.XmlToDxdConverter;
 import com.nilsign.dxd.model.DxdModel;
 import com.nilsign.generators.diagrams.database.GraphvizDotRenderer;
-import com.nilsign.generators.diagrams.database.GraphvizDotRendererException;
 import com.nilsign.generators.diagrams.database.dot.DotDatabaseDiagramGenerator;
-import com.nilsign.generators.diagrams.database.dot.DotGeneratorException;
 import com.nilsign.logging.LogLevel;
 import com.nilsign.logging.Logger;
 import com.nilsign.reader.xml.XmlReader;
-import com.nilsign.reader.xml.XmlReaderException;
 import com.nilsign.reader.xml.model.XmlModel;
 import lombok.NonNull;
 import picocli.CommandLine.Command;
@@ -80,26 +76,20 @@ public class RootCommand implements Callable<Integer> {
   public Integer call() {
     updateLoggerConfiguration();
     printDabacogVersionInfo();
-    if (Dabacog.CLI.isVersionHelpRequested()) {
-      return 0;
-    }
     if (Dabacog.CLI.isUsageHelpRequested()) {
       Dabacog.CLI.usage(Logger.LOG_STREAM);
       return 0;
     }
-    try {
-      readXmlFile();
-      buildDxdModel();
-      generateDotDatabaseDiagram();
-      renderDotDatabaseDiagram();
-      generateSql();
-      generateCode();
+    if (Dabacog.CLI.isVersionHelpRequested()) {
       return 0;
-    } catch (Exception e) {
-        Logger.log(e.getMessage());
-        Logger.printStackTrace(e);
-      return 1;
     }
+    readXmlFile();
+    buildDxdModel();
+    generateDotDatabaseDiagram();
+    renderDotDatabaseDiagram();
+    generateSql();
+    generateCode();
+    return 0;
   }
 
   private void updateLoggerConfiguration() {
@@ -120,15 +110,15 @@ public class RootCommand implements Callable<Integer> {
     Logger.log();
   }
 
-  private void readXmlFile() throws XmlReaderException {
+  private void readXmlFile()  {
     Logger.print(String.format("Parsing Dxd file '%s' ... ", source.getPath()));
     xmlModel = XmlReader.run(source.getPath());
     Logger.log(String.format("[DONE]", source.getPath()));
     Logger.verbose(xmlModel.toString());
   }
 
-  private void buildDxdModel() throws DxdModelException {
-    Logger.print(String.format("Preparing Dxd Model ..."));
+  private void buildDxdModel() {
+    Logger.print(String.format("Preparing Dxd Model ... "));
     dxdModel = XmlToDxdConverter.run(xmlModel);
     Logger.log(String.format("[DONE]"));
     Logger.verbose(dxdModel.toString());
@@ -140,7 +130,7 @@ public class RootCommand implements Callable<Integer> {
         || targets.contains(TARGET_VALUE_DIAGRAM_SHORT);
   }
 
-  private void generateDotDatabaseDiagram() throws DotGeneratorException {
+  private void generateDotDatabaseDiagram() {
     if (hasDiagramTarget()) {
       Logger.print(String.format("Generating database diagram description ... "));
       DotDatabaseDiagramGenerator.run(dxdModel);
@@ -148,7 +138,7 @@ public class RootCommand implements Callable<Integer> {
     }
   }
 
-  private void renderDotDatabaseDiagram() throws GraphvizDotRendererException {
+  private void renderDotDatabaseDiagram() {
     if (hasDiagramTarget()) {
       Logger.print(String.format("Rendering database diagram ... "));
       GraphvizDotRenderer.run(dxdModel);

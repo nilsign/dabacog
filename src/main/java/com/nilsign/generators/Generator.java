@@ -23,7 +23,7 @@ public abstract class Generator {
     return FileHelper.normalizePath(filePath) + getOutputFileName().trim();
   }
 
-  public File createOutputFile() throws DotGeneratorException {
+  public File createOutputFile() {
     String filePath = getOutputFilePath();
     FileHelper.deleteFileIfExists(filePath);
     try {

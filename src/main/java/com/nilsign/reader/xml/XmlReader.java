@@ -6,6 +6,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
+
 import java.io.File;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -14,13 +15,13 @@ public final class XmlReader {
   @NonNull
   private final String dxdFilePath;
 
-  public static XmlModel run(@NonNull String dxdFilePath) throws XmlReaderException {
+  public static XmlModel run(@NonNull String dxdFilePath) {
     Serializer serializer = new Persister();
     File source = new File(dxdFilePath);
     try {
-      return serializer.read(XmlModel.class, source);
-    } catch(Exception e) {
-      throw new XmlReaderException(e.getMessage(), e);
+       return serializer.read(XmlModel.class, source);
+    } catch (Exception e) {
+      throw new XmlReaderException(e);
     }
   }
 }

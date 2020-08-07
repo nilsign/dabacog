@@ -35,35 +35,61 @@ public final class Logger {
   }
 
   public static void log() {
-    if (instance != null && instance.isActive) {
+    if (isDefaultLogLevel()) {
       LOG_STREAM.println();
     }
   }
 
   public static void log(@NonNull String text) {
-    if (instance != null && instance.isActive) {
+    if (isDefaultLogLevel()) {
       LOG_STREAM.println(text);;
     }
   }
 
+  public static void error(@NonNull String text) {
+    if (isDefaultLogLevel()) {
+      LOG_STREAM.println("\nError: " + text);;
+    }
+  }
+
+  public static void error(@NonNull Exception e) {
+    if (isVerboseLogLevel()) {
+      LOG_STREAM.print("\nStacktrace: ");
+      e.printStackTrace(LOG_STREAM);
+      return;
+    }
+    LOG_STREAM.println("\nError: " + e.getMessage());
+    logCauses(e.getCause());
+  }
+
   public static void print(@NonNull String text) {
-    if (instance != null && instance.isActive) {
+    if (isDefaultLogLevel()) {
       LOG_STREAM.print(text);;
     }
   }
 
   public static void verbose(@NonNull String text) {
-    if (instance != null && instance.isActive && instance.logLevel == LogLevel.VERBOSE) {
+    if (isVerboseLogLevel()) {
       LOG_STREAM.println(text);;
     }
   }
 
-  public static void printStackTrace(@NonNull Exception e) {
-    if (e != null
-        && instance != null
+  private static boolean isDefaultLogLevel() {
+    return instance != null && instance.isActive;
+  }
+
+  private static boolean isVerboseLogLevel() {
+    return instance != null
         && instance.isActive
-        && instance.logLevel == LogLevel.VERBOSE) {
-      e.printStackTrace(LOG_STREAM);
+        && instance.logLevel == LogLevel.VERBOSE;
+  }
+
+  private static void logCauses(Throwable throwable) {
+    if (throwable != null) {
+      if (throwable.getMessage() != null) {
+        LOG_STREAM.println("Cause: " + throwable.getMessage());
+      }
+      logCauses(throwable.getCause());
     }
   }
 }

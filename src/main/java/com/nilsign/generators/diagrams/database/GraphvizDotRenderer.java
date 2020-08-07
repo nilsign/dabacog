@@ -21,11 +21,11 @@ public final class GraphvizDotRenderer extends Generator {
     return new GraphvizDotRenderer(dxdModel);
   }
 
-  public static void run(@NonNull DxdModel dxdModel) throws GraphvizDotRendererException {
+  public static void run(@NonNull DxdModel dxdModel) {
     GraphvizDotRenderer.of(dxdModel).run();
   }
 
-  private void run() throws GraphvizDotRendererException {
+  private void run() {
     File outputFile;
     try {
       outputFile = super.createOutputFile();
