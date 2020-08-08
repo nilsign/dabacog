@@ -31,7 +31,7 @@ public abstract class Generator {
     } catch (IOException e) {
       throw new DotGeneratorException(
           String.format(
-              "Couldn't create new generation target file at '%s'",
+              "Couldn't store new generation target file '%s'",
               filePath),
           e);
     }

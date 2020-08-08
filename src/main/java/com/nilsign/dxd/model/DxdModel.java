@@ -135,7 +135,7 @@ public final class DxdModel {
           = DxdModelFactory.createFieldNameToFieldMap(classes);
     } catch (Exception e) {
       throw new RuntimeException(
-          "Failed to create the common Dxd model mappings from the Dxd classes.", e);
+          "Failed to build common mappings from the Dxd classes.", e);
     }
   }
 
@@ -153,7 +153,7 @@ public final class DxdModel {
           = DxdModelFactory.createOneToOneRelations(relations);
     } catch (Exception e) {
       throw new RuntimeException(
-          "Failed to create all Dxd relations from the Dxd classes.", e);
+          "Failed to extract the Dxd relations out of the Dxd classes.", e);
     }
   }
 
@@ -171,7 +171,7 @@ public final class DxdModel {
           = DxdModelFactory.createDistinctOneToOneRelations(relations);
     } catch (Exception e) {
       throw new RuntimeException(
-          "Failed to filter all distinct Dxd relations from the Dxd relations.", e);
+          "Failed to extract the distinct Dxd relations.", e);
     }
   }
 
@@ -189,7 +189,7 @@ public final class DxdModel {
           = DxdModelFactory.createDistinctBiDirectionalOneToOneRelations(relations);
     } catch (Exception e) {
       throw new RuntimeException(
-          "Failed to filter all distinct bi-directional Dxd relations from the Dxd relations.", e);
+          "Failed to extract distinct bi-directional Dxd relations", e);
     }
   }
 
@@ -207,7 +207,7 @@ public final class DxdModel {
           = DxdModelFactory.createOneDirectionalOneToOneRelations(relations);
     } catch (Exception e) {
       throw new RuntimeException(
-          "Failed to filter all one-directional Dxd relations from the Dxd relations.", e);
+          "Failed to extract one-directional Dxd relations.", e);
     }
   }
 

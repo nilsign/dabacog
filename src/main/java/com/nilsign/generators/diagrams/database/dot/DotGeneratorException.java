@@ -4,9 +4,9 @@ import lombok.NonNull;
 
 public final class DotGeneratorException extends RuntimeException {
 
-  private static final String ERROR_CLASS_MESSAGE = "Failed to generate graph description file.";
+  private static final String ERROR_MESSAGE = "Failed to generate graph description file.";
 
   public DotGeneratorException(@NonNull String message, @NonNull Exception e) {
-    super(String.format("%s %s", ERROR_CLASS_MESSAGE, message), e);
+    super(ERROR_MESSAGE, e);
   }
 }
