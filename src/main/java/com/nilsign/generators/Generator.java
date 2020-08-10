@@ -1,13 +1,12 @@
 package com.nilsign.generators;
 
 import com.nilsign.dxd.model.DxdModel;
-import com.nilsign.generators.diagrams.database.dot.DotGeneratorException;
 import com.nilsign.helper.FileHelper;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+
 import java.io.File;
-import java.io.IOException;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Generator {
@@ -28,11 +27,9 @@ public abstract class Generator {
     FileHelper.deleteFileIfExists(filePath);
     try {
       return FileHelper.createFileIfNotExists(filePath);
-    } catch (IOException e) {
-      throw new DotGeneratorException(
-          String.format(
-              "Couldn't store new generation target file '%s'",
-              filePath),
+    } catch (Exception e) {
+      throw new RuntimeException(
+          String.format("Failed to create target file '%s'.", filePath),
           e);
     }
   }

@@ -3,8 +3,8 @@ package com.nilsign.cli;
 import com.nilsign.Dabacog;
 import com.nilsign.dxd.XmlToDxdConverter;
 import com.nilsign.dxd.model.DxdModel;
-import com.nilsign.generators.diagrams.database.GraphvizDotRenderer;
-import com.nilsign.generators.diagrams.database.dot.DotDatabaseDiagramGenerator;
+import com.nilsign.generators.diagrams.dot.renderer.GraphvizDotRenderer;
+import com.nilsign.generators.diagrams.dot.database.DotDatabaseDiagramGenerator;
 import com.nilsign.logging.LogLevel;
 import com.nilsign.logging.Logger;
 import com.nilsign.reader.xml.XmlReader;
@@ -107,18 +107,18 @@ public class RootCommand implements Callable<Integer> {
     Logger.log("/_____/\\__,_/_,___/\\__,_/\\___/\\____/\\__, /");
     Logger.log("                                   /____/");
     Logger.log(String.format("Version %s", Dabacog.DABACOG_VERSION));
-    Logger.log();
+    Logger.log("");
   }
 
   private void readXmlFile()  {
-    Logger.print(String.format("Parsing Dxd file '%s' ... ", source.getPath()));
+    Logger.out(String.format("Parsing Dxd file '%s' ... ", source.getPath()));
     xmlModel = XmlReader.run(source.getPath());
     Logger.log(String.format("[DONE]", source.getPath()));
     Logger.verbose(xmlModel.toString());
   }
 
   private void buildDxdModel() {
-    Logger.print(String.format("Preparing Dxd Model ... "));
+    Logger.out(String.format("Preparing Dxd Model ... "));
     dxdModel = XmlToDxdConverter.run(xmlModel);
     Logger.log(String.format("[DONE]"));
     Logger.verbose(dxdModel.toString());
@@ -132,7 +132,7 @@ public class RootCommand implements Callable<Integer> {
 
   private void generateDotDatabaseDiagram() {
     if (hasDiagramTarget()) {
-      Logger.print(String.format("Generating database diagram description ... "));
+      Logger.out(String.format("Generating database diagram description ... "));
       DotDatabaseDiagramGenerator.run(dxdModel);
       Logger.log(String.format("[DONE]"));
     }
@@ -140,7 +140,7 @@ public class RootCommand implements Callable<Integer> {
 
   private void renderDotDatabaseDiagram() {
     if (hasDiagramTarget()) {
-      Logger.print(String.format("Rendering database diagram ... "));
+      Logger.out(String.format("Rendering database diagram ... "));
       GraphvizDotRenderer.run(dxdModel);
       Logger.log(String.format("[DONE]"));
     }
@@ -154,7 +154,7 @@ public class RootCommand implements Callable<Integer> {
 
   private void generateSql() {
     if (hasSqlTarget()) {
-      Logger.print(String.format("Generating SQL ... "));
+      Logger.out(String.format("Generating SQL ... "));
       Logger.log(String.format("WARNING: Not implemented yet."));
     }
   }
@@ -167,8 +167,8 @@ public class RootCommand implements Callable<Integer> {
 
   private void generateCode() {
     if (hasCodeTarget()) {
-      Logger.print(String.format("Generating code ... "));
-      Logger.print(String.format("WARNING: Not implemented yet."));
+      Logger.out(String.format("Generating code ... "));
+      Logger.out(String.format("WARNING: Not implemented yet."));
      }
   }
 }

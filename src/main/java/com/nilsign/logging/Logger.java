@@ -34,15 +34,9 @@ public final class Logger {
     instance.logLevel = logLevel;
   }
 
-  public static void log() {
-    if (isDefaultLogLevel()) {
-      LOG_STREAM.println();
-    }
-  }
-
   public static void log(@NonNull String text) {
     if (isDefaultLogLevel()) {
-      LOG_STREAM.println(text);;
+      LOG_STREAM.println(text);
     }
   }
 
@@ -62,15 +56,15 @@ public final class Logger {
     logCauses(e.getCause());
   }
 
-  public static void print(@NonNull String text) {
-    if (isDefaultLogLevel()) {
-      LOG_STREAM.print(text);;
-    }
-  }
-
   public static void verbose(@NonNull String text) {
     if (isVerboseLogLevel()) {
       LOG_STREAM.println(text);;
+    }
+  }
+
+  public static void out(@NonNull String text) {
+    if (isDefaultLogLevel()) {
+      LOG_STREAM.print(text);;
     }
   }
 

@@ -1,11 +1,12 @@
-package com.nilsign.generators.diagrams.database.dot;
+package com.nilsign.generators.diagrams.dot.database;
 
 import com.nilsign.dxd.model.DxdModel;
 import com.nilsign.generators.Generator;
+import com.nilsign.generators.diagrams.dot.Dot;
 import lombok.NonNull;
+
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 
 public final class DotDatabaseDiagramGenerator extends Generator {
 
@@ -20,7 +21,11 @@ public final class DotDatabaseDiagramGenerator extends Generator {
   }
 
   public static void run(@NonNull DxdModel model) {
-    DotDatabaseDiagramGenerator.of(model).generate();
+    try {
+      DotDatabaseDiagramGenerator.of(model).generate();
+      } catch (Exception e) {
+        throw new DotDatabaseDiagramGeneratorException(e);
+    }
   }
 
   @Override
@@ -33,7 +38,7 @@ public final class DotDatabaseDiagramGenerator extends Generator {
     return OUTPUT_FILE_NAME;
   }
 
-  public void generate() {
+  private void generate() {
     File outputFile = super.createOutputFile();
     try (FileWriter writer = new FileWriter(outputFile)) {
       writer.write(
@@ -46,9 +51,12 @@ public final class DotDatabaseDiagramGenerator extends Generator {
               .append(addDatabaseEntityRelationEdges())
               .append(Dot.closeGraph())
               .toString());
-    } catch (IOException e) {
-      throw new DotGeneratorException(
-          "An error occurred while writing to the database diagram description file.", e);
+    } catch (Exception e) {
+      throw new RuntimeException(
+          String.format(
+              "Failed to write into target file '%s'.",
+              outputFile),
+          e);
     }
   }
 
