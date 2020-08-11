@@ -219,8 +219,9 @@ public final class DxdModel {
     classes.forEach(aClass
         -> output.append(aClass.toString("\t\t")));
     return output
+        .append("\t\tDxdRelations\n")
         .append(convertRelationsToString(
-            "Relations",
+            "All Relations",
             relations))
         .append(convertRelationsToString(
             "n..n Relations",
@@ -286,9 +287,9 @@ public final class DxdModel {
       @NonNull String name,
       @NonNull List<DxdFieldRelation> relations) {
     StringBuffer output = new StringBuffer()
-        .append(String.format("\t\t%s\n", name));
+        .append(String.format("\t\t\t%s\n", name));
     relations.forEach(relation
-        -> output.append(String.format("\t\t\t%s", relation.toString())));
+        -> output.append(relation.toString("\t\t\t\t")));
     return output.toString();
   }
 }
