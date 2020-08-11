@@ -42,7 +42,9 @@ public final class DxdField {
         .append(String.format("%s%s [%s%s%s]\n",
             indentation,
             DxdField.class.getSimpleName(),
-            String.format("Type: %s", type.getObjectName()),
+            String.format("Type: %s", type.isObject()
+                ? type.getObjectName()
+                : type.getName()),
             String.format(" - Name: %s", name),
             relationType != null
                 ? String.format(" - Relation: %s", relationType)
