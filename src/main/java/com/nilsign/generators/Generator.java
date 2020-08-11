@@ -19,6 +19,9 @@ public abstract class Generator {
 
   public String getOutputFilePath() {
     String filePath = FileHelper.createDirectoriesIfNotExist(getOutputDirectory());
+    if (filePath.startsWith(".\\") || (filePath.startsWith("./"))){
+      filePath = filePath.substring(2);
+    }
     return FileHelper.normalizePath(filePath) + getOutputFileName().trim();
   }
 
