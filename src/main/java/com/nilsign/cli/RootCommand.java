@@ -3,6 +3,7 @@ package com.nilsign.cli;
 import com.nilsign.Dabacog;
 import com.nilsign.dxd.XmlToDxdConverter;
 import com.nilsign.dxd.model.DxdModel;
+import com.nilsign.generators.GeneratedFilePaths;
 import com.nilsign.generators.diagrams.dot.renderer.GraphvizDotRenderer;
 import com.nilsign.generators.diagrams.dot.database.DotDatabaseDiagramGenerator;
 import com.nilsign.logging.LogLevel;
@@ -134,7 +135,7 @@ public final class RootCommand implements Callable<Integer> {
       Logger.out(String.format("Generating database diagram description ... "));
       DotDatabaseDiagramGenerator.run(dxdModel);
       Logger.log(String.format("[DONE]"));
-      Logger.verbose("\tTODO - Print generated file path.\n");
+      Logger.verbose(String.format("\t%s\n", GeneratedFilePaths.getDatabaseDiagramDotFile()));
     }
   }
 
@@ -143,7 +144,7 @@ public final class RootCommand implements Callable<Integer> {
       Logger.out(String.format("Rendering database diagram ... "));
       GraphvizDotRenderer.run(dxdModel);
       Logger.log(String.format("[DONE]"));
-      Logger.verbose("\tTODO - Print generated file path.\n");
+      Logger.verbose(String.format("\t%s\n", GeneratedFilePaths.getDatabaseDiagramFile()));
     }
   }
 

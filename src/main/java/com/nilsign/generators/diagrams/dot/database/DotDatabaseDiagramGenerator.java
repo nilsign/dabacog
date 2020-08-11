@@ -1,6 +1,7 @@
 package com.nilsign.generators.diagrams.dot.database;
 
 import com.nilsign.dxd.model.DxdModel;
+import com.nilsign.generators.GeneratedFilePaths;
 import com.nilsign.generators.Generator;
 import com.nilsign.generators.diagrams.dot.Dot;
 import lombok.NonNull;
@@ -57,6 +58,7 @@ public final class DotDatabaseDiagramGenerator extends Generator {
               outputFile),
           e);
     }
+    GeneratedFilePaths.setDatabaseDiagramDotFile(outputFile.getAbsolutePath());
   }
 
   private String addDatabaseEntityNodes() {

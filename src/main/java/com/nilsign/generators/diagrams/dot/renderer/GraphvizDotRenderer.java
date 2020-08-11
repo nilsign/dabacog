@@ -1,6 +1,7 @@
 package com.nilsign.generators.diagrams.dot.renderer;
 
 import com.nilsign.dxd.model.DxdModel;
+import com.nilsign.generators.GeneratedFilePaths;
 import com.nilsign.generators.Generator;
 import com.nilsign.generators.diagrams.dot.database.DotDatabaseDiagramGenerator;
 import com.nilsign.helper.FileHelper;
@@ -47,6 +48,7 @@ public final class GraphvizDotRenderer extends Generator {
           String.format("Failed to render into target file '%s'.", outputFile),
           e);
     }
+    GeneratedFilePaths.setDatabaseDiagramFile(outputFile.getAbsolutePath());
   }
 
   @Override
