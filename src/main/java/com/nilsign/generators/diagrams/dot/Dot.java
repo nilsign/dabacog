@@ -1,4 +1,4 @@
-package com.nilsign.generators.diagrams.database.dot;
+package com.nilsign.generators.diagrams.dot;
 
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.nilsign.generators.diagrams.database.dot;
+package com.nilsign.generators.diagrams.dot.database;
 
 import com.nilsign.dxd.model.DxdClass;
 import com.nilsign.dxd.model.DxdField;
@@ -6,6 +6,7 @@ import com.nilsign.dxd.model.DxdFieldRelation;
 import com.nilsign.dxd.model.DxdFieldType;
 import com.nilsign.dxd.model.DxdModel;
 import com.nilsign.generators.database.SqlSchemaGenerator;
+import com.nilsign.generators.diagrams.dot.Dot;
 import com.nilsign.misc.Pair;
 import lombok.AccessLevel;
 import lombok.NonNull;

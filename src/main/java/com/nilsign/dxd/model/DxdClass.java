@@ -18,7 +18,7 @@ public final class DxdClass {
     StringBuffer output = new StringBuffer()
         .append(String.format("%s%s [%s: %s]\n",
             indentation,
-            XmlClass.class.getSimpleName(),
+            DxdClass.class.getSimpleName(),
             "Name",
             name));
     fields.forEach(field

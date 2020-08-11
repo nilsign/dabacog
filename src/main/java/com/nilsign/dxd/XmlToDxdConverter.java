@@ -7,6 +7,7 @@ import com.nilsign.dxd.model.DxdField;
 import com.nilsign.dxd.model.DxdFieldRelationType;
 import com.nilsign.dxd.model.DxdFieldType;
 import com.nilsign.dxd.model.DxdModel;
+import com.nilsign.misc.Wrapper;
 import com.nilsign.reader.xml.model.XmlModel;
 import com.nilsign.reader.xml.model.config.XmlDiagramsConfig;
 import com.nilsign.reader.xml.model.entities.XmlField;
@@ -20,49 +21,77 @@ import java.util.List;
 public final class XmlToDxdConverter {
 
   public static DxdModel run(@NonNull XmlModel xmlModel) {
-    return DxdModel.of(
-        xmlModel.getName(),
-        buildDxdConfig(xmlModel),
-        buildDxdClasses(xmlModel));
+    try {
+      return DxdModel.of(
+          xmlModel.getName(),
+          buildDxdConfig(xmlModel),
+          buildDxdClasses(xmlModel));
+      } catch (Exception e) {
+      throw new DxdModelException(e);
+    }
   }
 
   private static DxdConfig buildDxdConfig(@NonNull XmlModel xmlModel) {
-    XmlDiagramsConfig diagramsConfig = xmlModel.getConfig().getDiagramsConfig();
-    DxdConfig dxdConfig = new DxdConfig();
-    if (diagramsConfig.getDiagramDatabaseOutputPath() != null) {
-      dxdConfig.setDiagramDatabaseOutputPath(diagramsConfig.getDiagramDatabaseOutputPath());
+    try {
+      XmlDiagramsConfig diagramsConfig = xmlModel.getConfig().getDiagramsConfig();
+      DxdConfig dxdConfig = new DxdConfig();
+      if (diagramsConfig.getDiagramDatabaseOutputPath() != null) {
+        dxdConfig.setDiagramDatabaseOutputPath(diagramsConfig.getDiagramDatabaseOutputPath());
+      }
+      if (diagramsConfig.getDiagramDatabaseTitle() != null) {
+        dxdConfig.setDiagramDatabaseTitle(diagramsConfig.getDiagramDatabaseTitle());
+      }
+      dxdConfig.setDiagramDatabasePrimaryKeyFieldPorts(
+          diagramsConfig.isDiagramDatabasePrimaryKeyFieldPorts());
+      dxdConfig.setDiagramDatabaseForeignKeyFieldPorts(
+          diagramsConfig.isDiagramDatabaseForeignKeyFieldPorts());
+      return dxdConfig;
+    } catch (Exception e) {
+      throw new RuntimeException(
+          "Xml <config> <diagramsConfig ... </config> to Dxd config model conversion failed.",
+          e);
     }
-    if (diagramsConfig.getDiagramDatabaseTitle() != null) {
-      dxdConfig.setDiagramDatabaseTitle(diagramsConfig.getDiagramDatabaseTitle());
-    }
-    dxdConfig.setDiagramDatabasePrimaryKeyFieldPorts(
-        diagramsConfig.isDiagramDatabasePrimaryKeyFieldPorts());
-    dxdConfig.setDiagramDatabaseForeignKeyFieldPorts(
-        diagramsConfig.isDiagramDatabaseForeignKeyFieldPorts());
-    return dxdConfig;
   }
 
   private static List<DxdClass> buildDxdClasses(@NonNull XmlModel xmlModel) {
-    List<DxdClass> dxdClasses = new ArrayList<>();
-    xmlModel.getEntities().getClasses().forEach(aClass -> {
-      List<DxdField> dxdFields = new ArrayList<>();
-      aClass.getFields().forEach(field -> dxdFields.add(buildDxdField(field)));
-      dxdClasses.add(DxdClass.of(aClass.getName(), ImmutableList.copyOf(dxdFields)));
-    });
-    return dxdClasses;
+    final Wrapper<String> className = Wrapper.of();
+    try {
+      List<DxdClass> dxdClasses = new ArrayList<>();
+      xmlModel.getEntities().getClasses().forEach(aClass -> {
+        className.set(aClass.getName());
+        List<DxdField> dxdFields = new ArrayList<>();
+        aClass.getFields().forEach(field -> dxdFields.add(buildDxdField(field)));
+        dxdClasses.add(DxdClass.of(aClass.getName(), ImmutableList.copyOf(dxdFields)));
+      });
+      return dxdClasses;
+    } catch (Exception e) {
+      throw new RuntimeException(
+          String.format(
+              "Xml <class name=\"%s\"> ... </class> to Dxd class model conversion failed.",
+              className.get()),
+          e);
+    }
   }
 
   private static DxdField buildDxdField(@NonNull XmlField field) {
-    return DxdField.of(
-        DxdFieldType.of(field.getType()),
-        DxdFieldType.of(field.getType()).isObject()
-            ? DxdFieldType.of(field.getType()).getObjectName()
-            : field.getName(),
-        DxdFieldRelationType.of(field.getRelation()),
-        field.isIndexed(),
-        field.isUnique(),
-        field.isNullable(),
-        field.isFts(),
-        field.getDefaultValue());
+    try {
+      return DxdField.of(
+          DxdFieldType.of(field.getType()),
+          DxdFieldType.of(field.getType()).isObject()
+              ? DxdFieldType.of(field.getType()).getObjectName()
+              : field.getName(),
+          DxdFieldRelationType.of(field.getRelation()),
+          field.isIndexed(),
+          field.isUnique(),
+          field.isNullable(),
+          field.isFts(),
+          field.getDefaultValue());
+    } catch (Exception e) {
+      throw new RuntimeException(
+          String.format(
+              "Xml <field name=\"%s\"> ... </field> to Dxd field model conversion failed.",
+              field.getName()),
+          e);
+      }
   }
 }

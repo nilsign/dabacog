@@ -15,11 +15,9 @@ public final class DxdModel {
   @NonNull
   private final String name;
 
-  // Config
   @NonNull
   private final DxdConfig config;
 
-  // Classes
   @NonNull
   private final ImmutableList<DxdClass> classes;
 
@@ -66,7 +64,7 @@ public final class DxdModel {
   @NonNull
   private ImmutableList<DxdFieldRelation> oneToOneRelations;
 
-  // Distinct relation
+  // Distinct relations
   @NonNull
   private ImmutableList<DxdFieldRelation> distinctRelations;
 
@@ -82,7 +80,7 @@ public final class DxdModel {
   @NonNull
   private ImmutableList<DxdFieldRelation> distinctOneToOneRelations;
 
-  // Distinct bi-directional relation mappings
+  // Distinct bi-directional relations
   @NonNull
   private ImmutableList<DxdFieldRelation> distinctBiDirectionalRelations;
 
@@ -98,7 +96,7 @@ public final class DxdModel {
   @NonNull
   private ImmutableList<DxdFieldRelation> distinctBiDirectionalOneToOneRelations;
 
-  // Distinct on-directional relation mappings
+  // Distinct on-directional relation
   @NonNull
   private ImmutableList<DxdFieldRelation> oneDirectionalRelations;
 
@@ -115,56 +113,101 @@ public final class DxdModel {
   private ImmutableList<DxdFieldRelation> oneDirectionalOneToOneRelations;
 
   private void prepare() {
-    classNameToClassMap
-        = DxdModelFactory.createClassNameToClassMap(classes);
-    fieldToClassMap
-        = DxdModelFactory.createFieldToClassMap(classes);
-    classToFieldsMap
-        = DxdModelFactory.createClassToFieldsMap(classes);
-    classNameToFieldsMap
-        = DxdModelFactory.createClassNameToFieldsMap(classes);
-    fieldNameToFieldMap
-        = DxdModelFactory.createFieldNameToFieldMap(classes);
-    relations
-        = DxdModelFactory.createRelations(classes);
-    manyToManyRelations
-        = DxdModelFactory.createManyToManyRelations(relations);
-    manyToOneRelations
-        = DxdModelFactory.createManyToOneRelations(relations);
-    oneToManyRelations
-        = DxdModelFactory.createOneToManyRelations(relations);
-    oneToOneRelations
-        = DxdModelFactory.createOneToOneRelations(relations);
-    distinctRelations
-        = DxdModelFactory.createDistinctRelations(relations);
-    distinctManyToManyRelations
-        = DxdModelFactory.createDistinctManyToManyRelations(relations);
-    distinctManyToOneRelations
-        = DxdModelFactory.createDistinctManyToOneRelations(relations);
-    distinctOneToManyRelations
-        = DxdModelFactory.createDistinctOneToManyRelations(relations);
-    distinctOneToOneRelations
-        = DxdModelFactory.createDistinctOneToOneRelations(relations);
-    distinctBiDirectionalRelations
-        = DxdModelFactory.createDistinctBiDirectionalRelations(relations);
-    distinctBiDirectionalManyToManyRelations
-        = DxdModelFactory.createDistinctBiDirectionalManyToManyRelations(relations);
-    distinctBiDirectionalManyToOneRelations
-        = DxdModelFactory.createDistinctBiDirectionalManyToOneRelations(relations);
-    distinctBiDirectionalOneToManyRelations
-        = DxdModelFactory.createDistinctBiDirectionalOneToManyRelations(relations);
-    distinctBiDirectionalOneToOneRelations
-        = DxdModelFactory.createDistinctBiDirectionalOneToOneRelations(relations);
-    oneDirectionalRelations
-        = DxdModelFactory.createOneDirectionalRelations(relations);
-    oneDirectionalManyToManyRelations
-        = DxdModelFactory.createOneDirectionalManyToManyRelations(relations);
-    oneDirectionalManyToOneRelations
-        = DxdModelFactory.createOneDirectionalManyToOneRelations(relations);
-    oneDirectionalOneToManyRelations
-        = DxdModelFactory.createOneDirectionalOneToManyRelations(relations);
-    oneDirectionalOneToOneRelations
-        = DxdModelFactory.createOneDirectionalOneToOneRelations(relations);
+    createCommonMappings();
+    createRelations();
+    createDistinctRelations();
+    createDistinctBiDirectionalRelations();
+    createOneDirectionalRelations();
+  }
+
+  private void createCommonMappings() {
+    try {
+      classNameToClassMap
+          = DxdModelFactory.createClassNameToClassMap(classes);
+      fieldToClassMap
+          = DxdModelFactory.createFieldToClassMap(classes);
+      classToFieldsMap
+          = DxdModelFactory.createClassToFieldsMap(classes);
+      classNameToFieldsMap
+          = DxdModelFactory.createClassNameToFieldsMap(classes);
+      fieldNameToFieldMap
+          = DxdModelFactory.createFieldNameToFieldMap(classes);
+    } catch (Exception e) {
+      throw new RuntimeException(
+          "Failed to build common mappings from the Dxd classes.", e);
+    }
+  }
+
+  private void createRelations() {
+    try {
+      relations
+          = DxdModelFactory.createRelations(classes);
+      manyToManyRelations
+          = DxdModelFactory.createManyToManyRelations(relations);
+      manyToOneRelations
+          = DxdModelFactory.createManyToOneRelations(relations);
+      oneToManyRelations
+          = DxdModelFactory.createOneToManyRelations(relations);
+      oneToOneRelations
+          = DxdModelFactory.createOneToOneRelations(relations);
+    } catch (Exception e) {
+      throw new RuntimeException(
+          "Failed to extract the Dxd relations out of the Dxd classes.", e);
+    }
+  }
+
+  private void createDistinctRelations() {
+    try {
+      distinctRelations
+          = DxdModelFactory.createDistinctRelations(relations);
+      distinctManyToManyRelations
+          = DxdModelFactory.createDistinctManyToManyRelations(relations);
+      distinctManyToOneRelations
+          = DxdModelFactory.createDistinctManyToOneRelations(relations);
+      distinctOneToManyRelations
+          = DxdModelFactory.createDistinctOneToManyRelations(relations);
+      distinctOneToOneRelations
+          = DxdModelFactory.createDistinctOneToOneRelations(relations);
+    } catch (Exception e) {
+      throw new RuntimeException(
+          "Failed to extract distinct Dxd relations.", e);
+    }
+  }
+
+  private void createDistinctBiDirectionalRelations() {
+    try {
+      distinctBiDirectionalRelations
+          = DxdModelFactory.createDistinctBiDirectionalRelations(relations);
+      distinctBiDirectionalManyToManyRelations
+          = DxdModelFactory.createDistinctBiDirectionalManyToManyRelations(relations);
+      distinctBiDirectionalManyToOneRelations
+          = DxdModelFactory.createDistinctBiDirectionalManyToOneRelations(relations);
+      distinctBiDirectionalOneToManyRelations
+          = DxdModelFactory.createDistinctBiDirectionalOneToManyRelations(relations);
+      distinctBiDirectionalOneToOneRelations
+          = DxdModelFactory.createDistinctBiDirectionalOneToOneRelations(relations);
+    } catch (Exception e) {
+      throw new RuntimeException(
+          "Failed to extract distinct bi-directional Dxd relations", e);
+    }
+  }
+
+  private void createOneDirectionalRelations() {
+    try {
+      oneDirectionalRelations
+          = DxdModelFactory.createOneDirectionalRelations(relations);
+      oneDirectionalManyToManyRelations
+          = DxdModelFactory.createOneDirectionalManyToManyRelations(relations);
+      oneDirectionalManyToOneRelations
+          = DxdModelFactory.createOneDirectionalManyToOneRelations(relations);
+      oneDirectionalOneToManyRelations
+          = DxdModelFactory.createOneDirectionalOneToManyRelations(relations);
+      oneDirectionalOneToOneRelations
+          = DxdModelFactory.createOneDirectionalOneToOneRelations(relations);
+    } catch (Exception e) {
+      throw new RuntimeException(
+          "Failed to extract one-directional Dxd relations.", e);
+    }
   }
 
   @Override
@@ -175,8 +218,9 @@ public final class DxdModel {
     classes.forEach(aClass
         -> output.append(aClass.toString("\t\t")));
     return output
+        .append("\t\tDxdRelations\n")
         .append(convertRelationsToString(
-            "Relations",
+            "All Relations",
             relations))
         .append(convertRelationsToString(
             "n..n Relations",
@@ -242,9 +286,9 @@ public final class DxdModel {
       @NonNull String name,
       @NonNull List<DxdFieldRelation> relations) {
     StringBuffer output = new StringBuffer()
-        .append(String.format("\t\t%s\n", name));
+        .append(String.format("\t\t\t%s\n", name));
     relations.forEach(relation
-        -> output.append(String.format("\t\t\t%s", relation.toString())));
+        -> output.append(relation.toString("\t\t\t\t")));
     return output.toString();
   }
 }

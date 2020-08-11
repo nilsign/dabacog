@@ -14,13 +14,13 @@ public final class XmlReader {
   @NonNull
   private final String dxdFilePath;
 
-  public static XmlModel run(@NonNull String dxdFilePath) throws XmlReaderException {
-    Serializer serializer = new Persister();
-    File source = new File(dxdFilePath);
+  public static XmlModel run(@NonNull String dxdFilePath) {
     try {
+      Serializer serializer = new Persister();
+      File source = new File(dxdFilePath);
       return serializer.read(XmlModel.class, source);
-    } catch(Exception e) {
-      throw new XmlReaderException(e.getMessage(), e);
+    } catch (Exception e) {
+      throw new XmlReaderException(e);
     }
   }
 }
