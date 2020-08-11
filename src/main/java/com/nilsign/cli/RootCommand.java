@@ -134,6 +134,7 @@ public final class RootCommand implements Callable<Integer> {
       Logger.out(String.format("Generating database diagram description ... "));
       DotDatabaseDiagramGenerator.run(dxdModel);
       Logger.log(String.format("[DONE]"));
+      Logger.verbose("\tTODO - Print generated file path.\n");
     }
   }
 
@@ -142,6 +143,7 @@ public final class RootCommand implements Callable<Integer> {
       Logger.out(String.format("Rendering database diagram ... "));
       GraphvizDotRenderer.run(dxdModel);
       Logger.log(String.format("[DONE]"));
+      Logger.verbose("\tTODO - Print generated file path.\n");
     }
   }
 
@@ -154,7 +156,9 @@ public final class RootCommand implements Callable<Integer> {
   private void generateSql() {
     if (hasSqlTarget()) {
       Logger.out(String.format("Generating SQL ... "));
-      Logger.log(String.format("WARNING: Not implemented yet."));
+      Logger.log(String.format("[FAILED]"));
+      Logger.verbose(String.format("\tWARNING: Not implemented yet."));
+      Logger.verbose("\tTODO - Print generated file paths.\n");
     }
   }
 
@@ -167,7 +171,9 @@ public final class RootCommand implements Callable<Integer> {
   private void generateCode() {
     if (hasCodeTarget()) {
       Logger.out(String.format("Generating code ... "));
-      Logger.out(String.format("WARNING: Not implemented yet."));
+      Logger.log(String.format("[FAILED]"));
+      Logger.verbose(String.format("\tWARNING: Not implemented yet."));
+      Logger.verbose("\tTODO - Print generated file paths.\n");
      }
   }
 }
