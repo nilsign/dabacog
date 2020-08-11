@@ -18,7 +18,7 @@ public final class Dabacog {
     Logger.init();
     try {
       CLI.parseArgs(arguments);
-    } catch(Exception e) {
+    } catch (Exception e) {
       Logger.error("Dabacog CLI parsing failed. " + e.getMessage() + ".");
       Logger.log("Example: dabacog --source ./app.dxd -target sql code --verbose-logging");
       Logger.log("Try 'dabacog --help' for more information.");

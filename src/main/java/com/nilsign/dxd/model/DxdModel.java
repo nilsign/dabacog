@@ -171,7 +171,7 @@ public final class DxdModel {
           = DxdModelFactory.createDistinctOneToOneRelations(relations);
     } catch (Exception e) {
       throw new RuntimeException(
-          "Failed to extract the distinct Dxd relations.", e);
+          "Failed to extract distinct Dxd relations.", e);
     }
   }
 

@@ -19,7 +19,7 @@ public final class XmlReader {
     Serializer serializer = new Persister();
     File source = new File(dxdFilePath);
     try {
-       return serializer.read(XmlModel.class, source);
+      return serializer.read(XmlModel.class, source);
     } catch (Exception e) {
       throw new XmlReaderException(e);
     }

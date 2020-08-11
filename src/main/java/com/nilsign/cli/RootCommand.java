@@ -12,7 +12,6 @@ import com.nilsign.reader.xml.model.XmlModel;
 import lombok.NonNull;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-
 import java.io.File;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -23,7 +22,7 @@ import java.util.concurrent.Callable;
     name="dabacog",
     mixinStandardHelpOptions = true,
     version = Dabacog.DABACOG_VERSION)
-public class RootCommand implements Callable<Integer> {
+public final class RootCommand implements Callable<Integer> {
 
   private static final String TARGET_VALUE_DIAGRAM_SHORT = "d";
   private static final String TARGET_VALUE_DIAGRAM = "diagram";

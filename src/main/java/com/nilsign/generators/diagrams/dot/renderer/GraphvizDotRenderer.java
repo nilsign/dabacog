@@ -25,7 +25,7 @@ public final class GraphvizDotRenderer extends Generator {
   public static void run(@NonNull DxdModel dxdModel) {
     try {
       GraphvizDotRenderer.of(dxdModel).render();
-    } catch(Exception e) {
+    } catch (Exception e) {
       throw new GraphvizDotRendererException(e);
     }
   }

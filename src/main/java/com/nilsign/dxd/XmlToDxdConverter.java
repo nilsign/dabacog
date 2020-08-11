@@ -26,7 +26,7 @@ public final class XmlToDxdConverter {
           xmlModel.getName(),
           buildDxdConfig(xmlModel),
           buildDxdClasses(xmlModel));
-      } catch(Exception e) {
+      } catch (Exception e) {
       throw new DxdModelException(e);
     }
   }
@@ -46,9 +46,9 @@ public final class XmlToDxdConverter {
       dxdConfig.setDiagramDatabaseForeignKeyFieldPorts(
           diagramsConfig.isDiagramDatabaseForeignKeyFieldPorts());
       return dxdConfig;
-    } catch(Exception e) {
+    } catch (Exception e) {
       throw new RuntimeException(
-          "Xml <config> <diagramsConfig ... </config> to DxD config model conversion failed.",
+          "Xml <config> <diagramsConfig ... </config> to Dxd config model conversion failed.",
           e);
     }
   }
@@ -64,10 +64,10 @@ public final class XmlToDxdConverter {
         dxdClasses.add(DxdClass.of(aClass.getName(), ImmutableList.copyOf(dxdFields)));
       });
       return dxdClasses;
-    } catch(Exception e) {
+    } catch (Exception e) {
       throw new RuntimeException(
           String.format(
-              "Xml <class name=\"%s\"> ... </class> to DxD class model conversion failed.",
+              "Xml <class name=\"%s\"> ... </class> to Dxd class model conversion failed.",
               className.get()),
           e);
     }
@@ -89,7 +89,7 @@ public final class XmlToDxdConverter {
     } catch (Exception e) {
       throw new RuntimeException(
           String.format(
-              "Xml <field name=\"%s\"> ... </field> to DxD field model conversion failed.",
+              "Xml <field name=\"%s\"> ... </field> to Dxd field model conversion failed.",
               field.getName()),
           e);
       }

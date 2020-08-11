@@ -4,7 +4,6 @@ import com.nilsign.dxd.model.DxdModel;
 import com.nilsign.generators.Generator;
 import com.nilsign.generators.diagrams.dot.Dot;
 import lombok.NonNull;
-
 import java.io.File;
 import java.io.FileWriter;
 
