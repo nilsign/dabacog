@@ -76,11 +76,11 @@ public final class RootCommand implements Callable<Integer> {
   public Integer call() {
     updateLoggerConfiguration();
     printDabacogVersionInfo();
-    if (Dabacog.CLI.isUsageHelpRequested()) {
-      Dabacog.CLI.usage(Logger.LOG_STREAM);
+    if (Cli.isHelpRequested()) {
+      Cli.showHelp();
       return 0;
     }
-    if (Dabacog.CLI.isVersionHelpRequested()) {
+    if (Cli.isVersionRequested()) {
       return 0;
     }
     readXmlFile();
