@@ -1,43 +1,49 @@
 package com.nilsign.dxd.model;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public final class DxdConfig {
 
-  private static final String DEFAULT_OUTPUT_PATH = "./generated";
+  public static final String DEFAULT_DATABASE_DIAGRAM_OUTPUT_PATH = "./generated";
+  public static final String DEFAULT_DATABASE_DIAGRAM_TITLE = "Dabacog - Database Scheme Diagram";
+  public static final boolean DEFAULT_DATABASE_DIAGRAM_PRIMARY_KEY_FIELD_PORTS = false;
+  public static final boolean DEFAULT_DATABASE_DIAGRAM_FOREIGN_KEY_FIELD_PORTS = true;
+
+  public static final String DEFAULT_SQL_OUTPUT_PATH = "./generated";
+  public static final boolean DEFAULT_SQL_GLOBAL_SEQUENCE = true;
+  public static final boolean DEFAULT_SQL_DUMP_DATABASE = false;
 
   // Diagram
   @NonNull
-  private String diagramDatabaseOutputPath = DEFAULT_OUTPUT_PATH;
+  private String diagramDatabaseOutputPath;
 
   @NonNull
-  private String diagramDatabaseTitle = "Dabacog - Database Scheme Diagram";
+  private String diagramDatabaseTitle;
 
   @NonNull
-  private boolean diagramDatabasePrimaryKeyFieldPorts = false;
+  private boolean diagramDatabasePrimaryKeyFieldPorts;
 
   @NonNull
-  private boolean diagramDatabaseForeignKeyFieldPorts = true;
+  private boolean diagramDatabaseForeignKeyFieldPorts;
 
   // SQL
   @NonNull
-  private String sqlOutputPath = DEFAULT_OUTPUT_PATH;
+  private String sqlOutputPath;
 
   @NonNull
-  private boolean sqlGlobalSequence = true;
+  private boolean sqlGlobalSequence;
 
   @NonNull
-  private boolean sqlDeleteExistingSqlScripts = false;
+  private boolean sqlDeleteExistingSqlScripts;
 
   public String toString(@NonNull String indentation) {
     return new StringBuffer()
         .append(String.format("%s%s\n", indentation, DxdConfig.class.getSimpleName()))
-        .append(String.format("%s\t%s: %s\n",
-            indentation,
-            "DefaultOutputPath",
-            DEFAULT_OUTPUT_PATH))
         .append(String.format("%s\t%s: %s\n",
             indentation,
             "DiagramDatabaseOutputPath",

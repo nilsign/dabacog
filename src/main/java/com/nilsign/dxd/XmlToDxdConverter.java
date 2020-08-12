@@ -44,12 +44,8 @@ public final class XmlToDxdConverter {
       @NonNull DxdConfig dxdConfig) {
     try {
       XmlDiagramsConfig diagramsConfig = xmlModel.getConfig().getDiagramsConfig();
-      if (diagramsConfig.getDiagramDatabaseOutputPath() != null) {
-        dxdConfig.setDiagramDatabaseOutputPath(diagramsConfig.getDiagramDatabaseOutputPath());
-      }
-      if (diagramsConfig.getDiagramDatabaseTitle() != null) {
-        dxdConfig.setDiagramDatabaseTitle(diagramsConfig.getDiagramDatabaseTitle());
-      }
+      dxdConfig.setDiagramDatabaseOutputPath(diagramsConfig.getDiagramDatabaseOutputPath());
+      dxdConfig.setDiagramDatabaseTitle(diagramsConfig.getDiagramDatabaseTitle());
       dxdConfig.setDiagramDatabasePrimaryKeyFieldPorts(
           diagramsConfig.isDiagramDatabasePrimaryKeyFieldPorts());
       dxdConfig.setDiagramDatabaseForeignKeyFieldPorts(
@@ -66,9 +62,7 @@ public final class XmlToDxdConverter {
       @NonNull DxdConfig dxdConfig) {
     try {
       XmlSqlConfig sqlConfig = xmlModel.getConfig().getSqlConfig();
-      if (sqlConfig.getSqlOutputPath() != null) {
-        dxdConfig.setDiagramDatabaseOutputPath(sqlConfig.getSqlOutputPath());
-      }
+      dxdConfig.setDiagramDatabaseOutputPath(sqlConfig.getSqlOutputPath());
       dxdConfig.setSqlGlobalSequence(sqlConfig.isSqlGlobalSequence());
       dxdConfig.setSqlDeleteExistingSqlScripts(sqlConfig.isSqlDumpDatabase());
     } catch (Exception e) {

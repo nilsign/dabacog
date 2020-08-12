@@ -1,5 +1,6 @@
 package com.nilsign.reader.xml.model.config;
 
+import com.nilsign.dxd.model.DxdConfig;
 import lombok.Data;
 import lombok.NonNull;
 import org.simpleframework.xml.Attribute;
@@ -10,13 +11,13 @@ import org.simpleframework.xml.Element;
 public class XmlSqlConfig {
 
   @Attribute(required = false)
-  private String sqlOutputPath;
+  private String sqlOutputPath = DxdConfig.DEFAULT_SQL_OUTPUT_PATH;
 
   @Attribute(required = false)
-  private boolean sqlGlobalSequence;
+  private boolean sqlGlobalSequence = DxdConfig.DEFAULT_SQL_GLOBAL_SEQUENCE;
 
   @Attribute(required = false)
-  private boolean sqlDumpDatabase;
+  private boolean sqlDumpDatabase = DxdConfig.DEFAULT_SQL_DUMP_DATABASE;
 
   public String toString(@NonNull String indentation) {
     return new StringBuffer()
