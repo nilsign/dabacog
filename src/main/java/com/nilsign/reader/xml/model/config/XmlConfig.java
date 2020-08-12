@@ -11,6 +11,9 @@ public final class XmlConfig {
   @Element(required = false)
   private XmlDiagramsConfig diagramsConfig;
 
+  @Element(required = false)
+  private XmlSqlConfig sqlConfig;
+
   public String toString(@NonNull String indentation) {
       return new StringBuffer()
           .append(String.format("%s%s\n", indentation, XmlConfig.class.getSimpleName()))
