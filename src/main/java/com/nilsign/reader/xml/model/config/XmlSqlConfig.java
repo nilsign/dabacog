@@ -1,6 +1,5 @@
 package com.nilsign.reader.xml.model.config;
 
-
 import lombok.Data;
 import lombok.NonNull;
 import org.simpleframework.xml.Attribute;

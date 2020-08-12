@@ -15,7 +15,6 @@ import com.nilsign.reader.xml.model.entities.XmlField;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 
