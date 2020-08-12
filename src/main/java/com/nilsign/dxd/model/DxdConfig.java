@@ -21,6 +21,16 @@ public final class DxdConfig {
   @NonNull
   private boolean diagramDatabaseForeignKeyFieldPorts = true;
 
+  // SQL
+  @NonNull
+  private String sqlOutputPath = DEFAULT_OUTPUT_PATH;
+
+  @NonNull
+  private boolean sqlGlobalSequence = true;
+
+  @NonNull
+  private boolean sqlDeleteExistingSqlScripts = false;
+
   public String toString(@NonNull String indentation) {
     return new StringBuffer()
         .append(String.format("%s%s\n", indentation, DxdConfig.class.getSimpleName()))
@@ -44,6 +54,18 @@ public final class DxdConfig {
             indentation,
             "DiagramDatabaseForeignKeyFieldPorts",
             diagramDatabaseForeignKeyFieldPorts))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "SqlOutputPath",
+            sqlOutputPath))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "SqlGlobalSequence",
+            sqlGlobalSequence))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "SqlDeleteExistingSqlScripts",
+            sqlDeleteExistingSqlScripts))
         .toString();
   }
 

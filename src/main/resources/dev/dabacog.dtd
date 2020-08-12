@@ -13,9 +13,8 @@
     <!ELEMENT sqlConfig (#PCDATA)>
     <!ATTLIST sqlConfig
         sqlOutputPath CDATA #REQUIRED
-        globalSequence CDATA #REQUIRED
-        flywayFileName CDATA #REQUIRED
-        deleteExistingSqlScripts CDATA #REQUIRED>
+        sqlGlobalSequence CDATA #REQUIRED
+        sqlDumpDatabase CDATA #REQUIRED>
     <!ELEMENT entities (class)*>
     <!ELEMENT class (field)*>
     <!ATTLIST class

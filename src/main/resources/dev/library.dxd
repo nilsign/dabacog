@@ -11,9 +11,8 @@
         diagramDatabaseForeignKeyFieldPorts="true"/>
     <sqlConfig
         sqlOutputPath="./generated"
-        globalSequence="true"
-        flywayFileName="true"
-        deleteExistingSqlScripts="true"/>
+        sqlGlobalSequence="true"
+        sqlDumpDatabase="true"/>
   </config>
 
   <entities>

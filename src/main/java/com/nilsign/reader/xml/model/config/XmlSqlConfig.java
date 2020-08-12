@@ -2,6 +2,7 @@ package com.nilsign.reader.xml.model.config;
 
 
 import lombok.Data;
+import lombok.NonNull;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 
@@ -13,11 +14,31 @@ public class XmlSqlConfig {
   private String sqlOutputPath;
 
   @Attribute(required = false)
-  private boolean globalSequence;
+  private boolean sqlGlobalSequence;
 
   @Attribute(required = false)
-  private boolean flywayFileName;
+  private boolean sqlDumpDatabase;
 
-  @Attribute(required = false)
-  private boolean deleteExistingSqlScripts;
+  public String toString(@NonNull String indentation) {
+    return new StringBuffer()
+        .append(String.format("%s%s\n", indentation, XmlSqlConfig.class.getSimpleName()))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "SqlOutputPath",
+            sqlOutputPath))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "SqlGlobalSequence",
+            sqlGlobalSequence))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "SqlDumpDatabase",
+            sqlDumpDatabase))
+        .toString();
+  }
+
+  @Override
+  public String toString() {
+    return toString("");
+  }
 }
