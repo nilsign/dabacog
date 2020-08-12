@@ -10,6 +10,7 @@ import com.nilsign.dxd.model.DxdModel;
 import com.nilsign.misc.Wrapper;
 import com.nilsign.reader.xml.model.XmlModel;
 import com.nilsign.reader.xml.model.config.XmlDiagramsConfig;
+import com.nilsign.reader.xml.model.config.XmlSqlConfig;
 import com.nilsign.reader.xml.model.entities.XmlField;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -32,9 +33,17 @@ public final class XmlToDxdConverter {
   }
 
   private static DxdConfig buildDxdConfig(@NonNull XmlModel xmlModel) {
+    DxdConfig dxdConfig = new DxdConfig();
+    buildDxdDiagramsConfig(xmlModel, dxdConfig);
+    buildDxdSqlConfig(xmlModel, dxdConfig);
+    return dxdConfig;
+  }
+
+  private static void buildDxdDiagramsConfig(
+      @NonNull XmlModel xmlModel,
+      @NonNull DxdConfig dxdConfig) {
     try {
       XmlDiagramsConfig diagramsConfig = xmlModel.getConfig().getDiagramsConfig();
-      DxdConfig dxdConfig = new DxdConfig();
       if (diagramsConfig.getDiagramDatabaseOutputPath() != null) {
         dxdConfig.setDiagramDatabaseOutputPath(diagramsConfig.getDiagramDatabaseOutputPath());
       }
@@ -45,10 +54,26 @@ public final class XmlToDxdConverter {
           diagramsConfig.isDiagramDatabasePrimaryKeyFieldPorts());
       dxdConfig.setDiagramDatabaseForeignKeyFieldPorts(
           diagramsConfig.isDiagramDatabaseForeignKeyFieldPorts());
-      return dxdConfig;
     } catch (Exception e) {
       throw new RuntimeException(
           "Xml <config> <diagramsConfig ... </config> to Dxd config model conversion failed.",
+          e);
+    }
+  }
+
+  private static void buildDxdSqlConfig(
+      @NonNull XmlModel xmlModel,
+      @NonNull DxdConfig dxdConfig) {
+    try {
+      XmlSqlConfig sqlConfig = xmlModel.getConfig().getSqlConfig();
+      if (sqlConfig.getSqlOutputPath() != null) {
+        dxdConfig.setDiagramDatabaseOutputPath(sqlConfig.getSqlOutputPath());
+      }
+      dxdConfig.setSqlGlobalSequence(sqlConfig.isSqlGlobalSequence());
+      dxdConfig.setSqlDeleteExistingSqlScripts(sqlConfig.isSqlDumpDatabase());
+    } catch (Exception e) {
+      throw new RuntimeException(
+          "Xml <config> <sqlConfig ... </config> to Dxd config model conversion failed.",
           e);
     }
   }

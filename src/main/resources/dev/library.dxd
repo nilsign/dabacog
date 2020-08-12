@@ -9,6 +9,10 @@
         diagramDatabaseTitle="Dabacog - Database Diagram - Book Library Demo"
         diagramDatabasePrimaryKeyFieldPorts="false"
         diagramDatabaseForeignKeyFieldPorts="true"/>
+    <sqlConfig
+        sqlOutputPath="./generated"
+        sqlGlobalSequence="true"
+        sqlDumpDatabase="true"/>
   </config>
 
   <entities>

@@ -6,7 +6,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 
 @Data
-@Element(name = "diagrams")
+@Element(name = "diagramConfig")
 public final class XmlDiagramsConfig {
 
   @Attribute(required = false)
