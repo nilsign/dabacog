@@ -1,5 +1,6 @@
 package com.nilsign.reader.xml.model.entities;
 
+import com.nilsign.dxd.model.DxdField;
 import lombok.Data;
 import lombok.NonNull;
 import org.simpleframework.xml.Attribute;
@@ -19,18 +20,18 @@ public final class XmlField {
   private String relation;
 
   @Attribute(required = false)
-  private boolean indexed;
+  private boolean indexed = DxdField.DEFAULT_INDEXED;
 
   @Attribute(required = false)
-  private boolean unique;
+  private boolean unique = DxdField.DEFAULT_UNIQUE;
 
   @Attribute(required = false)
-  private boolean nullable;
+  private boolean nullable = DxdField.DEFAULT_NULLABLE;
 
   // TODO(nilsheumer): Add support for full text search.
   // https://hackernoon.com/how-useful-is-postgresql-full-text-search-u39242fi
   @Attribute(required = false)
-  private boolean fts;
+  private boolean fts = DxdField.DEFAULT_FTS;
 
   @Attribute(name = "default", required = false)
   private String defaultValue;

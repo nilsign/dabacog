@@ -6,6 +6,11 @@ import lombok.NonNull;
 @Data(staticConstructor = "of")
 public final class DxdField {
 
+  public static final boolean DEFAULT_INDEXED = false;
+  public static final boolean DEFAULT_UNIQUE = false;
+  public static final boolean DEFAULT_NULLABLE = true;
+  public static final boolean DEFAULT_FTS = false;
+
   @NonNull
   private final DxdFieldType type;
 
