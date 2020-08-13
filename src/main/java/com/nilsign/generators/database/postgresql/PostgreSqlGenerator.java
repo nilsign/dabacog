@@ -42,9 +42,7 @@ public final class PostgreSqlGenerator extends Generator {
   private void generate() {
     File outputFile = super.createOutputFile();
     try (FileWriter writer = new FileWriter(outputFile)) {
-      if (0 == 0) {
-        throw new RuntimeException("Not implemented yet");
-      }
+
     } catch (Exception e) {
       throw new RuntimeException(
         String.format(
