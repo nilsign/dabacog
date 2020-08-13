@@ -11,6 +11,7 @@ public final class GeneratedFilePaths {
 
   private String databaseDiagramDotFile;
   private String databaseDiagramFile;
+  private String sqlScriptFile;
 
   public static GeneratedFilePaths of() {
     if (instance == null) {
@@ -33,5 +34,13 @@ public final class GeneratedFilePaths {
 
   public static String getDatabaseDiagramFile() {
     return GeneratedFilePaths.of().databaseDiagramFile;
+  }
+
+  public static void setSqlScriptFile(@NonNull String filePath) {
+    GeneratedFilePaths.of().sqlScriptFile = filePath;
+  }
+
+  public static String getSqlScriptFile() {
+    return GeneratedFilePaths.of().sqlScriptFile;
   }
 }

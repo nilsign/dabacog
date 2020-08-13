@@ -10,7 +10,7 @@ import java.io.FileWriter;
 
 public final class DotDatabaseDiagramGenerator extends Generator {
 
-  public static final String OUTPUT_FILE_NAME = "dabacog-db-diagram.pot";
+  public static final String OUTPUT_FILE_NAME = "DabacogDatabaseDiagram.pot";
 
   private DotDatabaseDiagramGenerator(@NonNull DxdModel dxdModel) {
     super(dxdModel);
@@ -30,7 +30,7 @@ public final class DotDatabaseDiagramGenerator extends Generator {
 
   @Override
   protected String getOutputDirectory() {
-    return dxdModel.getConfig().getDiagramDatabaseOutputPath();
+    return super.dxdModel.getConfig().getDiagramDatabaseOutputPath();
   }
 
   @Override

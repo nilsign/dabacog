@@ -9,7 +9,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public final class SqlSchemaGenerator {
+public final class Sql {
 
   public static final String SQL_PRIMARY_KEY_NAME = "id";
   private static final String SQL_TABLE_PREFIX = "tbl";

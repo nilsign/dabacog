@@ -1,7 +1,7 @@
 package com.nilsign.generators.diagrams.dot.database;
 
 import com.nilsign.dxd.model.DxdFieldRelation;
-import com.nilsign.generators.database.SqlSchemaGenerator;
+import com.nilsign.generators.database.Sql;
 import com.nilsign.generators.diagrams.dot.Dot;
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -26,22 +26,22 @@ public final class DotDatabaseEdgeBuilder {
     }
     return new StringBuffer()
         .append(Dot.addEdge(
-            String.format("node_%s", SqlSchemaGenerator.buildTableName(dxdRelation)),
+            String.format("node_%s", Sql.buildTableName(dxdRelation)),
             String.format("port_%s",
-                SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getFirst()),
+                Sql.buildForeignKeyNames(dxdRelation).getFirst()),
             Dot.PortAlignment.WEST,
             String.format("node_%s",
-                SqlSchemaGenerator.buildTableName(dxdRelation.getFirstClass())),
-            String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME),
+                Sql.buildTableName(dxdRelation.getFirstClass())),
+            String.format("port_%s", Sql.SQL_PRIMARY_KEY_NAME),
             Dot.PortAlignment.WEST))
         .append(Dot.addEdge(
-            String.format("node_%s", SqlSchemaGenerator.buildTableName(dxdRelation)),
+            String.format("node_%s", Sql.buildTableName(dxdRelation)),
             String.format("port_%s",
-                SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getSecond()),
+                Sql.buildForeignKeyNames(dxdRelation).getSecond()),
             Dot.PortAlignment.EAST,
             String.format("node_%s",
-                SqlSchemaGenerator.buildTableName(dxdRelation.getSecondClass())),
-            String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME),
+                Sql.buildTableName(dxdRelation.getSecondClass())),
+            String.format("port_%s", Sql.SQL_PRIMARY_KEY_NAME),
             Dot.PortAlignment.WEST))
         .toString();
   }
@@ -52,13 +52,13 @@ public final class DotDatabaseEdgeBuilder {
     }
     return Dot.addEdge(
         String.format("node_%s",
-            SqlSchemaGenerator.buildTableName(dxdRelation.getFirstClass())),
+            Sql.buildTableName(dxdRelation.getFirstClass())),
         String.format("port_%s",
-            SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getSecond()),
+            Sql.buildForeignKeyNames(dxdRelation).getSecond()),
         Dot.PortAlignment.EAST,
         String.format("node_%s",
-            SqlSchemaGenerator.buildTableName(dxdRelation.getSecondClass())),
-        String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME),
+            Sql.buildTableName(dxdRelation.getSecondClass())),
+        String.format("port_%s", Sql.SQL_PRIMARY_KEY_NAME),
         Dot.PortAlignment.WEST,
         Dot.EdgeStyle.DASHED);
   }
@@ -69,14 +69,14 @@ public final class DotDatabaseEdgeBuilder {
     }
     return Dot.addEdge(
         String.format("node_%s",
-            SqlSchemaGenerator.buildTableName(dxdRelation.getSecondClass())),
+            Sql.buildTableName(dxdRelation.getSecondClass())),
         String.format("port_%s",
-            SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getFirst()),
+            Sql.buildForeignKeyNames(dxdRelation).getFirst()),
         Dot.PortAlignment.EAST,
         String.format("node_%s",
-            SqlSchemaGenerator.buildTableName(dxdRelation.getFirstClass())),
+            Sql.buildTableName(dxdRelation.getFirstClass())),
         String.format("port_%s",
-            SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME),
+            Sql.SQL_PRIMARY_KEY_NAME),
         Dot.PortAlignment.WEST,
         Dot.EdgeStyle.DASHED);
   }
@@ -88,12 +88,12 @@ public final class DotDatabaseEdgeBuilder {
     if (dxdRelation.isSelfReference()) {
       return Dot.addEdge(
           String.format(
-            "node_%s", SqlSchemaGenerator.buildTableName(dxdRelation.getFirstClass())),
+            "node_%s", Sql.buildTableName(dxdRelation.getFirstClass())),
           String.format(
-              "port_%s", SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getFirst()),
+              "port_%s", Sql.buildForeignKeyNames(dxdRelation).getFirst()),
           Dot.PortAlignment.EAST,
           String.format(
-              "node_%s", SqlSchemaGenerator.buildTableName(dxdRelation.getSecondClass())),
+              "node_%s", Sql.buildTableName(dxdRelation.getSecondClass())),
           String.format("port_%s", Dot.PortLocation.TOP.getShortName()),
           Dot.PortAlignment.NORTH,
           Dot.EdgeStyle.DOTTED);
@@ -102,25 +102,25 @@ public final class DotDatabaseEdgeBuilder {
     if (dxdRelation.isOneToOne()) {
       output.append(Dot.addEdge(
           String.format(
-              "node_%s", SqlSchemaGenerator.buildTableName(dxdRelation.getFirstClass())),
+              "node_%s", Sql.buildTableName(dxdRelation.getFirstClass())),
           String.format(
-              "port_%s", SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getSecond()),
+              "port_%s", Sql.buildForeignKeyNames(dxdRelation).getSecond()),
           Dot.PortAlignment.EAST,
           String.format(
-              "node_%s", SqlSchemaGenerator.buildTableName(dxdRelation.getSecondClass())),
-          String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME),
+              "node_%s", Sql.buildTableName(dxdRelation.getSecondClass())),
+          String.format("port_%s", Sql.SQL_PRIMARY_KEY_NAME),
           Dot.PortAlignment.WEST,
           Dot.EdgeStyle.DOTTED));
       if (dxdRelation.isBiDirectional()) {
         output.append(Dot.addEdge(
             String.format(
-              "node_%s", SqlSchemaGenerator.buildTableName(dxdRelation.getSecondClass())),
+              "node_%s", Sql.buildTableName(dxdRelation.getSecondClass())),
               String.format(
-                  "port_%s", SqlSchemaGenerator.buildForeignKeyNames(dxdRelation).getFirst()),
+                  "port_%s", Sql.buildForeignKeyNames(dxdRelation).getFirst()),
               Dot.PortAlignment.EAST,
               String.format(
-                  "node_%s", SqlSchemaGenerator.buildTableName(dxdRelation.getFirstClass())),
-              String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME),
+                  "node_%s", Sql.buildTableName(dxdRelation.getFirstClass())),
+              String.format("port_%s", Sql.SQL_PRIMARY_KEY_NAME),
               Dot.PortAlignment.WEST,
               Dot.EdgeStyle.DOTTED));
       }

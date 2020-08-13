@@ -12,7 +12,7 @@ import java.io.File;
 
 public final class GraphvizDotRenderer extends Generator {
 
-  private static final String TARGET_FILE_NAME = "dabacog-db-diagram.png";
+  private static final String OUTPUT_FILE_NAME = "DabacogDatabaseDiagram.png";
 
   private GraphvizDotRenderer(@NonNull DxdModel dxdModel) {
     super(dxdModel);
@@ -57,7 +57,7 @@ public final class GraphvizDotRenderer extends Generator {
 
   @Override
   protected String getOutputFileName() {
-    return TARGET_FILE_NAME;
+    return OUTPUT_FILE_NAME;
   }
 
   private File getInputFile() {

@@ -5,7 +5,7 @@ import com.nilsign.dxd.model.DxdField;
 import com.nilsign.dxd.model.DxdFieldRelation;
 import com.nilsign.dxd.model.DxdFieldType;
 import com.nilsign.dxd.model.DxdModel;
-import com.nilsign.generators.database.SqlSchemaGenerator;
+import com.nilsign.generators.database.Sql;
 import com.nilsign.generators.diagrams.dot.Dot;
 import com.nilsign.misc.Pair;
 import lombok.AccessLevel;
@@ -28,13 +28,13 @@ public final class DotDatabaseNodeLabelRowBuilder {
 
   public static String buildEntityNodeNameRow(@NonNull DxdClass dxdClass) {
     return Dot.addNodeLabelTableName(
-        SqlSchemaGenerator.buildTableName(dxdClass),
+        Sql.buildTableName(dxdClass),
         ENTITY_NODE_COLUMN_NAMES.size());
   }
 
   public static String buildEntityRelationNodeNameRow(@NonNull DxdFieldRelation dxdRelation) {
     return Dot.addNodeLabelTableName(
-        SqlSchemaGenerator.buildTableName(dxdRelation),
+        Sql.buildTableName(dxdRelation),
         ENTITY_RELATION_NODE_COLUMN_NAMES.size());
   }
 
@@ -56,7 +56,7 @@ public final class DotDatabaseNodeLabelRowBuilder {
           && i == ENTITY_NODE_COLUMN_NAMES.size() - 1
           && hasForeignKeyPorts(dxdModel)
           ? Dot.addNodeLabelTableCell(getCellValue(i, dxdField), String.format("port_%s",
-          SqlSchemaGenerator.buildForeignKeyName(!dxdField.getRelationType().isManyToOne()
+          Sql.buildForeignKeyName(!dxdField.getRelationType().isManyToOne()
               ? dxdField.getType().getObjectName()
               : dxdField.getName())))
           : Dot.addNodeLabelTableCell(getCellValue(i, dxdField)));
@@ -71,9 +71,9 @@ public final class DotDatabaseNodeLabelRowBuilder {
         .append(Dot.openNodeLabelTableRow())
         .append(hasPrimaryKeyPorts(dxdModel)
             ? Dot.addNodeLabelTableCell(
-            SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME,
-            String.format("port_%s", SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME))
-            : Dot.addNodeLabelTableCell(SqlSchemaGenerator.SQL_PRIMARY_KEY_NAME))
+                Sql.SQL_PRIMARY_KEY_NAME,
+                String.format("port_%s", Sql.SQL_PRIMARY_KEY_NAME))
+            : Dot.addNodeLabelTableCell(Sql.SQL_PRIMARY_KEY_NAME))
         .append(Dot.addNodeLabelTableCell(DxdFieldType.LONG_TYPE_NAME))
         .append(Dot.addNodeLabelTableCell(YES))
         .append(Dot.addNodeLabelTableCell(NO))
@@ -87,7 +87,7 @@ public final class DotDatabaseNodeLabelRowBuilder {
   public static String buildEntityRelationNodeFieldsRow(
       @NonNull DxdModel dxdModel,
       @NonNull DxdFieldRelation dxdRelation) {
-    Pair<String, String> foreignKeyName = SqlSchemaGenerator.buildForeignKeyNames(dxdRelation);
+    Pair<String, String> foreignKeyName = Sql.buildForeignKeyNames(dxdRelation);
     return new StringBuffer()
         .append(Dot.openNodeLabelTableRow())
         .append(hasForeignKeyPorts(dxdModel)
@@ -119,8 +119,8 @@ public final class DotDatabaseNodeLabelRowBuilder {
 
   private static String getFieldNameCellValue(@NonNull DxdField dxdField) {
     return dxdField.hasRelation()
-        ? SqlSchemaGenerator.buildForeignKeyName(dxdField.getType().getObjectName())
-        : SqlSchemaGenerator.buildFieldName(dxdField);
+        ? Sql.buildForeignKeyName(dxdField.getType().getObjectName())
+        : Sql.buildFieldName(dxdField);
   }
 
   private static String getFieldTypeCellValue(@NonNull DxdField dxdField) {
