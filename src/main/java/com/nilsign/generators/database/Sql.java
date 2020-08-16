@@ -13,11 +13,12 @@ public final class Sql {
 
   public static final String SQL_PRIMARY_KEY_NAME = "id";
   private static final String SQL_TABLE_PREFIX = "tbl";
+  private static final String SQL_CONSTRAINT_PREFIX = "cstr";
 
-  public static String buildTableName(@NonNull DxdClass entityClass) {
+  public static String buildTableName(@NonNull DxdClass aClass) {
     return String.format("%s_%s",
         SQL_TABLE_PREFIX,
-        transformClassEntityName(entityClass.getName()));
+        transformName(aClass.getName()));
   }
 
   public static String buildTableName(@NonNull DxdFieldRelation relation) {
@@ -29,37 +30,67 @@ public final class Sql {
   public static String buildForeignKeyName(@NonNull String referencedClassName) {
     return String.format("%s_%s",
         SQL_PRIMARY_KEY_NAME,
-        transformClassEntityName(referencedClassName));
+        transformName(referencedClassName));
   }
 
   public static Pair<String, String> buildForeignKeyNames(@NonNull DxdFieldRelation relation) {
     return Pair.of(
         String.format("%s_%s",
             SQL_PRIMARY_KEY_NAME,
-            transformClassEntityName(relation.getFirstClass().getName())),
+            transformName(relation.getFirstClass().getName())),
          String.format("%s_%s",
             SQL_PRIMARY_KEY_NAME,
-             transformClassEntityName(relation.getSecondClass().getName())));
+             transformName(relation.getSecondClass().getName())));
   }
 
-  public static String buildFieldName(@NonNull DxdField fieldName) {
-    return transformClassEntityName(fieldName.getName());
+  public static String buildFieldName(@NonNull DxdField field) {
+    return field.getType().isObject()
+        ? buildForeignKeyName(field.getName())
+        : transformName(field.getName());
   }
 
-  private static String transformClassEntityName(@NonNull String entityName) {
+  private static String transformName(@NonNull String name) {
     String normalizedName = "";
-    for (int i = 0; i < entityName.length(); ++i) {
+    for (int i = 0; i < name.length(); ++i) {
       if (i > 0
-          && Character.isUpperCase(entityName.charAt(i))
-          && Character.isLowerCase(entityName.charAt(i - 1))
+          && Character.isUpperCase(name.charAt(i))
+          && Character.isLowerCase(name.charAt(i - 1))
           || i > 1
-          && Character.isLowerCase(entityName.charAt(i))
-          && Character.isUpperCase(entityName.charAt(i - 1))
-          && Character.isUpperCase(entityName.charAt(i - 2))) {
+          && Character.isLowerCase(name.charAt(i))
+          && Character.isUpperCase(name.charAt(i - 1))
+          && Character.isUpperCase(name.charAt(i - 2))) {
         normalizedName += "_";
       }
-      normalizedName += entityName.charAt(i);
+      normalizedName += name.charAt(i);
     }
     return normalizedName.toLowerCase();
+  }
+
+  public static String buildConstraintsNameForPrimaryKeyField(@NonNull DxdClass aClass) {
+    return String.format(
+        "%s_%s_pk",
+        SQL_CONSTRAINT_PREFIX,
+        transformName(aClass.getName()));
+  }
+
+  public static String buildConstraintsNameForForeignKeyField(
+      @NonNull DxdClass aClass,
+      @NonNull DxdField field) {
+    return String.format(
+        "%s_%s_%s_%s_fk",
+        SQL_CONSTRAINT_PREFIX,
+        transformName(aClass.getName()),
+        SQL_PRIMARY_KEY_NAME,
+        transformName(field.getName()));
+  }
+
+  public static String buildConstraintsNameForUniqueField(
+      @NonNull DxdClass aClass,
+      @NonNull DxdField field) {
+    return String.format(
+        "%s_%s_%s_unique",
+        SQL_CONSTRAINT_PREFIX,
+        transformName(aClass.getName()),
+        transformName(field.getName()));
   }
 }
