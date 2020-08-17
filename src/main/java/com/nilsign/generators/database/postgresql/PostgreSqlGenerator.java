@@ -9,6 +9,7 @@ import com.nilsign.generators.Generator;
 import com.nilsign.generators.database.Sql;
 import com.nilsign.misc.Pair;
 import lombok.NonNull;
+
 import java.io.File;
 import java.io.FileWriter;
 
@@ -256,6 +257,18 @@ public final class PostgreSqlGenerator extends Generator {
   }
 
   private String buildRelationalTableForeignKeyIndices(@NonNull DxdFieldRelation relation) {
-    return "\n";
+    return new StringBuffer()
+        .append(String.format(
+            "\nCREATE INDEX %s ON %s(%s);",
+            Sql.buildIndexNameForForeignKeyField(relation, relation.getFirstClass()),
+            Sql.buildTableName(relation),
+            Sql.buildForeignKeyName(relation.getFirstClass().getName())))
+        .append(String.format(
+            "\nCREATE INDEX %s ON %s(%s);",
+            Sql.buildIndexNameForForeignKeyField(relation, relation.getSecondClass()),
+            Sql.buildTableName(relation),
+            Sql.buildForeignKeyName(relation.getSecondClass().getName())))
+        .append("\n")
+        .toString();
   }
 }

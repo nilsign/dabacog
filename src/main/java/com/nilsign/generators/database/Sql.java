@@ -115,13 +115,27 @@ public final class Sql {
         "%s_%s_%s_fk",
         SQL_CONSTRAINT_PREFIX,
         buildTableName(relation),
-        transformName(aClass.getName())
+        buildForeignKeyName(aClass.getName())
     );
   }
 
   public static String buildIndexNameForForeignKeyField(
       @NonNull DxdClass aClass,
       @NonNull DxdField field) {
-    return "";
+    return String.format(
+        "idx_%s_%s",
+        buildTableName(aClass.getName()),
+        buildForeignKeyName(field.getName())
+    );
+  }
+
+  public static String buildIndexNameForForeignKeyField(
+      @NonNull DxdFieldRelation relation,
+      @NonNull DxdClass referencedClass) {
+    return String.format(
+        "%s_%s_%s",
+        SQL_INDEX_PREFIX,
+        buildTableName(relation),
+        buildForeignKeyName(referencedClass.getName()));
   }
 }
