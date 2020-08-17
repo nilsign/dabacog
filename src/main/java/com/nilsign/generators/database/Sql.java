@@ -93,4 +93,14 @@ public final class Sql {
         transformName(aClass.getName()),
         transformName(field.getName()));
   }
+
+  public static String buildIndexNameForForeignKeyField(
+      @NonNull DxdClass aClass,
+      @NonNull DxdField field) {
+    return String.format(
+        "idx_%s_%s",
+        transformName(aClass.getName()),
+        buildForeignKeyName(field.getName())
+    );
+  }
 }

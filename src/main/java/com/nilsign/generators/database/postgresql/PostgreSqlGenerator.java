@@ -79,9 +79,10 @@ public final class PostgreSqlGenerator extends Generator {
 
   private String buildTables() {
     StringBuffer output = new StringBuffer()
-        .append("\n-- Creates all tables and the required indices");
+        .append("\n-- Creates normal tables and the required indices");
     super.dxdModel.getClasses().forEach(aClass -> {
         output.append(buildTable(aClass));
+        output.append(buildTableForeignKeyIndices(aClass));
         output.append("\n");
     });
     return output.toString();
@@ -174,7 +175,18 @@ public final class PostgreSqlGenerator extends Generator {
         : "";
   }
 
-  private String buildTableIndices(@NonNull DxdClass aClass) {
-    return null;
+  private String buildTableForeignKeyIndices(@NonNull DxdClass aClass) {
+    StringBuffer output = new StringBuffer();
+    aClass.getFields().forEach(field -> {
+      if (field.hasRelation()) {
+        output.append(
+            String.format(
+                "\nCREATE INDEX %s ON %s(%s);",
+                Sql.buildIndexNameForForeignKeyField(aClass, field),
+                Sql.buildTableName(aClass),
+                Sql.buildForeignKeyName(field.getName())));
+      }
+    });
+    return output.toString();
   }
 }
