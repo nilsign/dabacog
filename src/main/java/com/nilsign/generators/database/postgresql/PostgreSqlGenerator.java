@@ -2,12 +2,13 @@ package com.nilsign.generators.database.postgresql;
 
 import com.nilsign.dxd.model.DxdClass;
 import com.nilsign.dxd.model.DxdField;
+import com.nilsign.dxd.model.DxdFieldRelation;
 import com.nilsign.dxd.model.DxdModel;
 import com.nilsign.generators.GeneratedFilePaths;
 import com.nilsign.generators.Generator;
 import com.nilsign.generators.database.Sql;
+import com.nilsign.misc.Pair;
 import lombok.NonNull;
-
 import java.io.File;
 import java.io.FileWriter;
 
@@ -79,12 +80,23 @@ public final class PostgreSqlGenerator extends Generator {
 
   private String buildTables() {
     StringBuffer output = new StringBuffer()
-        .append("\n-- Creates normal tables and the required indices");
+        .append("\n-- Creates normal tables and the according indices");
     super.model.getClasses().forEach(aClass -> {
-        output.append(buildTable(aClass));
-        output.append(buildTableForeignKeyIndices(aClass));
-        output.append("\n");
+        output
+            .append(buildTable(aClass))
+            .append(buildTableForeignKeyIndices(aClass))
+            .append("\n");
     });
+    if (super.model.getDistinctManyToManyRelations().size() > 0) {
+      output.append("\n-- Creates relational tables (n..n) and the according indices");
+      super.model.getDistinctManyToManyRelations().forEach(relation -> {
+        output
+            .append(buildRelationalTable(relation))
+            .append(buildRelationalTableForeignKeyIndices(relation))
+            .append("\n");
+      });
+    }
+
     return output.toString();
   }
 
@@ -159,7 +171,8 @@ public final class PostgreSqlGenerator extends Generator {
                 Sql.buildConstraintsNameForForeignKeyField(aClass, field),
                 Sql.buildForeignKeyName(field.getName())))
             .append(String.format(
-                "\n        REFERENCES tbl_address(%s)",
+                "\n        REFERENCES %s(%s)",
+                Sql.buildTableName(field.getName()),
                 Sql.SQL_PRIMARY_KEY_NAME))
             .append("\n        ON UPDATE NO ACTION")
             .append("\n        ON DELETE NO ACTION")
@@ -188,5 +201,61 @@ public final class PostgreSqlGenerator extends Generator {
       }
     });
     return output.toString();
+  }
+
+  private String buildRelationalTable(@NonNull DxdFieldRelation relation) {
+    Pair<String, String> foreignKeyNames = Sql.buildForeignKeyNames(relation);
+    return new StringBuffer()
+        .append(String.format(
+            "\nCREATE TABLE IF NOT EXISTS %s_%s (",
+            Sql.buildTableName(relation.getFirstClass()),
+            Sql.buildTableName(relation.getSecondClass())))
+        .append(String.format(
+            "\n    %s BIGINT NOT NULL",
+            foreignKeyNames.getFirst()))
+        .append(String.format(
+            "\n    %s BIGINT NOT NULL",
+            foreignKeyNames.getSecond()))
+        .append(String.format(
+            "\n    CONSTRAINT %s PRIMARY KEY (%s, %s)",
+            Sql.buildConstraintsNameForRelationalTablePrimaryKeyFields(relation),
+            foreignKeyNames.getFirst(),
+            foreignKeyNames.getSecond()))
+        .append(buildRelationalTableForeignKeyConstraints(relation))
+        .append("\n);")
+        .toString();
+  }
+
+  private String buildRelationalTableForeignKeyConstraints(@NonNull DxdFieldRelation relation) {
+    return new StringBuffer()
+        .append(String.format(
+            ",\n    CONSTRAINT %s FOREIGN KEY(%s)",
+            Sql.buildConstraintsNameForRelationalTableForeignKeyField(
+                relation,
+                relation.getFirstClass()),
+            Sql.buildForeignKeyName(relation.getFirstClass().getName())))
+        .append(String.format(
+            "\n        REFERENCES %s(%s)",
+            Sql.buildTableName(relation.getFirstClass()),
+            Sql.SQL_PRIMARY_KEY_NAME))
+        .append("\n        ON UPDATE NO ACTION")
+        .append("\n        ON DELETE NO ACTION")
+        .append(String.format(
+            ",\n    CONSTRAINT %s FOREIGN KEY(%s)",
+            Sql.buildConstraintsNameForRelationalTableForeignKeyField(
+                relation,
+                relation.getSecondClass()),
+            Sql.buildForeignKeyName(relation.getSecondClass().getName())))
+        .append(String.format(
+            "\n        REFERENCES %s(%s)",
+            Sql.buildTableName(relation.getSecondClass()),
+            Sql.SQL_PRIMARY_KEY_NAME))
+        .append("\n        ON UPDATE NO ACTION")
+        .append("\n        ON DELETE NO ACTION")
+        .toString();
+  }
+
+  private String buildRelationalTableForeignKeyIndices(@NonNull DxdFieldRelation relation) {
+    return "\n";
   }
 }

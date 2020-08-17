@@ -12,13 +12,19 @@ import lombok.RequiredArgsConstructor;
 public final class Sql {
 
   public static final String SQL_PRIMARY_KEY_NAME = "id";
+
   private static final String SQL_TABLE_PREFIX = "tbl";
   private static final String SQL_CONSTRAINT_PREFIX = "cstr";
+  private static final String SQL_INDEX_PREFIX = "idx";
 
   public static String buildTableName(@NonNull DxdClass aClass) {
+    return buildTableName(aClass.getName());
+  }
+
+  public static String buildTableName(@NonNull String className) {
     return String.format("%s_%s",
         SQL_TABLE_PREFIX,
-        transformName(aClass.getName()));
+        transformName(className));
   }
 
   public static String buildTableName(@NonNull DxdFieldRelation relation) {
@@ -70,17 +76,16 @@ public final class Sql {
     return String.format(
         "%s_%s_pk",
         SQL_CONSTRAINT_PREFIX,
-        transformName(aClass.getName()));
+        buildTableName(aClass.getName()));
   }
 
   public static String buildConstraintsNameForForeignKeyField(
       @NonNull DxdClass aClass,
       @NonNull DxdField field) {
     return String.format(
-        "%s_%s_%s_%s_fk",
+        "%s_%s_%s_fk",
         SQL_CONSTRAINT_PREFIX,
-        transformName(aClass.getName()),
-        SQL_PRIMARY_KEY_NAME,
+        buildTableName(aClass.getName()),
         transformName(field.getName()));
   }
 
@@ -90,17 +95,33 @@ public final class Sql {
     return String.format(
         "%s_%s_%s_unique",
         SQL_CONSTRAINT_PREFIX,
-        transformName(aClass.getName()),
+        buildTableName(aClass.getName()),
         transformName(field.getName()));
+  }
+
+  public static String buildConstraintsNameForRelationalTablePrimaryKeyFields(
+      @NonNull DxdFieldRelation relation) {
+    return String.format(
+        "%s_%s_%s_pks",
+        SQL_CONSTRAINT_PREFIX,
+        buildTableName(relation.getFirstClass().getName()),
+        buildTableName(relation.getSecondClass().getName()));
+  }
+
+  public static String buildConstraintsNameForRelationalTableForeignKeyField(
+      @NonNull DxdFieldRelation relation,
+      @NonNull DxdClass aClass) {
+    return String.format(
+        "%s_%s_%s_fk",
+        SQL_CONSTRAINT_PREFIX,
+        buildTableName(relation),
+        transformName(aClass.getName())
+    );
   }
 
   public static String buildIndexNameForForeignKeyField(
       @NonNull DxdClass aClass,
       @NonNull DxdField field) {
-    return String.format(
-        "idx_%s_%s",
-        transformName(aClass.getName()),
-        buildForeignKeyName(field.getName())
-    );
+    return "";
   }
 }
