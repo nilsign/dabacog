@@ -12,12 +12,12 @@ public final class DotDatabaseDiagramGenerator extends Generator {
 
   public static final String OUTPUT_FILE_NAME = "DabacogDatabaseDiagram.pot";
 
-  private DotDatabaseDiagramGenerator(@NonNull DxdModel dxdModel) {
-    super(dxdModel);
+  private DotDatabaseDiagramGenerator(@NonNull DxdModel model) {
+    super(model);
   }
 
-  private static DotDatabaseDiagramGenerator of(@NonNull DxdModel dxdModel) {
-    return new DotDatabaseDiagramGenerator(dxdModel);
+  private static DotDatabaseDiagramGenerator of(@NonNull DxdModel model) {
+    return new DotDatabaseDiagramGenerator(model);
   }
 
   public static void run(@NonNull DxdModel model) {
@@ -30,7 +30,7 @@ public final class DotDatabaseDiagramGenerator extends Generator {
 
   @Override
   protected String getOutputDirectory() {
-    return super.dxdModel.getConfig().getDiagramDatabaseOutputPath();
+    return super.model.getConfig().getDiagramDatabaseOutputPath();
   }
 
   @Override
@@ -44,11 +44,11 @@ public final class DotDatabaseDiagramGenerator extends Generator {
       writer.write(
           new StringBuffer()
               .append(Dot.openGraph())
-              .append(Dot.addGraphProperties(dxdModel
+              .append(Dot.addGraphProperties(model
                   .getConfig()
                   .getDiagramDatabaseTitle()))
-              .append(addDatabaseEntityNodes())
-              .append(addDatabaseEntityRelationEdges())
+              .append(addDatabaseTableNodes())
+              .append(addDatabaseTableRelationEdges())
               .append(Dot.closeGraph())
               .toString());
     } catch (Exception e) {
@@ -61,19 +61,19 @@ public final class DotDatabaseDiagramGenerator extends Generator {
     GeneratedFilePaths.setDatabaseDiagramDotFile(outputFile.getAbsolutePath());
   }
 
-  private String addDatabaseEntityNodes() {
+  private String addDatabaseTableNodes() {
     StringBuffer output = new StringBuffer();
-    super.dxdModel.getClasses().forEach(dxdEntityClass
-        -> output.append(DotDatabaseNodeBuilder.buildEntityNode(dxdModel, dxdEntityClass)));
-    super.dxdModel.getDistinctManyToManyRelations().forEach(dxdRelation
-        -> output.append(DotDatabaseNodeBuilder.buildEntityRelationNode(dxdModel, dxdRelation)));
+    super.model.getClasses().forEach(aClass
+        -> output.append(DotDatabaseNodeBuilder.buildTableNode(model, aClass)));
+    super.model.getDistinctManyToManyRelations().forEach(relation
+        -> output.append(DotDatabaseNodeBuilder.buildRelationalTableNode(model, relation)));
     return output.toString();
   }
 
-  private String addDatabaseEntityRelationEdges() {
+  private String addDatabaseTableRelationEdges() {
     StringBuffer output = new StringBuffer();
-    super.dxdModel.getDistinctRelations().forEach(dxdRelation
-        -> output.append(DotDatabaseEdgeBuilder.buildEntityRelationEdge(dxdRelation)));
+    super.model.getDistinctRelations().forEach(relation
+        -> output.append(DotDatabaseEdgeBuilder.buildTableRelationEdge(relation)));
     return output.toString();
   }
 }

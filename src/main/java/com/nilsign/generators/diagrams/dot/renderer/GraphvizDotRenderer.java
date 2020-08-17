@@ -14,17 +14,17 @@ public final class GraphvizDotRenderer extends Generator {
 
   private static final String OUTPUT_FILE_NAME = "DabacogDatabaseDiagram.png";
 
-  private GraphvizDotRenderer(@NonNull DxdModel dxdModel) {
-    super(dxdModel);
+  private GraphvizDotRenderer(@NonNull DxdModel model) {
+    super(model);
   }
 
-  private static GraphvizDotRenderer of(@NonNull DxdModel dxdModel) {
-    return new GraphvizDotRenderer(dxdModel);
+  private static GraphvizDotRenderer of(@NonNull DxdModel model) {
+    return new GraphvizDotRenderer(model);
   }
 
-  public static void run(@NonNull DxdModel dxdModel) {
+  public static void run(@NonNull DxdModel model) {
     try {
-      GraphvizDotRenderer.of(dxdModel).render();
+      GraphvizDotRenderer.of(model).render();
     } catch (Exception e) {
       throw new GraphvizDotRendererException(e);
     }
@@ -52,7 +52,7 @@ public final class GraphvizDotRenderer extends Generator {
 
   @Override
   protected String getOutputDirectory() {
-    return super.dxdModel.getConfig().getDiagramDatabaseOutputPath();
+    return super.model.getConfig().getDiagramDatabaseOutputPath();
   }
 
   @Override

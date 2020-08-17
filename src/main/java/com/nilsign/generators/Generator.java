@@ -11,7 +11,7 @@ import java.io.File;
 public abstract class Generator {
 
   @NonNull
-  protected final DxdModel dxdModel;
+  protected final DxdModel model;
 
   protected abstract String getOutputDirectory();
   protected abstract String getOutputFileName();

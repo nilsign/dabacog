@@ -15,12 +15,12 @@ public final class PostgreSqlGenerator extends Generator {
 
   public static final String OUTPUT_FILE_NAME = "InitializeDatabase.sql";
 
-  private PostgreSqlGenerator(@NonNull DxdModel dxdModel) {
-    super(dxdModel);
+  private PostgreSqlGenerator(@NonNull DxdModel model) {
+    super(model);
   }
 
-  private static PostgreSqlGenerator of(@NonNull DxdModel dxdModel) {
-    return new PostgreSqlGenerator(dxdModel);
+  private static PostgreSqlGenerator of(@NonNull DxdModel model) {
+    return new PostgreSqlGenerator(model);
   }
 
   public static void run(@NonNull DxdModel model) {
@@ -33,7 +33,7 @@ public final class PostgreSqlGenerator extends Generator {
 
   @Override
   protected String getOutputDirectory() {
-    return super.dxdModel.getConfig().getDiagramDatabaseOutputPath();
+    return super.model.getConfig().getDiagramDatabaseOutputPath();
   }
 
   @Override
@@ -64,7 +64,7 @@ public final class PostgreSqlGenerator extends Generator {
     StringBuffer output = new StringBuffer()
         .append("-- Global Setup.\n")
         .append("SET client_encoding = 'UTF8';\n\n");
-    if (dxdModel.getConfig().isSqlGlobalSequence()) {
+    if (model.getConfig().isSqlGlobalSequence()) {
        output
            .append("-- Configures a global id sequence shared by all generated primary keys.\n")
            .append("CREATE SEQUENCE public.shared_sequence\n")
@@ -80,7 +80,7 @@ public final class PostgreSqlGenerator extends Generator {
   private String buildTables() {
     StringBuffer output = new StringBuffer()
         .append("\n-- Creates normal tables and the required indices");
-    super.dxdModel.getClasses().forEach(aClass -> {
+    super.model.getClasses().forEach(aClass -> {
         output.append(buildTable(aClass));
         output.append(buildTableForeignKeyIndices(aClass));
         output.append("\n");

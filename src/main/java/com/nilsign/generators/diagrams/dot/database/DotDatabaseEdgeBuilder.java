@@ -10,116 +10,116 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DotDatabaseEdgeBuilder {
 
-  public static String buildEntityRelationEdge(@NonNull DxdFieldRelation dxdRelation) {
-    switch(dxdRelation.getType()) {
-      case MANY_TO_MANY: return buildManyToManyEdges(dxdRelation);
-      case MANY_TO_ONE: return buildManyToOneEdge(dxdRelation);
-      case ONE_TO_MANY: return buildOneToManyEdge(dxdRelation);
-      case ONE_TO_ONE: return buildOneToOneEdge(dxdRelation);
+  public static String buildTableRelationEdge(@NonNull DxdFieldRelation relation) {
+    switch(relation.getType()) {
+      case MANY_TO_MANY: return buildManyToManyEdges(relation);
+      case MANY_TO_ONE: return buildManyToOneEdge(relation);
+      case ONE_TO_MANY: return buildOneToManyEdge(relation);
+      case ONE_TO_ONE: return buildOneToOneEdge(relation);
       default: return null;
     }
   }
 
-  private static String buildManyToManyEdges(@NonNull DxdFieldRelation dxdRelation) {
-    if (!dxdRelation.isManyToMany()) {
+  private static String buildManyToManyEdges(@NonNull DxdFieldRelation relation) {
+    if (!relation.isManyToMany()) {
       return "";
     }
     return new StringBuffer()
         .append(Dot.addEdge(
-            String.format("node_%s", Sql.buildTableName(dxdRelation)),
+            String.format("node_%s", Sql.buildTableName(relation)),
             String.format("port_%s",
-                Sql.buildForeignKeyNames(dxdRelation).getFirst()),
+                Sql.buildForeignKeyNames(relation).getFirst()),
             Dot.PortAlignment.WEST,
             String.format("node_%s",
-                Sql.buildTableName(dxdRelation.getFirstClass())),
+                Sql.buildTableName(relation.getFirstClass())),
             String.format("port_%s", Sql.SQL_PRIMARY_KEY_NAME),
             Dot.PortAlignment.WEST))
         .append(Dot.addEdge(
-            String.format("node_%s", Sql.buildTableName(dxdRelation)),
+            String.format("node_%s", Sql.buildTableName(relation)),
             String.format("port_%s",
-                Sql.buildForeignKeyNames(dxdRelation).getSecond()),
+                Sql.buildForeignKeyNames(relation).getSecond()),
             Dot.PortAlignment.EAST,
             String.format("node_%s",
-                Sql.buildTableName(dxdRelation.getSecondClass())),
+                Sql.buildTableName(relation.getSecondClass())),
             String.format("port_%s", Sql.SQL_PRIMARY_KEY_NAME),
             Dot.PortAlignment.WEST))
         .toString();
   }
 
-  private static String buildOneToManyEdge(@NonNull DxdFieldRelation dxdRelation) {
-    if (!dxdRelation.isOneToMany()) {
+  private static String buildOneToManyEdge(@NonNull DxdFieldRelation relation) {
+    if (!relation.isOneToMany()) {
       return "";
     }
     return Dot.addEdge(
         String.format("node_%s",
-            Sql.buildTableName(dxdRelation.getFirstClass())),
+            Sql.buildTableName(relation.getFirstClass())),
         String.format("port_%s",
-            Sql.buildForeignKeyNames(dxdRelation).getSecond()),
+            Sql.buildForeignKeyNames(relation).getSecond()),
         Dot.PortAlignment.EAST,
         String.format("node_%s",
-            Sql.buildTableName(dxdRelation.getSecondClass())),
+            Sql.buildTableName(relation.getSecondClass())),
         String.format("port_%s", Sql.SQL_PRIMARY_KEY_NAME),
         Dot.PortAlignment.WEST,
         Dot.EdgeStyle.DASHED);
   }
 
-  private static String buildManyToOneEdge(@NonNull DxdFieldRelation dxdRelation) {
-    if (!dxdRelation.isManyToOne()) {
+  private static String buildManyToOneEdge(@NonNull DxdFieldRelation relation) {
+    if (!relation.isManyToOne()) {
       return "";
     }
     return Dot.addEdge(
         String.format("node_%s",
-            Sql.buildTableName(dxdRelation.getSecondClass())),
+            Sql.buildTableName(relation.getSecondClass())),
         String.format("port_%s",
-            Sql.buildForeignKeyNames(dxdRelation).getFirst()),
+            Sql.buildForeignKeyNames(relation).getFirst()),
         Dot.PortAlignment.EAST,
         String.format("node_%s",
-            Sql.buildTableName(dxdRelation.getFirstClass())),
+            Sql.buildTableName(relation.getFirstClass())),
         String.format("port_%s",
             Sql.SQL_PRIMARY_KEY_NAME),
         Dot.PortAlignment.WEST,
         Dot.EdgeStyle.DASHED);
   }
 
-  private static String buildOneToOneEdge(@NonNull DxdFieldRelation dxdRelation) {
-    if (!dxdRelation.isOneToOne()) {
+  private static String buildOneToOneEdge(@NonNull DxdFieldRelation relation) {
+    if (!relation.isOneToOne()) {
       return "";
     }
-    if (dxdRelation.isSelfReference()) {
+    if (relation.isSelfReference()) {
       return Dot.addEdge(
           String.format(
-            "node_%s", Sql.buildTableName(dxdRelation.getFirstClass())),
+            "node_%s", Sql.buildTableName(relation.getFirstClass())),
           String.format(
-              "port_%s", Sql.buildForeignKeyNames(dxdRelation).getFirst()),
+              "port_%s", Sql.buildForeignKeyNames(relation).getFirst()),
           Dot.PortAlignment.EAST,
           String.format(
-              "node_%s", Sql.buildTableName(dxdRelation.getSecondClass())),
+              "node_%s", Sql.buildTableName(relation.getSecondClass())),
           String.format("port_%s", Dot.PortLocation.TOP.getShortName()),
           Dot.PortAlignment.NORTH,
           Dot.EdgeStyle.DOTTED);
     }
     StringBuffer output = new StringBuffer();
-    if (dxdRelation.isOneToOne()) {
+    if (relation.isOneToOne()) {
       output.append(Dot.addEdge(
           String.format(
-              "node_%s", Sql.buildTableName(dxdRelation.getFirstClass())),
+              "node_%s", Sql.buildTableName(relation.getFirstClass())),
           String.format(
-              "port_%s", Sql.buildForeignKeyNames(dxdRelation).getSecond()),
+              "port_%s", Sql.buildForeignKeyNames(relation).getSecond()),
           Dot.PortAlignment.EAST,
           String.format(
-              "node_%s", Sql.buildTableName(dxdRelation.getSecondClass())),
+              "node_%s", Sql.buildTableName(relation.getSecondClass())),
           String.format("port_%s", Sql.SQL_PRIMARY_KEY_NAME),
           Dot.PortAlignment.WEST,
           Dot.EdgeStyle.DOTTED));
-      if (dxdRelation.isBiDirectional()) {
+      if (relation.isBiDirectional()) {
         output.append(Dot.addEdge(
             String.format(
-              "node_%s", Sql.buildTableName(dxdRelation.getSecondClass())),
+              "node_%s", Sql.buildTableName(relation.getSecondClass())),
               String.format(
-                  "port_%s", Sql.buildForeignKeyNames(dxdRelation).getFirst()),
+                  "port_%s", Sql.buildForeignKeyNames(relation).getFirst()),
               Dot.PortAlignment.EAST,
               String.format(
-                  "node_%s", Sql.buildTableName(dxdRelation.getFirstClass())),
+                  "node_%s", Sql.buildTableName(relation.getFirstClass())),
               String.format("port_%s", Sql.SQL_PRIMARY_KEY_NAME),
               Dot.PortAlignment.WEST,
               Dot.EdgeStyle.DOTTED));

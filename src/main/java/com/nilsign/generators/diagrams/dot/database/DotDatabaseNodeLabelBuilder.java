@@ -14,28 +14,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DotDatabaseNodeLabelBuilder {
 
-  public static String buildEntityNodeLabel(
-      @NonNull DxdModel dxdModel,
-      @NonNull DxdClass dxdClass) {
+  public static String buildTableNodeLabel(
+      @NonNull DxdModel model,
+      @NonNull DxdClass aClass) {
     StringBuffer output = new StringBuffer()
         .append(Dot.openNodeLabel())
         .append(Dot.openNodeLabelTable())
-        .append(DotDatabaseNodeLabelRowBuilder.buildEntityNodeNameRow(dxdClass))
-        .append(DotDatabaseNodeLabelRowBuilder.buildEntityNodeColumnNamesRow())
-        .append(DotDatabaseNodeLabelRowBuilder.buildEntityNodePrimaryKeyRow(dxdModel));
+        .append(DotDatabaseNodeLabelRowBuilder.buildTableNodeNameRow(aClass))
+        .append(DotDatabaseNodeLabelRowBuilder.buildTableNodeColumnNamesRow())
+        .append(DotDatabaseNodeLabelRowBuilder.buildTableNodePrimaryKeyRow(model));
     // Adds database fields in case of one-directional one-to-many relations. The foreign key is
     // added to the according referenced table, but not in the referencing table.
-    dxdModel.getManyToOneRelations()
+    model.getManyToOneRelations()
         .stream()
-        .filter(dxdFieldRelation
-            -> dxdFieldRelation.isOneDirectional()
-            && dxdFieldRelation.getSecondClass().equals(dxdClass))
-        .forEach(dxdFieldRelation
+        .filter(relation
+            -> relation.isOneDirectional()
+            && relation.getSecondClass().equals(aClass))
+        .forEach(relation
             -> output.append(
-                DotDatabaseNodeLabelRowBuilder.buildEntityNodeFieldRow(
-                    dxdModel,
+                DotDatabaseNodeLabelRowBuilder.buildTableNodeFieldRow(
+                    model,
                     DxdField.of(
-                        DxdFieldType.of(dxdFieldRelation.getFirstClass().getName()),
+                        DxdFieldType.of(relation.getFirstClass().getName()),
                         null,
                         DxdFieldRelationType.ONE_TO_MANY,
                         true,
@@ -43,7 +43,7 @@ public final class DotDatabaseNodeLabelBuilder {
                         false,
                         false,
                         null))));
-    dxdClass.getFields()
+    aClass.getFields()
         .stream()
         .filter(field
             -> !field.hasRelation()
@@ -51,24 +51,24 @@ public final class DotDatabaseNodeLabelBuilder {
             && !field.getRelationType().isManyToOne())
         .forEach(field
             -> output.append(
-                DotDatabaseNodeLabelRowBuilder.buildEntityNodeFieldRow(dxdModel, field)));
+                DotDatabaseNodeLabelRowBuilder.buildTableNodeFieldRow(model, field)));
     return output
         .append(Dot.closeNodeLabelTable())
         .append(Dot.closeNodeLabel())
         .toString();
   }
 
-  public static String buildEntityRelationNodeLabel(
-      @NonNull DxdModel dxdModel,
-      @NonNull DxdFieldRelation dxdRelation) {
+  public static String buildRelationalTableNodeLabel(
+      @NonNull DxdModel model,
+      @NonNull DxdFieldRelation relation) {
     return new StringBuffer()
         .append(Dot.openNodeLabel())
         .append(Dot.openNodeLabelTable())
-        .append(DotDatabaseNodeLabelRowBuilder.buildEntityRelationNodeNameRow(dxdRelation))
-        .append(DotDatabaseNodeLabelRowBuilder.buildEntityRelationNodeColumnNamesRow())
-        .append(DotDatabaseNodeLabelRowBuilder.buildEntityRelationNodeFieldsRow(
-            dxdModel,
-            dxdRelation))
+        .append(DotDatabaseNodeLabelRowBuilder.buildRelationalTableNodeNameRow(relation))
+        .append(DotDatabaseNodeLabelRowBuilder.buildRelationalTableNodeColumnNamesRow())
+        .append(DotDatabaseNodeLabelRowBuilder.buildRelationalTableNodeFieldsRow(
+            model,
+            relation))
         .append(Dot.closeNodeLabelTable())
         .append(Dot.closeNodeLabel())
         .toString();
