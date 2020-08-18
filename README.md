@@ -3,22 +3,48 @@
 Dabacog is the acronym for '<ins>Da</ins>ta<ins>ba</ins>se <ins>Co</ins>de <ins>G</ins>eneration'
 and comes as a command line interface (CLI).
 
-Most software projects have a database layer and typically most (if not even all) of the database
-operations are [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)
-operations. These operations are usually simple, repetitive (except of the namings) and can be
-easily derived from a model which describes the required data structures and their relations.
-Software developers often spend up to 30% and more of their time in a project with tasks related to
-[CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and surrounding problems as
-testing, setting up the database, mapping database tables to entities or DTOs, and more... 
+            ____        __
+           / __ \____ _/ /_  ____ __________  ____ _
+          / / / / __ `/ __ \/ __ `/ ___/ __ \/ __ `/
+         / /_/ / /_/ / /_/ / /_/ / /__/ /_/ / /_/ /
+        /_____/\__,_/_,___/\__,_/\___/\____/\__, /
+                                           /____/
+        Version 0.1.0 - Alpha
+
+        Usage: dabacog [-hnvV] -s=<source> [-t=<targets> [<targets> [<targets>]]]...
+        Example: dabacog --source ./app.dxd -target sql code --verbose-logging
+
+        Dabacog CLI arguments:
+
+          -h, --help              Show this help message and exit.
+          -n, --no-logging        Disables logging to the console.
+          -s, --source=<source>   Defines Dabacog description (Dxd) source file path.
+          -t, --targets=<targets> [<targets> [<targets>]]
+                                  Defines the targets to generate. Use 'd' or
+                                    'diagram', 's' or 'sql' and 'c' or 'code' as
+                                    values. The values can be combined space separated.
+                                    If no target is defined all targets are generated.
+          -v, --verbose-logging   Enables verbose logging. Overrides the no-logging
+                                    option.
+          -V, --version           Print version information and exit.
+
+Most software projects have a database layer and the operations are on this layer are
+[CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations, which are
+usually simple, repetitive and can be easily derived from a model describing the required
+data structures and their relations.
+Software developers often spend up to 30% and more of their time in a project with tasks
+related to [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and
+surrounding problems as testing, setting up the database, mapping database tables to entities
+or DTOs, and more... 
 
 All this makes the described problem an optimal candidate to be solved by code generation. And
 exactly that is what DABACOG is intending to achieve. To stay flexible, as not all problems are
-generic enough for a static code generation approach, there will be an easy option to hook into the
-generated code and inject custom code, or to even override generated code, both in order to use
-custom code for custom problems.
+generic enough for a code generation approach, there will be an easy option to override or extend
+the generated code, both in order to use custom code for custom - non generic - problems.
 
-In the long term all major databases (with different SQL dialects) and all mayor programming
-languages are planned to be supported.
+In the long term all major databases (with different SQL dialects) and all major programming
+languages are planned to be supported, as well as database migration strategies to address
+evolving database schemas in a project life-cycle.
 
 # SIMPLIFIED USAGE DEMONSTRATION 
 
