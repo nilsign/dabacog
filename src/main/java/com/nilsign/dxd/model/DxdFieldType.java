@@ -2,10 +2,10 @@ package com.nilsign.dxd.model;
 
 import lombok.Getter;
 import lombok.NonNull;
+
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-@Getter
 public final class DxdFieldType {
 
   public static final String LONG_TYPE_NAME = "long";
@@ -37,6 +37,7 @@ public final class DxdFieldType {
   @NonNull
   private final FieldType type;
 
+  @Getter
   private final String objectName;
 
   public static DxdFieldType of(@NonNull String name) {
