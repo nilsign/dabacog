@@ -33,6 +33,12 @@ public final class Sql {
         buildTableName(relation.getSecondClass()));
   }
 
+  public static String buildFieldName(@NonNull DxdField field) {
+    return field.getType().isObject()
+        ? buildForeignKeyName(field.getName())
+        : transformName(field.getName());
+  }
+
   public static String buildForeignKeyName(@NonNull String referencedClassName) {
     return String.format("%s_%s",
         SQL_PRIMARY_KEY_NAME,
@@ -47,29 +53,6 @@ public final class Sql {
          String.format("%s_%s",
             SQL_PRIMARY_KEY_NAME,
              transformName(relation.getSecondClass().getName())));
-  }
-
-  public static String buildFieldName(@NonNull DxdField field) {
-    return field.getType().isObject()
-        ? buildForeignKeyName(field.getName())
-        : transformName(field.getName());
-  }
-
-  private static String transformName(@NonNull String name) {
-    String normalizedName = "";
-    for (int i = 0; i < name.length(); ++i) {
-      if (i > 0
-          && Character.isUpperCase(name.charAt(i))
-          && Character.isLowerCase(name.charAt(i - 1))
-          || i > 1
-          && Character.isLowerCase(name.charAt(i))
-          && Character.isUpperCase(name.charAt(i - 1))
-          && Character.isUpperCase(name.charAt(i - 2))) {
-        normalizedName += "_";
-      }
-      normalizedName += name.charAt(i);
-    }
-    return normalizedName.toLowerCase();
   }
 
   public static String buildConstraintsNameForPrimaryKeyField(@NonNull DxdClass aClass) {
@@ -131,11 +114,28 @@ public final class Sql {
 
   public static String buildIndexNameForForeignKeyField(
       @NonNull DxdFieldRelation relation,
-      @NonNull DxdClass referencedClass) {
+      @NonNull DxdClass referencedClass) {git d
     return String.format(
         "%s_%s_%s",
         SQL_INDEX_PREFIX,
         buildTableName(relation),
         buildForeignKeyName(referencedClass.getName()));
+  }
+
+  private static String transformName(@NonNull String name) {
+    String normalizedName = "";
+    for (int i = 0; i < name.length(); ++i) {
+      if (i > 0
+          && Character.isUpperCase(name.charAt(i))
+          && Character.isLowerCase(name.charAt(i - 1))
+          || i > 1
+          && Character.isLowerCase(name.charAt(i))
+          && Character.isUpperCase(name.charAt(i - 1))
+          && Character.isUpperCase(name.charAt(i - 2))) {
+        normalizedName += "_";
+      }
+      normalizedName += name.charAt(i);
+    }
+    return normalizedName.toLowerCase();
   }
 }
