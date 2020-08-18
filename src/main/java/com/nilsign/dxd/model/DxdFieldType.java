@@ -2,7 +2,6 @@ package com.nilsign.dxd.model;
 
 import lombok.Getter;
 import lombok.NonNull;
-
 import java.util.Arrays;
 import java.util.stream.Collectors;
 

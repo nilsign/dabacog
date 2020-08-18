@@ -114,7 +114,7 @@ public final class Sql {
 
   public static String buildIndexNameForForeignKeyField(
       @NonNull DxdFieldRelation relation,
-      @NonNull DxdClass referencedClass) {
+      @NonNull DxdClass referencedClass) {git d
     return String.format(
         "%s_%s_%s",
         SQL_INDEX_PREFIX,
