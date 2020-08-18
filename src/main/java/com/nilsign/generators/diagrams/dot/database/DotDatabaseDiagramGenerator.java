@@ -44,7 +44,7 @@ public final class DotDatabaseDiagramGenerator extends Generator {
       writer.write(
           new StringBuffer()
               .append(Dot.openGraph())
-              .append(Dot.addGraphProperties(model
+              .append(Dot.addGraphProperties(super.model
                   .getConfig()
                   .getDiagramDatabaseTitle()))
               .append(addDatabaseTableNodes())
@@ -64,9 +64,9 @@ public final class DotDatabaseDiagramGenerator extends Generator {
   private String addDatabaseTableNodes() {
     StringBuffer output = new StringBuffer();
     super.model.getClasses().forEach(aClass
-        -> output.append(DotDatabaseNodeBuilder.buildTableNode(model, aClass)));
+        -> output.append(DotDatabaseNodeBuilder.buildTableNode(super.model, aClass)));
     super.model.getDistinctManyToManyRelations().forEach(relation
-        -> output.append(DotDatabaseNodeBuilder.buildRelationalTableNode(model, relation)));
+        -> output.append(DotDatabaseNodeBuilder.buildRelationalTableNode(super.model, relation)));
     return output.toString();
   }
 

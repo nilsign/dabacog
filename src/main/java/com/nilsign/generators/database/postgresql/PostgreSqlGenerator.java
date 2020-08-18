@@ -9,7 +9,6 @@ import com.nilsign.generators.Generator;
 import com.nilsign.generators.database.Sql;
 import com.nilsign.misc.Pair;
 import lombok.NonNull;
-
 import java.io.File;
 import java.io.FileWriter;
 
@@ -66,7 +65,7 @@ public final class PostgreSqlGenerator extends Generator {
     StringBuffer output = new StringBuffer()
         .append("-- Global Setup.\n")
         .append("SET client_encoding = 'UTF8';\n\n");
-    if (model.getConfig().isSqlGlobalSequence()) {
+    if (super.model.getConfig().isSqlGlobalSequence()) {
        output
            .append("-- Configures a global id sequence shared by all generated primary keys.\n")
            .append("CREATE SEQUENCE public.shared_sequence\n")
