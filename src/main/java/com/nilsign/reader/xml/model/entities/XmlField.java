@@ -30,6 +30,7 @@ public final class XmlField {
 
   // TODO(nilsheumer): Add support for full text search.
   // https://hackernoon.com/how-useful-is-postgresql-full-text-search-u39242fi
+  // https://compose.com/articles/mastering-postgresql-tools-full-text-search-and-phrase-search
   @Attribute(required = false)
   private boolean fts = DxdField.DEFAULT_FTS;
 

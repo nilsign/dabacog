@@ -59,15 +59,15 @@
 
     <class name="Location">
       <field type="Book" relation="n..1"/>
-      <field type="string" name="Floor" default="warehouse"/>
-      <field type="string" name="Shelf" default=""/>
+      <field type="string" name="Floor" default="'warehouse'"/>
+      <field type="string" name="Shelf" default="''"/>
       <field type="int" name="Position" default="-1"/>
     </class>
 
     <class name="BookOrder">
       <field type="Book" relation="n..1" nullable="true"/>
-      <field type="string" name="Floor" default="warehouse"/>
-      <field type="string" name="Shelf" default=""/>
+      <field type="string" name="Floor" default="'warehouse'"/>
+      <field type="string" name="Shelf" default="''"/>
       <field type="int" name="Position" default="-1"/>
     </class>
 

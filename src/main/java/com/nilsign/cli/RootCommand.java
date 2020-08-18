@@ -4,6 +4,7 @@ import com.nilsign.Dabacog;
 import com.nilsign.dxd.XmlToDxdConverter;
 import com.nilsign.dxd.model.DxdModel;
 import com.nilsign.generators.GeneratedFilePaths;
+import com.nilsign.generators.database.postgresql.PostgreSqlGenerator;
 import com.nilsign.generators.diagrams.dot.renderer.GraphvizDotRenderer;
 import com.nilsign.generators.diagrams.dot.database.DotDatabaseDiagramGenerator;
 import com.nilsign.logging.LogLevel;
@@ -157,9 +158,9 @@ public final class RootCommand implements Callable<Integer> {
   private void generateSql() {
     if (hasSqlTarget()) {
       Logger.out(String.format("Generating SQL ... "));
-      Logger.log(String.format("[FAILED]"));
-      Logger.verbose(String.format("\tWARNING: Not implemented yet."));
-      Logger.verbose("\tTODO - Print generated file paths.\n");
+      PostgreSqlGenerator.run(dxdModel);
+      Logger.log(String.format("[DONE]"));
+      Logger.verbose(String.format("\t%s\n", GeneratedFilePaths.getSqlScriptFile()));
     }
   }
 
