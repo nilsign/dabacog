@@ -20,7 +20,7 @@ public final class PostgreSqlSchemaBuilder {
     if (model.getConfig().isSqlGlobalSequence()) {
       output
           .append("-- Configures a global id sequence shared by all generated primary keys.\n")
-          .append("CREATE SEQUENCE public.shared_sequence\n")
+          .append("CREATE SEQUENCE IF NOT EXISTS public.shared_sequence\n")
           .append("    START WITH 1\n")
           .append("    INCREMENT BY 1\n")
           .append("    NO MINVALUE\n")
@@ -146,7 +146,7 @@ public final class PostgreSqlSchemaBuilder {
       if (field.hasRelation()) {
         output.append(
             String.format(
-                "\nCREATE INDEX %s ON %s(%s);",
+                "\nCREATE INDEX IF NOT EXISTS %s ON %s(%s);",
                 Sql.buildIndexNameForForeignKeyField(aClass, field),
                 Sql.buildTableName(aClass),
                 Sql.buildForeignKeyName(field.getName())));
@@ -210,16 +210,15 @@ public final class PostgreSqlSchemaBuilder {
   private static String buildRelationalTableForeignKeyIndices(@NonNull DxdFieldRelation relation) {
     return new StringBuffer()
         .append(String.format(
-            "\nCREATE INDEX %s ON %s(%s);",
+            "\nCREATE INDEX IF NOT EXISTS %s ON %s(%s);",
             Sql.buildIndexNameForForeignKeyField(relation, relation.getFirstClass()),
             Sql.buildTableName(relation),
             Sql.buildForeignKeyName(relation.getFirstClass().getName())))
         .append(String.format(
-            "\nCREATE INDEX %s ON %s(%s);",
+            "\nCREATE INDEX IF NOT EXISTS %s ON %s(%s);",
             Sql.buildIndexNameForForeignKeyField(relation, relation.getSecondClass()),
             Sql.buildTableName(relation),
             Sql.buildForeignKeyName(relation.getSecondClass().getName())))
-        .append("\n")
         .toString();
   }
 }
