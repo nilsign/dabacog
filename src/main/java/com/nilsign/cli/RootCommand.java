@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 
 @Command(
-    description = "Example: dabacog --source ./app.dxd -target sql code --verbose-logging\n\n"
+    description = "Example: dabacog --source ./app.dxd --targets sql code --verbose-logging\n\n"
       + "Dabacog CLI arguments:\n",
     name="dabacog",
     mixinStandardHelpOptions = true,
@@ -35,7 +35,7 @@ public final class RootCommand implements Callable<Integer> {
 
   @Option(
       names = {"-s", "--source"},
-      description = "Defines Dabacog description (Dxd) source file path.",
+      description = "Defines the description (Dxd) source file path.",
       required = true,
       arity = "1"
   )

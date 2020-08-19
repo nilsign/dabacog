@@ -3,13 +3,18 @@
     <!ELEMENT dxd (config|entities)*>
     <!ATTLIST dxd
         name CDATA #REQUIRED>
-    <!ELEMENT config (diagramsConfig)*>
+    <!ELEMENT config (diagramsConfig|sqlConfig)*>
     <!ELEMENT diagramsConfig (#PCDATA)>
     <!ATTLIST diagramsConfig
         diagramDatabaseOutputPath CDATA #REQUIRED
         diagramDatabaseTitle CDATA #REQUIRED
         diagramDatabasePrimaryKeyFieldPorts CDATA #REQUIRED
         diagramDatabaseForeignKeyFieldPorts CDATA #REQUIRED>
+    <!ELEMENT sqlConfig (#PCDATA)>
+    <!ATTLIST sqlConfig
+        sqlOutputPath CDATA #REQUIRED
+        sqlGlobalSequence CDATA #REQUIRED
+        sqlDumpDatabase CDATA #REQUIRED>
     <!ELEMENT entities (class)*>
     <!ELEMENT class (field)*>
     <!ATTLIST class
