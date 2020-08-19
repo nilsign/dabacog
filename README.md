@@ -28,8 +28,8 @@ and comes as a command line interface (CLI).
                                     option.
           -V, --version           Print version information and exit.
 
-Most software projects have a database, and a data access layer, where the data access layer
-communicates with the database layer to perform
+Most software projects have a data storage, and a data access layer where the access layer
+communicates with the storage layer (typically a database) to perform
 [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations. These operations,
 as well as the data access layer designs, are usually simple, repetitive and can be easily derived
 from a model describing the required data structures and their relations.
@@ -62,6 +62,10 @@ schema requirements in an application life-cycle.
             diagramDatabaseTitle="Dabacog - Database Diagram - Book Library Demo"
             diagramDatabasePrimaryKeyFieldPorts="false"
             diagramDatabaseForeignKeyFieldPorts="true"/>
+        <sqlConfig
+            sqlOutputPath="./generated"
+            sqlGlobalSequence="true"
+            sqlDumpDatabase="true"/>
       </config>
 
       <entities>
@@ -108,15 +112,15 @@ schema requirements in an application life-cycle.
 
         <class name="Location">
           <field type="Book" relation="n..1"/>
-          <field type="string" name="Floor" default="warehouse"/>
-          <field type="string" name="Shelf" default=""/>
+          <field type="string" name="Floor" default="'warehouse'"/>
+          <field type="string" name="Shelf" default="''"/>
           <field type="int" name="Position" default="-1"/>
         </class>
 
         <class name="BookOrder">
           <field type="Book" relation="n..1" nullable="true"/>
-          <field type="string" name="Floor" default="warehouse"/>
-          <field type="string" name="Shelf" default=""/>
+          <field type="string" name="Floor" default="'warehouse'"/>
+          <field type="string" name="Shelf" default="''"/>
           <field type="int" name="Position" default="-1"/>
         </class>
 
@@ -137,6 +141,7 @@ schema requirements in an application life-cycle.
       </entities>
 
     </dxd>
+
     ```
 
 2. Execute the corresponding Dabacog CLI generation

@@ -39,7 +39,7 @@ public final class DxdConfig {
   private boolean sqlGlobalSequence;
 
   @NonNull
-  private boolean sqlDeleteExistingSqlScripts;
+  private boolean sqlDumpDatabase;
 
   public String toString(@NonNull String indentation) {
     return new StringBuffer()
@@ -70,8 +70,8 @@ public final class DxdConfig {
             sqlGlobalSequence))
         .append(String.format("%s\t%s: %s\n",
             indentation,
-            "SqlDeleteExistingSqlScripts",
-            sqlDeleteExistingSqlScripts))
+            "SqlDumpDatabase",
+            sqlDumpDatabase))
         .toString();
   }
 
