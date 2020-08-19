@@ -40,11 +40,12 @@ public final class PostgreSqlGenerator extends Generator {
   private void generate() {
     File outputFile = super.createOutputFile();
     try (FileWriter writer = new FileWriter(outputFile)) {
-      writer.write(
-         new StringBuffer()
-            .append(PostgreSqlSchemaBuilder.buildSetup(super.model))
-            .append(PostgreSqlSchemaBuilder.buildTables(super.model))
-            .toString());
+      writer.write(new StringBuffer()
+          .append(PostgreSqlSchemaBuilder.buildGeneratedByComment())
+          .append(PostgreSqlSchemaBuilder.buildDumpDatabase(super.model))
+          .append(PostgreSqlSchemaBuilder.buildSetup(super.model))
+          .append(PostgreSqlSchemaBuilder.buildTables(super.model))
+          .toString());
     } catch (Exception e) {
       throw new RuntimeException(
         String.format(

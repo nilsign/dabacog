@@ -64,7 +64,7 @@ public final class XmlToDxdConverter {
       XmlSqlConfig sqlConfig = xmlModel.getConfig().getSqlConfig();
       dxdConfig.setDiagramDatabaseOutputPath(sqlConfig.getSqlOutputPath());
       dxdConfig.setSqlGlobalSequence(sqlConfig.isSqlGlobalSequence());
-      dxdConfig.setSqlDeleteExistingSqlScripts(sqlConfig.isSqlDumpDatabase());
+      dxdConfig.setSqlDumpDatabase(sqlConfig.isSqlDumpDatabase());
     } catch (Exception e) {
       throw new RuntimeException(
           "Xml <config> <sqlConfig ... </config> to Dxd config model conversion failed.",
