@@ -56,7 +56,7 @@ public final class DotDatabaseNodeLabelRowBuilder {
           && i == TABLE_NODE_COLUMN_NAMES.size() - 1
           && hasForeignKeyPorts(model)
           ? Dot.addNodeLabelTableCell(getCellValue(i, field), String.format("port_%s",
-          Sql.buildForeignKeyName(!field.getRelationType().isManyToOne()
+          Sql.buildForeignKeyFieldName(!field.getRelationType().isManyToOne()
               ? field.getType().getObjectName()
               : field.getName())))
           : Dot.addNodeLabelTableCell(getCellValue(i, field)));
@@ -87,7 +87,7 @@ public final class DotDatabaseNodeLabelRowBuilder {
   public static String buildRelationalTableNodeFieldsRow(
       @NonNull DxdModel model,
       @NonNull DxdFieldRelation relation) {
-    Pair<String, String> foreignKeyName = Sql.buildForeignKeyNames(relation);
+    Pair<String, String> foreignKeyName = Sql.buildForeignKeyFieldNames(relation);
     return new StringBuffer()
         .append(Dot.openNodeLabelTableRow())
         .append(hasForeignKeyPorts(model)
@@ -119,7 +119,7 @@ public final class DotDatabaseNodeLabelRowBuilder {
 
   private static String getFieldNameCellValue(@NonNull DxdField field) {
     return field.hasRelation()
-        ? Sql.buildForeignKeyName(field.getType().getObjectName())
+        ? Sql.buildForeignKeyFieldName(field.getType().getObjectName())
         : Sql.buildFieldName(field);
   }
 

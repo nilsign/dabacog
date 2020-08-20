@@ -41,10 +41,13 @@ public final class PostgreSqlGenerator extends Generator {
     File outputFile = super.createOutputFile();
     try (FileWriter writer = new FileWriter(outputFile)) {
       writer.write(new StringBuffer()
-          .append(PostgreSqlSchemaBuilder.buildGeneratedByComment())
-          .append(PostgreSqlSchemaBuilder.buildDumpDatabase(super.model))
-          .append(PostgreSqlSchemaBuilder.buildSetup(super.model))
+          .append(Generator.buildGeneratedByComment())
+          .append(PostgreSqlSchemaBuilder.buildSettings(super.model))
+          .append(PostgreSqlSchemaBuilder.buildDropSchema(super.model))
+          .append(PostgreSqlSchemaBuilder.buildGlobalSequence(super.model))
           .append(PostgreSqlSchemaBuilder.buildTables(super.model))
+          .append(PostgreSqlSchemaBuilder.buildForeignKeys(super.model))
+          .append(PostgreSqlSchemaBuilder.buildIndices(super.model))
           .toString());
     } catch (Exception e) {
       throw new RuntimeException(

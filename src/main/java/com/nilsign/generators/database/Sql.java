@@ -35,17 +35,17 @@ public final class Sql {
 
   public static String buildFieldName(@NonNull DxdField field) {
     return field.getType().isObject()
-        ? buildForeignKeyName(field.getName())
+        ? buildForeignKeyFieldName(field.getName())
         : transformName(field.getName());
   }
 
-  public static String buildForeignKeyName(@NonNull String referencedClassName) {
+  public static String buildForeignKeyFieldName(@NonNull String referencedClassName) {
     return String.format("%s_%s",
         SQL_PRIMARY_KEY_NAME,
         transformName(referencedClassName));
   }
 
-  public static Pair<String, String> buildForeignKeyNames(@NonNull DxdFieldRelation relation) {
+  public static Pair<String, String> buildForeignKeyFieldNames(@NonNull DxdFieldRelation relation) {
     return Pair.of(
         String.format("%s_%s",
             SQL_PRIMARY_KEY_NAME,
@@ -98,28 +98,29 @@ public final class Sql {
         "%s_%s_%s_fk",
         SQL_CONSTRAINT_PREFIX,
         buildTableName(relation),
-        buildForeignKeyName(aClass.getName())
+        buildForeignKeyFieldName(aClass.getName())
     );
+  }
+
+  public static String buildIndexNameForField(
+      @NonNull DxdClass aClass,
+      @NonNull DxdField field) {
+    return String.format(
+        "%s_%s_%s",
+        SQL_INDEX_PREFIX,
+        buildTableName(aClass.getName()),
+        transformName(field.getName()));
   }
 
   public static String buildIndexNameForForeignKeyField(
       @NonNull DxdClass aClass,
       @NonNull DxdField field) {
     return String.format(
-        "idx_%s_%s",
-        buildTableName(aClass.getName()),
-        buildForeignKeyName(field.getName())
-    );
-  }
-
-  public static String buildIndexNameForForeignKeyField(
-      @NonNull DxdFieldRelation relation,
-      @NonNull DxdClass referencedClass) {
-    return String.format(
         "%s_%s_%s",
         SQL_INDEX_PREFIX,
-        buildTableName(relation),
-        buildForeignKeyName(referencedClass.getName()));
+        buildTableName(aClass.getName()),
+        buildForeignKeyFieldName(field.getName())
+    );
   }
 
   private static String transformName(@NonNull String name) {
