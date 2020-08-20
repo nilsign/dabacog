@@ -29,9 +29,9 @@
     <class name="Loan">
       <field type="Book" relation="1..n"/>
       <field type="Customer" relation="1..n"/>
-      <field type="date" name="Start"/>
-      <field type="date" name="End" indexed="true"/>
-      <field type="date" name="Return" nullable="true"/>
+      <field type="date" name="Starts"/>
+      <field type="date" name="Ends" indexed="true"/>
+      <field type="date" name="Returns" nullable="true"/>
       <field type="boolean" name="DunningLetter" default="false"/>
     </class>
 

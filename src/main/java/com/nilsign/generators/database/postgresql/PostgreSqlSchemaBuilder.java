@@ -33,16 +33,14 @@ public final class PostgreSqlSchemaBuilder {
             .append("\n-- Dump database.")
             .append("\nDROP SEQUENCE IF EXISTS public.shared_sequence;");
       }
-      model.getClasses().forEach(aClass -> {
-        output.append(String.format(
-            "\nDROP TABLE IF EXISTS %s;",
-            Sql.buildTableName(aClass)));
-      });
-      model.getDistinctManyToManyRelations().forEach(relation -> {
-        output.append(String.format(
-            "\nDROP TABLE IF EXISTS %s;",
-            Sql.buildTableName(relation)));
-      });
+      model.getDistinctManyToManyRelations().forEach(relation
+          -> output.append(String.format(
+              "\nDROP TABLE IF EXISTS %s;",
+              Sql.buildTableName(relation))));
+      model.getClasses().forEach(aClass
+          -> output.append(String.format(
+              "\nDROP TABLE IF EXISTS %s;",
+              Sql.buildTableName(aClass))));
       return output.append("\n").toString();
   }
 
@@ -168,8 +166,9 @@ public final class PostgreSqlSchemaBuilder {
   private static String buildUniqueConstraint(@NonNull DxdClass aClass, @NonNull DxdField field) {
     return field.isUnique()
         ? String.format(
-        ",\n    CONSTRAINT %s UNIQUE",
-        Sql.buildConstraintsNameForUniqueField(aClass, field))
+            ",\n    CONSTRAINT %s UNIQUE(%s)",
+            Sql.buildConstraintsNameForUniqueField(aClass, field),
+            Sql.buildFieldName(field))
         : "";
   }
 
@@ -196,10 +195,10 @@ public final class PostgreSqlSchemaBuilder {
             Sql.buildTableName(relation.getFirstClass()),
             Sql.buildTableName(relation.getSecondClass())))
         .append(String.format(
-            "\n    %s BIGINT NOT NULL",
+            "\n    %s BIGINT NOT NULL,",
             foreignKeyNames.getFirst()))
         .append(String.format(
-            "\n    %s BIGINT NOT NULL",
+            "\n    %s BIGINT NOT NULL,",
             foreignKeyNames.getSecond()))
         .append(String.format(
             "\n    CONSTRAINT %s PRIMARY KEY (%s, %s)",
