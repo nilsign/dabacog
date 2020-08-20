@@ -35,12 +35,12 @@ public final class PostgreSqlSchemaBuilder {
       }
       model.getClasses().forEach(aClass -> {
         output.append(String.format(
-            "\nDROP TABLE IF EXISTS %s",
+            "\nDROP TABLE IF EXISTS %s;",
             Sql.buildTableName(aClass)));
       });
       model.getDistinctManyToManyRelations().forEach(relation -> {
         output.append(String.format(
-            "\nDROP TABLE IF EXISTS %s",
+            "\nDROP TABLE IF EXISTS %s;",
             Sql.buildTableName(relation)));
       });
       return output.append("\n").toString();
