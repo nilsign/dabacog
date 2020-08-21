@@ -28,7 +28,7 @@ public final class DotDatabaseEdgeBuilder {
         .append(Dot.addEdge(
             String.format("node_%s", Sql.buildTableName(relation)),
             String.format("port_%s",
-                Sql.buildForeignKeyNames(relation).getFirst()),
+                Sql.buildForeignKeyFieldNames(relation).getFirst()),
             Dot.PortAlignment.WEST,
             String.format("node_%s",
                 Sql.buildTableName(relation.getFirstClass())),
@@ -37,7 +37,7 @@ public final class DotDatabaseEdgeBuilder {
         .append(Dot.addEdge(
             String.format("node_%s", Sql.buildTableName(relation)),
             String.format("port_%s",
-                Sql.buildForeignKeyNames(relation).getSecond()),
+                Sql.buildForeignKeyFieldNames(relation).getSecond()),
             Dot.PortAlignment.EAST,
             String.format("node_%s",
                 Sql.buildTableName(relation.getSecondClass())),
@@ -54,7 +54,7 @@ public final class DotDatabaseEdgeBuilder {
         String.format("node_%s",
             Sql.buildTableName(relation.getFirstClass())),
         String.format("port_%s",
-            Sql.buildForeignKeyNames(relation).getSecond()),
+            Sql.buildForeignKeyFieldNames(relation).getSecond()),
         Dot.PortAlignment.EAST,
         String.format("node_%s",
             Sql.buildTableName(relation.getSecondClass())),
@@ -71,7 +71,7 @@ public final class DotDatabaseEdgeBuilder {
         String.format("node_%s",
             Sql.buildTableName(relation.getSecondClass())),
         String.format("port_%s",
-            Sql.buildForeignKeyNames(relation).getFirst()),
+            Sql.buildForeignKeyFieldNames(relation).getFirst()),
         Dot.PortAlignment.EAST,
         String.format("node_%s",
             Sql.buildTableName(relation.getFirstClass())),
@@ -90,7 +90,7 @@ public final class DotDatabaseEdgeBuilder {
           String.format(
             "node_%s", Sql.buildTableName(relation.getFirstClass())),
           String.format(
-              "port_%s", Sql.buildForeignKeyNames(relation).getFirst()),
+              "port_%s", Sql.buildForeignKeyFieldNames(relation).getFirst()),
           Dot.PortAlignment.EAST,
           String.format(
               "node_%s", Sql.buildTableName(relation.getSecondClass())),
@@ -104,7 +104,7 @@ public final class DotDatabaseEdgeBuilder {
           String.format(
               "node_%s", Sql.buildTableName(relation.getFirstClass())),
           String.format(
-              "port_%s", Sql.buildForeignKeyNames(relation).getSecond()),
+              "port_%s", Sql.buildForeignKeyFieldNames(relation).getSecond()),
           Dot.PortAlignment.EAST,
           String.format(
               "node_%s", Sql.buildTableName(relation.getSecondClass())),
@@ -116,7 +116,7 @@ public final class DotDatabaseEdgeBuilder {
             String.format(
               "node_%s", Sql.buildTableName(relation.getSecondClass())),
               String.format(
-                  "port_%s", Sql.buildForeignKeyNames(relation).getFirst()),
+                  "port_%s", Sql.buildForeignKeyFieldNames(relation).getFirst()),
               Dot.PortAlignment.EAST,
               String.format(
                   "node_%s", Sql.buildTableName(relation.getFirstClass())),
