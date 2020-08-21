@@ -49,7 +49,7 @@ schema requirements in an application life-cycle.
 
 # USAGE DEMONSTRATION
 
-1. Create a (<ins>D</ins>abacog <ins>X</ins>ML <ins>D</ins>escription) Dxd file :
+1. Create a (<ins>D</ins>abacog <ins>X</ins>ML <ins>D</ins>escription) Dxd file
     ```xml
     <?xml version="1.0" encoding="utf-8"?>
     <!DOCTYPE dxd SYSTEM "dabacog.dtd">
@@ -82,9 +82,9 @@ schema requirements in an application life-cycle.
         <class name="Loan">
           <field type="Book" relation="1..n"/>
           <field type="Customer" relation="1..n"/>
-          <field type="date" name="Start"/>
-          <field type="date" name="End" indexed="true"/>
-          <field type="date" name="Return" nullable="true"/>
+          <field type="date" name="Starts"/>
+          <field type="date" name="Ends" indexed="true"/>
+          <field type="date" name="Returns" nullable="true"/>
           <field type="boolean" name="DunningLetter" default="false"/>
         </class>
 
@@ -141,10 +141,9 @@ schema requirements in an application life-cycle.
       </entities>
 
     </dxd>
-
     ```
 
-2. Execute the corresponding Dabacog CLI generation
+2. Use the Dabacog CLI to generate the diagram, and the code
 
         $ dabacog.jar --source [dxd-file-path] --verbose-logging
 
@@ -169,21 +168,20 @@ schema requirements in an application life-cycle.
 # BUILD AND EXECUTE THE DABACOG.JAR
 
 Execute the maven 'package' phase to build a Dabacog fat jar including a valid manifest. The build
-dabacog.jar file can be found in your projects target folder. To run the build Dabacog fat jar from
-a command line navigate into the Dabacog project root folder and execute:
+dabacog.jar file can be found in your projects 'target' folder. Note, that your 'target' folder
+might have a different name. This depends on your IDE´s Dabacog project settings.
+
+To run the Dabacog fat jar from a command line navigate into the Dabacog project´s root folder and
+execute:
 
     java -jar target/dabacog.jar --source ./src/main/resources/dev/library.dxd -verbose-logging
 
 Ensure that the Java version is the same as used in the pom file, which is currently Java 14.
 
-Note, that your 'target' folder, where the fat jar ends up after the maven 'package' phase', might
-have a different name. This depends on your IDE´s Dabacog project settings.
-
 # ROADMAP
 
 As the project started recently and as I am working on it in my spare time, do not expect steady
-progress. Anyhow, here are the major milestones of my project visions with an appended progress
-status (DONE, DEV, PLANNED, SKIPPED).
+progress. Anyhow, here are the major milestones of my project visions:
 
 1. Setup project. [DONE]
 2. Create a Xml parser and read the Xml model. [DONE]

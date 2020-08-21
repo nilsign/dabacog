@@ -115,7 +115,7 @@ digraph G {
 					<td port="port_id_customer">no</td>
 				</tr>
 				<tr>
-					<td>start</td>
+					<td>starts</td>
 					<td>long</td>
 					<td>no</td>
 					<td>no</td>
@@ -124,7 +124,7 @@ digraph G {
 					<td>no</td>
 				</tr>
 				<tr>
-					<td>end</td>
+					<td>ends</td>
 					<td>long</td>
 					<td>yes</td>
 					<td>no</td>
@@ -133,7 +133,7 @@ digraph G {
 					<td>no</td>
 				</tr>
 				<tr>
-					<td>return</td>
+					<td>returns</td>
 					<td>long</td>
 					<td>no</td>
 					<td>no</td>

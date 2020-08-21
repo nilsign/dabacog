@@ -54,7 +54,7 @@ public final class PostgreSqlForeignKeyBuilder {
             "\nALTER TABLE %s",
             referencingTableName))
         .append(String.format(
-            "\n    ADD CONSTRAINT %s ",
+            "\n    ADD CONSTRAINT %s",
             constraintName))
         .append(String.format(
             "\n    FOREIGN KEY(%s)",
