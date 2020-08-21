@@ -55,10 +55,13 @@ public final class DotDatabaseNodeLabelRowBuilder {
       output.append(field.hasRelation()
           && i == TABLE_NODE_COLUMN_NAMES.size() - 1
           && hasForeignKeyPorts(model)
-          ? Dot.addNodeLabelTableCell(getCellValue(i, field), String.format("port_%s",
-          Sql.buildForeignKeyFieldName(!field.getRelationType().isManyToOne()
-              ? field.getType().getObjectName()
-              : field.getName())))
+          ? Dot.addNodeLabelTableCell(
+              getCellValue(i, field),
+              String.format(
+                  "port_%s",
+                  Sql.buildForeignKeyFieldName(!field.getRelationType().isManyToOne()
+                      ? field.getType().getObjectName()
+                      : field.getName())))
           : Dot.addNodeLabelTableCell(getCellValue(i, field)));
     }
     return output

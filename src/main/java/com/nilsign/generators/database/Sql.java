@@ -50,9 +50,9 @@ public final class Sql {
         String.format("%s_%s",
             SQL_PRIMARY_KEY_NAME,
             transformName(relation.getFirstClass().getName())),
-         String.format("%s_%s",
+        String.format("%s_%s",
             SQL_PRIMARY_KEY_NAME,
-             transformName(relation.getSecondClass().getName())));
+            transformName(relation.getSecondClass().getName())));
   }
 
   public static String buildConstraintsNameForPrimaryKeyField(@NonNull DxdClass aClass) {

@@ -17,11 +17,11 @@ public final class PostgreSqlIndexBuilder {
             Sql.buildTableName(aClass),
             Sql.buildForeignKeyFieldName(field.getName()))
         : field.isIndexed()
-            ? buildIndex(
-                Sql.buildIndexNameForField(aClass, field),
-                Sql.buildTableName(aClass),
-                Sql.buildFieldName(field))
-            : "";
+        ? buildIndex(
+            Sql.buildIndexNameForField(aClass, field),
+            Sql.buildTableName(aClass),
+            Sql.buildFieldName(field))
+        : "";
   }
 
   private static String buildIndex(
