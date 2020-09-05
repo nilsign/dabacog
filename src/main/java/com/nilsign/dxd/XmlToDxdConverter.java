@@ -1,6 +1,7 @@
 package com.nilsign.dxd;
 
 import com.google.common.collect.ImmutableList;
+import com.nilsign.dxd.model.DatabaseType;
 import com.nilsign.dxd.model.DxdClass;
 import com.nilsign.dxd.model.DxdConfig;
 import com.nilsign.dxd.model.DxdField;
@@ -62,9 +63,11 @@ public final class XmlToDxdConverter {
       @NonNull DxdConfig dxdConfig) {
     try {
       XmlSqlConfig sqlConfig = xmlModel.getConfig().getSqlConfig();
-      dxdConfig.setDiagramDatabaseOutputPath(sqlConfig.getSqlOutputPath());
+      dxdConfig.setSqlDatabaseType(
+          DatabaseType.valueOf(sqlConfig.getSqlDatabaseType().toUpperCase()));
+      dxdConfig.setSqlOutputPath(sqlConfig.getSqlOutputPath());
       dxdConfig.setSqlGlobalSequence(sqlConfig.isSqlGlobalSequence());
-      dxdConfig.setSqlDumpDatabase(sqlConfig.isSqlDumpDatabase());
+      dxdConfig.setSqlDumpDatabase(sqlConfig.isSqlDropSchema());
     } catch (Exception e) {
       throw new RuntimeException(
           "Xml <config> <sqlConfig ... </config> to Dxd config model conversion failed.",

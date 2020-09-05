@@ -14,6 +14,7 @@ public final class DxdConfig {
   public static final boolean DEFAULT_DATABASE_DIAGRAM_PRIMARY_KEY_FIELD_PORTS = false;
   public static final boolean DEFAULT_DATABASE_DIAGRAM_FOREIGN_KEY_FIELD_PORTS = true;
 
+  public static final DatabaseType DEFAULT_SQL_DATABASE_TYPE = DatabaseType.POSTGRESQL;
   public static final String DEFAULT_SQL_OUTPUT_PATH = "./generated";
   public static final boolean DEFAULT_SQL_GLOBAL_SEQUENCE = true;
   public static final boolean DEFAULT_SQL_DUMP_DATABASE = false;
@@ -32,6 +33,9 @@ public final class DxdConfig {
   private boolean diagramDatabaseForeignKeyFieldPorts;
 
   // SQL
+  @NonNull
+  private DatabaseType sqlDatabaseType;
+
   @NonNull
   private String sqlOutputPath;
 
