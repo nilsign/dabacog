@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.List;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class GeneratedFilePaths {
 
@@ -12,6 +14,8 @@ public final class GeneratedFilePaths {
   private String databaseDiagramDotFile;
   private String databaseDiagramFile;
   private String sqlScriptFile;
+
+  private List<String> codeFiles;
 
   public static GeneratedFilePaths of() {
     if (instance == null) {
@@ -42,5 +46,13 @@ public final class GeneratedFilePaths {
 
   public static String getSqlScriptFile() {
     return GeneratedFilePaths.of().sqlScriptFile;
+  }
+
+  public static void setCodeFiles(@NonNull List<String> codeFiles) {
+    GeneratedFilePaths.of().codeFiles = codeFiles;
+  }
+
+  public static List<String> getCodeFiles() {
+    return GeneratedFilePaths.of().codeFiles;
   }
 }
