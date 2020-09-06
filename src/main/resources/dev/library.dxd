@@ -31,12 +31,10 @@
         password="./passwords.txt"/>
 -->
     </sqlConfig>
-<!--
     <codeConfig
         codeType="java"
         codeOutputPath="./generated"
-        codePackagePath="com.nilsign.dabacog.demo"/>
--->
+        codePackageName="com.nilsign.dabacog.demo"/>
   </config>
 
   <entities>

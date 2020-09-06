@@ -1,4 +1,4 @@
-package com.nilsign.dxd.model;
+package com.nilsign.dxd.types;
 
 public enum DatabaseType {
   POSTGRESQL

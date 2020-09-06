@@ -1,21 +1,24 @@
 package com.nilsign.dxd;
 
 import com.google.common.collect.ImmutableList;
-import com.nilsign.dxd.model.DatabaseType;
 import com.nilsign.dxd.model.DxdClass;
 import com.nilsign.dxd.model.DxdConfig;
 import com.nilsign.dxd.model.DxdField;
 import com.nilsign.dxd.model.DxdFieldRelationType;
 import com.nilsign.dxd.model.DxdFieldType;
 import com.nilsign.dxd.model.DxdModel;
+import com.nilsign.dxd.types.CodeType;
+import com.nilsign.dxd.types.DatabaseType;
 import com.nilsign.misc.Wrapper;
 import com.nilsign.reader.xml.model.XmlModel;
+import com.nilsign.reader.xml.model.config.XmlCodeConfig;
 import com.nilsign.reader.xml.model.config.XmlDiagramsConfig;
 import com.nilsign.reader.xml.model.config.XmlSqlConfig;
 import com.nilsign.reader.xml.model.entities.XmlField;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +40,7 @@ public final class XmlToDxdConverter {
     DxdConfig dxdConfig = new DxdConfig();
     buildDxdDiagramsConfig(xmlModel, dxdConfig);
     buildDxdSqlConfig(xmlModel, dxdConfig);
+    buildDxdCodeConfig(xmlModel, dxdConfig);
     return dxdConfig;
   }
 
@@ -67,10 +71,25 @@ public final class XmlToDxdConverter {
           DatabaseType.valueOf(sqlConfig.getSqlDatabaseType().toUpperCase()));
       dxdConfig.setSqlOutputPath(sqlConfig.getSqlOutputPath());
       dxdConfig.setSqlGlobalSequence(sqlConfig.isSqlGlobalSequence());
-      dxdConfig.setSqlDumpDatabase(sqlConfig.isSqlDropSchema());
+      dxdConfig.setSqlDropSchema(sqlConfig.isSqlDropSchema());
     } catch (Exception e) {
       throw new RuntimeException(
           "Xml <config> <sqlConfig ... </config> to Dxd config model conversion failed.",
+          e);
+    }
+  }
+
+  private static void buildDxdCodeConfig(
+      @NonNull XmlModel xmlModel,
+      @NonNull DxdConfig dxdConfig) {
+    try {
+      XmlCodeConfig codeConfig = xmlModel.getConfig().getCodeConfig();
+      dxdConfig.setCodeType(CodeType.valueOf(codeConfig.getCodeType().toUpperCase()));
+      dxdConfig.setCodeOutputPath(codeConfig.getCodeOutputPath());
+      dxdConfig.setCodePackageName(codeConfig.getCodePackageName());
+    } catch (Exception e) {
+      throw new RuntimeException(
+          "Xml <config> <codeConfig ... </config> to Dxd config model conversion failed.",
           e);
     }
   }

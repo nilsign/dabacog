@@ -26,7 +26,7 @@ public class XmlSqlConfig {
     return new StringBuffer()
         .append(String.format("%s%s\n", indentation, XmlSqlConfig.class.getSimpleName()))
         .append(String.format("%s\t%s: %s\n",
-            sqlDatabaseType,
+            indentation,
             "SqlDatabaseType",
             sqlDatabaseType))
         .append(String.format("%s\t%s: %s\n",
