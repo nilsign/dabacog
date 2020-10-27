@@ -58,7 +58,7 @@ public final class Java {
     return "\n}\n";
   }
 
-  private static String buildJavaType(@NonNull DxdField field) {
+  public static String buildJavaType(@NonNull DxdField field) {
       String dataType =
           field.getType().isObject() ? field.getType().getObjectName() :
           field.getType().isString() ? "String" :
@@ -78,7 +78,7 @@ public final class Java {
       return dataType;
   }
 
-  private static String normalizeClassName(@NonNull String name) {
+  public static String normalizeClassName(@NonNull String name) {
     return startUpperCased(name);
   }
 

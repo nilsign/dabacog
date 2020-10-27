@@ -9,4 +9,8 @@ public final class JavaEntitiesGeneratorException extends RuntimeException {
   public JavaEntitiesGeneratorException(@NonNull Exception e) {
     super(ERROR_MESSAGE, e);
   }
+
+  public JavaEntitiesGeneratorException(@NonNull String error) {
+    super(String.format("%s %s", ERROR_MESSAGE, error));
+  }
 }

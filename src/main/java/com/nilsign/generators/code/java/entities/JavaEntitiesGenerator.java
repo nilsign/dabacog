@@ -49,12 +49,11 @@ public final class JavaEntitiesGenerator extends Generator {
       try (FileWriter writer = new FileWriter(outputFile)) {
         writer.write(new StringBuffer()
             .append(Java.buildGeneratedByComment())
+            .append(JavaEntityClassBuilder.buildEntityClass(super.model, aClass))
             .toString());
       } catch (Exception e) {
         throw new RuntimeException(
-            String.format(
-                "Failed to write into target file '%s'.",
-                outputFile),
+            String.format("Failed to write into target file '%s'.", outputFile),
             e);
       } finally {
         codeFiles.add(outputFile.getAbsolutePath());
