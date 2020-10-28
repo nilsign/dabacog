@@ -1,9 +1,11 @@
 package com.nilsign.generators.code.java.entities;
 
+import com.google.common.collect.Lists;
 import com.nilsign.dxd.model.DxdClass;
 import com.nilsign.dxd.model.DxdField;
 import com.nilsign.dxd.model.DxdModel;
 import com.nilsign.generators.code.java.Java;
+import com.nilsign.generators.database.Sql;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
@@ -13,7 +15,6 @@ import com.squareup.javapoet.TypeSpec;
 import lombok.NonNull;
 
 import javax.lang.model.element.Modifier;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,25 +32,60 @@ public final class JavaEntityClassBuilder {
         .toString();
   }
 
+  // TODO(nilsheumer): Improve readability similar to function:
+  //  private static List<MethodSpec> buildMethodSpecs(@NonNull List<DxdField> fields) {
   private static List<FieldSpec> buildFieldSpecs(@NonNull List<DxdField> fields) {
-    return fields.stream().map(field
-        -> FieldSpec
+    return Lists.asList(
+        FieldSpec
             .builder(
-                field.getType().isObject()
-                    ? ClassName.get("com.nilsign.dabacog.demo", field.getType().getObjectName())
-                    : getJavaTypeName(field),
-                Java.normalizeFieldName(field.getName()),
+                TypeName.LONG,
+                Java.normalizeFieldName(Sql.SQL_PRIMARY_KEY_NAME),
                 Modifier.PRIVATE)
-            .build())
-        .collect(Collectors.toList());
+            .build(),
+        fields.stream().map(field
+            -> FieldSpec
+                .builder(
+                    field.getType().isObject()
+                        ? ClassName.get(
+                            "com.nilsign.dabacog.demo",
+                            field.getType().getObjectName())
+                        : getJavaTypeName(field),
+                    Java.normalizeFieldName(field.getName()),
+                    Modifier.PRIVATE)
+                .build())
+            .collect(Collectors.toList())
+            .stream()
+            .toArray(FieldSpec[]::new));
   }
 
   private static List<MethodSpec> buildMethodSpecs(@NonNull List<DxdField> fields) {
-    List<MethodSpec> methodSpecs = new ArrayList<>();
+    List<MethodSpec> methodSpecs = Lists.newArrayList(
+        buildPrimaryKeyGetterMethodSpec(),
+        buildPrimaryKeySetterMethodSpec());
     fields.forEach(field -> methodSpecs.addAll(List.of(
         buildGetterMethodSpec(field),
         buildSetterMethodSpec(field))));
     return methodSpecs;
+  }
+
+  private static MethodSpec buildPrimaryKeyGetterMethodSpec() {
+    return MethodSpec
+        .methodBuilder(String.format("get%s", Java.startUpperCased(Sql.SQL_PRIMARY_KEY_NAME)))
+        .addModifiers(Modifier.PUBLIC)
+        .addStatement(String.format("return %s", Java.normalizeFieldName(Sql.SQL_PRIMARY_KEY_NAME)))
+        .returns(TypeName.LONG)
+        .build();
+  }
+
+  private static MethodSpec buildPrimaryKeySetterMethodSpec() {
+    String fieldName = Java.normalizeFieldName(Sql.SQL_PRIMARY_KEY_NAME);
+    return MethodSpec.methodBuilder(
+        String.format(
+            "set%s", Java.startUpperCased(Sql.SQL_PRIMARY_KEY_NAME)))
+        .addModifiers(Modifier.PUBLIC)
+        .addParameter(TypeName.LONG, fieldName)
+        .addStatement(String.format("this.%s = %s", fieldName, fieldName))
+        .build();
   }
 
   private static MethodSpec buildGetterMethodSpec(@NonNull DxdField field) {
