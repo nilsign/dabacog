@@ -17,7 +17,6 @@ import lombok.NonNull;
 import javax.lang.model.element.Modifier;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class JavaEntityClassBuilder {
 
@@ -32,31 +31,33 @@ public final class JavaEntityClassBuilder {
         .toString();
   }
 
-  // TODO(nilsheumer): Improve readability similar to function:
-  //  private static List<MethodSpec> buildMethodSpecs(@NonNull List<DxdField> fields) {
   private static List<FieldSpec> buildFieldSpecs(@NonNull List<DxdField> fields) {
-    return Lists.asList(
-        FieldSpec
-            .builder(
-                TypeName.LONG,
-                Java.normalizeFieldName(Sql.SQL_PRIMARY_KEY_NAME),
-                Modifier.PRIVATE)
-            .build(),
-        fields.stream().map(field
-            -> FieldSpec
-                .builder(
-                    field.getType().isObject()
-                        ? ClassName.get(
-                            "com.nilsign.dabacog.demo",
-                            field.getType().getObjectName())
-                        : getJavaTypeName(field),
-                    Java.normalizeFieldName(field.getName()),
-                    Modifier.PRIVATE)
-                .build())
-            .collect(Collectors.toList())
-            .stream()
-            .toArray(FieldSpec[]::new));
+    List<FieldSpec> methodSpecs = Lists.newArrayList(
+        buildPrimaryKeyFieldSpec());
+    fields.forEach(field -> methodSpecs.add(
+        buildFieldSpec(field)));
+    return methodSpecs;
   }
+
+  private static FieldSpec buildPrimaryKeyFieldSpec() {
+    return FieldSpec
+        .builder(
+            TypeName.LONG,
+            Java.normalizeFieldName(Sql.SQL_PRIMARY_KEY_NAME),
+            Modifier.PRIVATE)
+        .build();
+    }
+
+    private static FieldSpec buildFieldSpec(@NonNull DxdField field) {
+      return FieldSpec
+          .builder(
+              field.getType().isObject()
+                  ? ClassName.get("com.nilsign.dabacog.demo", field.getType().getObjectName())
+                  : getJavaTypeName(field),
+              Java.normalizeFieldName(field.getName()),
+              Modifier.PRIVATE)
+          .build();
+    }
 
   private static List<MethodSpec> buildMethodSpecs(@NonNull List<DxdField> fields) {
     List<MethodSpec> methodSpecs = Lists.newArrayList(
