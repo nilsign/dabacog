@@ -51,96 +51,101 @@ schema requirements in an application life-cycle.
 
 1. Create a (<ins>D</ins>abacog <ins>X</ins>ML <ins>D</ins>escription) Dxd file
     ```xml
-    <?xml version="1.0" encoding="utf-8"?>
-    <!DOCTYPE dxd SYSTEM "dabacog.dtd">
+   <?xml version="1.0" encoding="utf-8"?>
+   <!DOCTYPE dxd SYSTEM "dabacog.dtd">
 
-    <dxd name="Dabacog - Book Library Demo">
+   <dxd name="Dabacog - Book Library Demo">
 
-      <config>
-        <diagramsConfig
-            diagramDatabaseOutputPath="./generated"
-            diagramDatabaseTitle="Dabacog - Database Diagram - Book Library Demo"
-            diagramDatabasePrimaryKeyFieldPorts="false"
-            diagramDatabaseForeignKeyFieldPorts="true"/>
-        <sqlConfig
-            sqlOutputPath="./generated"
-            sqlGlobalSequence="true"
-            sqlDumpDatabase="true"/>
-      </config>
+     <config>
+       <diagramsConfig
+           diagramDatabaseOutputPath="./generated"
+           diagramDatabaseTitle="Dabacog - Database Diagram - Book Library Demo"
+           diagramDatabasePrimaryKeyFieldPorts="false"
+           diagramDatabaseForeignKeyFieldPorts="true"/>
+       <sqlConfig
+           sqlDatabaseType="postgresql"
+           sqlOutputPath="./generated"
+           sqlGlobalSequence="true"
+           sqlDropSchema="true"/>
+       <codeConfig
+           codeType="java"
+           codeOutputPath="./generated"
+           codePackageName="com.nilsign.dabacog.demo"/>
+     </config>
 
-      <entities>
+     <entities>
 
-        <class name="Genre">
-          <field type="string" name="Name" unique="true" />
-        </class>
+       <class name="Genre">
+         <field type="string" name="Name" unique="true" />
+       </class>
 
-        <class name="Author">
-          <field type="Book" relation="n..n"/>
-          <field type="string" name="Name" fts="true"/>
-        </class>
+       <class name="Author">
+         <field type="Book" relation="n..n"/>
+         <field type="string" name="Name" fts="true"/>
+       </class>
 
-        <class name="Loan">
-          <field type="Book" relation="1..n"/>
-          <field type="Customer" relation="1..n"/>
-          <field type="date" name="Starts"/>
-          <field type="date" name="Ends" indexed="true"/>
-          <field type="date" name="Returns" nullable="true"/>
-          <field type="boolean" name="DunningLetter" default="false"/>
-        </class>
+       <class name="Loan">
+         <field type="Book" relation="1..n"/>
+         <field type="Customer" relation="1..n"/>
+         <field type="date" name="Starts"/>
+         <field type="date" name="Ends" indexed="true"/>
+         <field type="date" name="Returns" nullable="true"/>
+         <field type="boolean" name="DunningLetter" default="false"/>
+       </class>
 
-        <class name="Book">
-          <field type="Author" relation="n..n"/>
-          <field type="Genre" relation="n..n"/>
-          <field type="Location" relation="1..n"/>
-          <field type="string" name="Name" fts="true"/>
-          <field type="string" name="Isbn" unique="true"/>
-          <field type="double" name="Price" nullable="true"/>
-        </class>
+       <class name="Book">
+         <field type="Author" relation="n..n"/>
+         <field type="Genre" relation="n..n"/>
+         <field type="Location" relation="1..n"/>
+         <field type="string" name="Name" fts="true"/>
+         <field type="string" name="Isbn" unique="true"/>
+         <field type="double" name="Price" nullable="true"/>
+       </class>
 
-        <class name="Customer">
-            <field type="Address" relation="1..1" nullable="true"/>
-          <field type="Contact" relation="1..1"/>
-            <field type="string" name="FirstName"/>
-            <field type="string" name="LastName"/>
-        </class>
+       <class name="Customer">
+           <field type="Address" relation="1..1" nullable="true"/>
+         <field type="Contact" relation="1..1"/>
+           <field type="string" name="FirstName"/>
+           <field type="string" name="LastName"/>
+       </class>
 
-        <class name="Address">
-            <field type="string" name="Street"/>
-            <field type="string" name="Zipcode"/>
-            <field type="string" name="City"/>
-        </class>
+       <class name="Address">
+           <field type="string" name="Street"/>
+           <field type="string" name="Zipcode"/>
+           <field type="string" name="City"/>
+       </class>
 
-        <class name="Location">
-          <field type="Book" relation="n..1"/>
-          <field type="string" name="Floor" default="'warehouse'"/>
-          <field type="string" name="Shelf" default="''"/>
-          <field type="int" name="Position" default="-1"/>
-        </class>
+       <class name="Location">
+         <field type="Book" relation="n..1"/>
+         <field type="string" name="Floor" default="'warehouse'"/>
+         <field type="string" name="Shelf" default="''"/>
+         <field type="int" name="Position" default="-1"/>
+       </class>
 
-        <class name="BookOrder">
-          <field type="Book" relation="n..1" nullable="true"/>
-          <field type="string" name="Floor" default="'warehouse'"/>
-          <field type="string" name="Shelf" default="''"/>
-          <field type="int" name="Position" default="-1"/>
-        </class>
+       <class name="BookOrder">
+         <field type="Book" relation="n..1" nullable="true"/>
+         <field type="string" name="Floor" default="'warehouse'"/>
+         <field type="string" name="Shelf" default="''"/>
+         <field type="int" name="Position" default="-1"/>
+       </class>
 
-        <class name="Employee">
-          <field type="Employee" relation="1..1" nullable="true"/>
-          <field type="Address" relation="1..1"/>
-          <field type="string" name="FirstName" />
-          <field type="string" name="LastName"/>
-        </class>
+       <class name="Employee">
+         <field type="Employee" relation="1..1" nullable="true"/>
+         <field type="Address" relation="1..1"/>
+         <field type="string" name="FirstName" />
+         <field type="string" name="LastName"/>
+       </class>
 
-        <class name="Contact">
-          <field type="Customer" relation="1..1"/>
-          <field type="string" name="Mobile" nullable="true"/>
-          <field type="string" name="Home" nullable="true"/>
-          <field type="string" name="Email"/>
-        </class>
+       <class name="Contact">
+         <field type="Customer" relation="1..1"/>
+         <field type="string" name="Mobile" nullable="true"/>
+         <field type="string" name="Home" nullable="true"/>
+         <field type="string" name="Email"/>
+       </class>
 
-      </entities>
+     </entities>
 
-    </dxd>
+   </dxd>
     ```
 
 2. Use the Dabacog CLI to generate the diagram, and the code

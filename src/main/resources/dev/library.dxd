@@ -9,7 +9,7 @@
         diagramDatabaseTitle="Dabacog - Database Diagram - Book Library Demo"
         diagramDatabasePrimaryKeyFieldPorts="false"
         diagramDatabaseForeignKeyFieldPorts="true"/>
-      <sqlConfig
+    <sqlConfig
         sqlDatabaseType="postgresql"
         sqlOutputPath="./generated"
         sqlGlobalSequence="true"
