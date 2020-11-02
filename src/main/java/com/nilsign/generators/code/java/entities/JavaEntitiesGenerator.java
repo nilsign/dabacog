@@ -53,7 +53,7 @@ public final class JavaEntitiesGenerator extends Generator {
             .toString());
       } catch (Exception e) {
         throw new RuntimeException(
-            String.format("Failed to write into target file '%s'.", outputFile),
+            String.format("Failed to generate Java target file '%s'.", outputFile),
             e);
       } finally {
         codeFiles.add(outputFile.getAbsolutePath());

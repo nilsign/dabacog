@@ -37,18 +37,25 @@ public final class JavaEntityClassBuilder {
     fields.forEach(field -> methodSpecs.add(
         buildFieldSpec(field)));
     return methodSpecs;
+
   }
 
   private static FieldSpec buildPrimaryKeyFieldSpec() {
-    return FieldSpec
-        .builder(
-            TypeName.LONG,
-            Java.normalizeFieldName(Sql.SQL_PRIMARY_KEY_NAME),
-            Modifier.PRIVATE)
-        .build();
+    try {
+      return FieldSpec
+          .builder(
+              TypeName.LONG,
+              Java.normalizeFieldName(Sql.SQL_PRIMARY_KEY_NAME),
+              Modifier.PRIVATE)
+          .build();
+    }  catch (Exception e) {
+        throw new RuntimeException("Failed to generate primary key field.", e);
+      }
     }
 
     private static FieldSpec buildFieldSpec(@NonNull DxdField field) {
+    try {
+
       return FieldSpec
           .builder(
               field.getType().isObject()
@@ -57,7 +64,14 @@ public final class JavaEntityClassBuilder {
               Java.normalizeFieldName(field.getName()),
               Modifier.PRIVATE)
           .build();
+      }  catch (Exception e) {
+      throw new RuntimeException(
+          String.format(
+              "Failed to generate field for '%s'.",
+              field.getName()),
+          e);
     }
+  }
 
   private static List<MethodSpec> buildMethodSpecs(@NonNull List<DxdField> fields) {
     List<MethodSpec> methodSpecs = Lists.newArrayList(
@@ -70,40 +84,63 @@ public final class JavaEntityClassBuilder {
   }
 
   private static MethodSpec buildPrimaryKeyGetterMethodSpec() {
-    return MethodSpec
-        .methodBuilder(String.format("get%s", Java.startUpperCased(Sql.SQL_PRIMARY_KEY_NAME)))
-        .addModifiers(Modifier.PUBLIC)
-        .addStatement(String.format("return %s", Java.normalizeFieldName(Sql.SQL_PRIMARY_KEY_NAME)))
-        .returns(TypeName.LONG)
-        .build();
+    try {
+      return MethodSpec
+          .methodBuilder(String.format("get%s", Java.startUpperCased(Sql.SQL_PRIMARY_KEY_NAME)))
+          .addModifiers(Modifier.PUBLIC)
+          .addStatement(String.format("return %s", Java.normalizeFieldName(Sql.SQL_PRIMARY_KEY_NAME)))
+          .returns(TypeName.LONG)
+          .build();
+    }  catch (Exception e) {
+      throw new RuntimeException("Failed to generate primary key getter function.", e);
+    }
   }
 
   private static MethodSpec buildPrimaryKeySetterMethodSpec() {
-    String fieldName = Java.normalizeFieldName(Sql.SQL_PRIMARY_KEY_NAME);
-    return MethodSpec.methodBuilder(
-        String.format(
-            "set%s", Java.startUpperCased(Sql.SQL_PRIMARY_KEY_NAME)))
-        .addModifiers(Modifier.PUBLIC)
-        .addParameter(TypeName.LONG, fieldName)
-        .addStatement(String.format("this.%s = %s", fieldName, fieldName))
-        .build();
+    try {
+      String fieldName = Java.normalizeFieldName(Sql.SQL_PRIMARY_KEY_NAME);
+      return MethodSpec.methodBuilder(
+              String.format("set%s", Java.startUpperCased(Sql.SQL_PRIMARY_KEY_NAME)))
+          .addModifiers(Modifier.PUBLIC)
+          .addParameter(TypeName.LONG, fieldName)
+          .addStatement(String.format("this.%s = %s", fieldName, fieldName))
+          .build();
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to generate primary key setter function.", e);
+    }
   }
 
   private static MethodSpec buildGetterMethodSpec(@NonNull DxdField field) {
-    return MethodSpec.methodBuilder(String.format("get%s", field.getName()))
-        .addModifiers(Modifier.PUBLIC)
-        .addStatement(String.format("return %s", Java.normalizeFieldName(field.getName())))
-        .returns(getJavaTypeName(field))
-        .build();
+    try {
+      return MethodSpec.methodBuilder(String.format("get%s", field.getName()))
+          .addModifiers(Modifier.PUBLIC)
+          .addStatement(String.format("return %s", Java.normalizeFieldName(field.getName())))
+          .returns(getJavaTypeName(field))
+          .build();
+      } catch (Exception e) {
+      throw new RuntimeException(
+          String.format(
+              "Failed to generate '%s' getter function.",
+              field.getName()),
+          e);
+    }
   }
 
   private static MethodSpec buildSetterMethodSpec(@NonNull DxdField field) {
-    String fieldName = Java.normalizeFieldName(field.getName());
-    return MethodSpec.methodBuilder(String.format("set%s", field.getName()))
-        .addModifiers(Modifier.PUBLIC)
-        .addParameter(getJavaTypeName(field), fieldName)
-        .addStatement(String.format("this.%s = %s", field.getName(), field.getName()))
-        .build();
+    try {
+      String fieldName = Java.normalizeFieldName(field.getName());
+      return MethodSpec.methodBuilder(String.format("set%s", field.getName()))
+          .addModifiers(Modifier.PUBLIC)
+          .addParameter(getJavaTypeName(field), fieldName)
+          .addStatement(String.format("this.%s = %s", field.getName(), field.getName()))
+          .build();
+    } catch (Exception e) {
+      throw new RuntimeException(
+          String.format(
+              "Failed to generate '%s' setter function.",
+              field.getName()),
+          e);
+      }
   }
 
   private static TypeName getJavaTypeName(@NonNull DxdField field) {
@@ -136,6 +173,6 @@ public final class JavaEntityClassBuilder {
     if (field.getType().isBlob()) {
       return TypeName.get(byte[].class);
     }
-    throw new JavaEntitiesGeneratorException("Unable to map Dxd field type to Java type.");
+    throw new RuntimeException("Unable to map Dxd field type to Java type.");
   }
 }
