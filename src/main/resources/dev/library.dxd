@@ -10,9 +10,31 @@
         diagramDatabasePrimaryKeyFieldPorts="false"
         diagramDatabaseForeignKeyFieldPorts="true"/>
     <sqlConfig
+        sqlDatabaseType="postgresql"
         sqlOutputPath="./generated"
         sqlGlobalSequence="true"
-        sqlDumpDatabase="true"/>
+        sqlDropSchema="true">
+<!-- TODO(nilsheumer): Introduce once the Java Postgresql connector is generated.
+      <sqlConnection
+        environmentName="DEV"
+        url="localhost"
+        port="5432"
+        databaseName="DabacogDemoDB"
+        user="postgres"
+        password="./passwords.txt"/>
+      <sqlConnection
+        environmentName="PROD"
+        url="10.219.20.15"
+        port="5432"
+        databaseName="DabacogDemoDB"
+        user="postgres"
+        password="./passwords.txt"/>
+-->
+    </sqlConfig>
+    <codeConfig
+        codeType="java"
+        codeOutputPath="./generated"
+        codePackageName="com.nilsign.dabacog.demo"/>
   </config>
 
   <entities>

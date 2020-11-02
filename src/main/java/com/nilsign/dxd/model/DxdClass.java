@@ -1,7 +1,6 @@
 package com.nilsign.dxd.model;
 
 import com.google.common.collect.ImmutableList;
-import com.nilsign.reader.xml.model.entities.XmlClass;
 import lombok.Data;
 import lombok.NonNull;
 

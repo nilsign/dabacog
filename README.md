@@ -29,14 +29,14 @@ and comes as a command line interface (CLI).
           -V, --version           Print version information and exit.
 
 Most software projects have a data storage, and a data access layer where the access layer
-communicates with the storage layer (typically a database) to perform
+needs to communicate with the storage layer (typically a database) to perform
 [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations. These operations,
 as well as the data access layer designs, are usually simple, repetitive and can be easily derived
 from a model describing the required data structures and their relations.
-Software developers often spend up to 30% (and more) of their time in a project with tasks
+Software developers often spend up to 30% (and more) of their time within a project with tasks
 related to [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and
-surrounding problems as testing, setting up the database, mapping database tables to entities,
-mapping entities to DTOs, and more...
+surrounding problems as testing, setting up the database schema, mapping database tables to
+entities, mapping entities to DTOs, and more...
 
 All this makes the described problem an optimal candidate to be solved by code generation. And
 exactly that is what Dabacog is intending to achieve. To stay flexible, as not all problems are
@@ -51,96 +51,101 @@ schema requirements in an application life-cycle.
 
 1. Create a (<ins>D</ins>abacog <ins>X</ins>ML <ins>D</ins>escription) Dxd file
     ```xml
-    <?xml version="1.0" encoding="utf-8"?>
-    <!DOCTYPE dxd SYSTEM "dabacog.dtd">
+   <?xml version="1.0" encoding="utf-8"?>
+   <!DOCTYPE dxd SYSTEM "dabacog.dtd">
 
-    <dxd name="Dabacog - Book Library Demo">
+   <dxd name="Dabacog - Book Library Demo">
 
-      <config>
-        <diagramsConfig
-            diagramDatabaseOutputPath="./generated"
-            diagramDatabaseTitle="Dabacog - Database Diagram - Book Library Demo"
-            diagramDatabasePrimaryKeyFieldPorts="false"
-            diagramDatabaseForeignKeyFieldPorts="true"/>
-        <sqlConfig
-            sqlOutputPath="./generated"
-            sqlGlobalSequence="true"
-            sqlDumpDatabase="true"/>
-      </config>
+     <config>
+       <diagramsConfig
+           diagramDatabaseOutputPath="./generated"
+           diagramDatabaseTitle="Dabacog - Database Diagram - Book Library Demo"
+           diagramDatabasePrimaryKeyFieldPorts="false"
+           diagramDatabaseForeignKeyFieldPorts="true"/>
+       <sqlConfig
+           sqlDatabaseType="postgresql"
+           sqlOutputPath="./generated"
+           sqlGlobalSequence="true"
+           sqlDropSchema="true"/>
+       <codeConfig
+           codeType="java"
+           codeOutputPath="./generated"
+           codePackageName="com.nilsign.dabacog.demo"/>
+     </config>
 
-      <entities>
+     <entities>
 
-        <class name="Genre">
-          <field type="string" name="Name" unique="true" />
-        </class>
+       <class name="Genre">
+         <field type="string" name="Name" unique="true" />
+       </class>
 
-        <class name="Author">
-          <field type="Book" relation="n..n"/>
-          <field type="string" name="Name" fts="true"/>
-        </class>
+       <class name="Author">
+         <field type="Book" relation="n..n"/>
+         <field type="string" name="Name" fts="true"/>
+       </class>
 
-        <class name="Loan">
-          <field type="Book" relation="1..n"/>
-          <field type="Customer" relation="1..n"/>
-          <field type="date" name="Starts"/>
-          <field type="date" name="Ends" indexed="true"/>
-          <field type="date" name="Returns" nullable="true"/>
-          <field type="boolean" name="DunningLetter" default="false"/>
-        </class>
+       <class name="Loan">
+         <field type="Book" relation="1..n"/>
+         <field type="Customer" relation="1..n"/>
+         <field type="date" name="Starts"/>
+         <field type="date" name="Ends" indexed="true"/>
+         <field type="date" name="Returns" nullable="true"/>
+         <field type="boolean" name="DunningLetter" default="false"/>
+       </class>
 
-        <class name="Book">
-          <field type="Author" relation="n..n"/>
-          <field type="Genre" relation="n..n"/>
-          <field type="Location" relation="1..n"/>
-          <field type="string" name="Name" fts="true"/>
-          <field type="string" name="Isbn" unique="true"/>
-          <field type="double" name="Price" nullable="true"/>
-        </class>
+       <class name="Book">
+         <field type="Author" relation="n..n"/>
+         <field type="Genre" relation="n..n"/>
+         <field type="Location" relation="1..n"/>
+         <field type="string" name="Name" fts="true"/>
+         <field type="string" name="Isbn" unique="true"/>
+         <field type="double" name="Price" nullable="true"/>
+       </class>
 
-        <class name="Customer">
-            <field type="Address" relation="1..1" nullable="true"/>
-          <field type="Contact" relation="1..1"/>
-            <field type="string" name="FirstName"/>
-            <field type="string" name="LastName"/>
-        </class>
+       <class name="Customer">
+           <field type="Address" relation="1..1" nullable="true"/>
+         <field type="Contact" relation="1..1"/>
+           <field type="string" name="FirstName"/>
+           <field type="string" name="LastName"/>
+       </class>
 
-        <class name="Address">
-            <field type="string" name="Street"/>
-            <field type="string" name="Zipcode"/>
-            <field type="string" name="City"/>
-        </class>
+       <class name="Address">
+           <field type="string" name="Street"/>
+           <field type="string" name="Zipcode"/>
+           <field type="string" name="City"/>
+       </class>
 
-        <class name="Location">
-          <field type="Book" relation="n..1"/>
-          <field type="string" name="Floor" default="'warehouse'"/>
-          <field type="string" name="Shelf" default="''"/>
-          <field type="int" name="Position" default="-1"/>
-        </class>
+       <class name="Location">
+         <field type="Book" relation="n..1"/>
+         <field type="string" name="Floor" default="'warehouse'"/>
+         <field type="string" name="Shelf" default="''"/>
+         <field type="int" name="Position" default="-1"/>
+       </class>
 
-        <class name="BookOrder">
-          <field type="Book" relation="n..1" nullable="true"/>
-          <field type="string" name="Floor" default="'warehouse'"/>
-          <field type="string" name="Shelf" default="''"/>
-          <field type="int" name="Position" default="-1"/>
-        </class>
+       <class name="BookOrder">
+         <field type="Book" relation="n..1" nullable="true"/>
+         <field type="string" name="Floor" default="'warehouse'"/>
+         <field type="string" name="Shelf" default="''"/>
+         <field type="int" name="Position" default="-1"/>
+       </class>
 
-        <class name="Employee">
-          <field type="Employee" relation="1..1" nullable="true"/>
-          <field type="Address" relation="1..1"/>
-          <field type="string" name="FirstName" />
-          <field type="string" name="LastName"/>
-        </class>
+       <class name="Employee">
+         <field type="Employee" relation="1..1" nullable="true"/>
+         <field type="Address" relation="1..1"/>
+         <field type="string" name="FirstName" />
+         <field type="string" name="LastName"/>
+       </class>
 
-        <class name="Contact">
-          <field type="Customer" relation="1..1"/>
-          <field type="string" name="Mobile" nullable="true"/>
-          <field type="string" name="Home" nullable="true"/>
-          <field type="string" name="Email"/>
-        </class>
+       <class name="Contact">
+         <field type="Customer" relation="1..1"/>
+         <field type="string" name="Mobile" nullable="true"/>
+         <field type="string" name="Home" nullable="true"/>
+         <field type="string" name="Email"/>
+       </class>
 
-      </entities>
+     </entities>
 
-    </dxd>
+   </dxd>
     ```
 
 2. Use the Dabacog CLI to generate the diagram, and the code
@@ -154,13 +159,11 @@ schema requirements in an application life-cycle.
     - A [graph as png](https://github.com/nilsign/dabacog/blob/develop/demo/generated-output/diagrams/DabacogDatabaseDiagram.png)
       showing all database tables including their relations.
 
-    - A graph as png showing all Java entities and their relations. [SKIPPED]
-
     - The database schema generation [Sql script](https://github.com/nilsign/dabacog/blob/develop/demo/generated-output/sql/InitializeDatabase.sql).
 
-    - A Java database connector class [UNDER DEVELOPMENT]
+    - All Java entity classes, representing all Sql tables and their fields)
 
-    - All Java entity classes, representing all Sql tables and their fields) [UNDER DEVELOPMENT]
+    - A Java database connector class [UNDER DEVELOPMENT]
 
     - All Java repositories containing all [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)
     operations of any entity class [PLANNED]
@@ -168,8 +171,7 @@ schema requirements in an application life-cycle.
 # BUILD AND EXECUTE THE DABACOG.JAR
 
 Execute the maven 'package' phase to build a Dabacog fat jar including a valid manifest. The build
-dabacog.jar file can be found in your projects 'target' folder. Note, that your 'target' folder
-might have a different name. This depends on your IDE´s Dabacog project settings.
+dabacog.jar file can be found in your projects build 'target' folder.
 
 To run the Dabacog fat jar from a command line navigate into the Dabacog project´s root folder and
 execute:
@@ -189,7 +191,7 @@ progress. Anyhow, here are the major milestones of my project visions:
 4. Generate a relational database schema dot diagram and render it with [Graphviz](https://www.graphviz.org/) [DONE]
 5. Generate an entity class (code) dot diagram and render it with [Graphviz](https://www.graphviz.org/) [SKIPPED]
 6. Generate a Postgres database schema from the Dxd model. [DONE]
-7. Generate the Java entity source code from the Dxd model. [DEV]
+7. Generate the Java entity source code from the Dxd model. [DONE]
 8. Generate the Java postgres database connector class source code for the DEV, QA and PROD environment. [PLANNED]
 8. Generate the Java code and Sql queries required for all CRUD operations on all entities [PLANNED]
 9. Generate DTO classes out of many dxd model entity classes. [PLANED]

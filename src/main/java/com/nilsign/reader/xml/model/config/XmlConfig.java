@@ -14,11 +14,15 @@ public final class XmlConfig {
   @Element(required = false)
   private XmlSqlConfig sqlConfig;
 
+  @Element
+  private XmlCodeConfig codeConfig;
+
   public String toString(@NonNull String indentation) {
       return new StringBuffer()
           .append(String.format("%s%s\n", indentation, XmlConfig.class.getSimpleName()))
           .append(diagramsConfig.toString(String.format("%s\t", indentation)))
           .append(sqlConfig.toString(String.format("%s\t", indentation)))
+          .append(codeConfig.toString(String.format("%s\t", indentation)))
           .toString();
   }
 

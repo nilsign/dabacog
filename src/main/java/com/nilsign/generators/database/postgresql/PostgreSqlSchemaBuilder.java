@@ -1,12 +1,17 @@
 package com.nilsign.generators.database.postgresql;
 
 import com.nilsign.dxd.model.DxdModel;
+import com.nilsign.generators.Generator;
 import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PostgreSqlSchemaBuilder {
+
+  public static String buildGeneratedByComment() {
+    return String.format("-- %s", Generator.buildGeneratedByComment());
+  }
 
   public static String buildSettings(@NonNull DxdModel model) {
     return new StringBuffer()
@@ -16,7 +21,7 @@ public final class PostgreSqlSchemaBuilder {
   }
 
   public static String buildDropSchema(@NonNull DxdModel model) {
-    return model.getConfig().isSqlDumpDatabase()
+    return model.getConfig().isSqlDropSchema()
         ? new StringBuffer()
             .append("\n-- Drops the database schema")
             .append("\nDROP SCHEMA IF EXISTS public CASCADE;")

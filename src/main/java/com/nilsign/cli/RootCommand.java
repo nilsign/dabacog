@@ -4,6 +4,7 @@ import com.nilsign.Dabacog;
 import com.nilsign.dxd.XmlToDxdConverter;
 import com.nilsign.dxd.model.DxdModel;
 import com.nilsign.generators.GeneratedFilePaths;
+import com.nilsign.generators.code.java.entities.JavaEntitiesGenerator;
 import com.nilsign.generators.database.postgresql.PostgreSqlGenerator;
 import com.nilsign.generators.diagrams.dot.renderer.GraphvizDotRenderer;
 import com.nilsign.generators.diagrams.dot.database.DotDatabaseDiagramGenerator;
@@ -157,7 +158,7 @@ public final class RootCommand implements Callable<Integer> {
 
   private void generateSql() {
     if (hasSqlTarget()) {
-      Logger.out(String.format("Generating SQL ... "));
+      Logger.out(String.format("Generating Sql ... "));
       PostgreSqlGenerator.run(dxdModel);
       Logger.log(String.format("[DONE]"));
       Logger.verbose(String.format("\t%s\n", GeneratedFilePaths.getSqlScriptFile()));
@@ -173,9 +174,17 @@ public final class RootCommand implements Callable<Integer> {
   private void generateCode() {
     if (hasCodeTarget()) {
       Logger.out(String.format("Generating code ... "));
-      Logger.log(String.format("[FAILED]"));
-      Logger.verbose(String.format("\tWARNING: Not implemented yet."));
-      Logger.verbose("\tTODO - Print generated file paths.\n");
+      try {
+        JavaEntitiesGenerator.run(dxdModel);
+      } catch (Exception e) {
+        Logger.verbose("");
+        GeneratedFilePaths.getCodeFiles().forEach(filePath
+            -> Logger.verbose(String.format("\t%s", filePath)));
+        throw new RuntimeException(e);
+      }
+      Logger.log(String.format("[DONE]"));
+      GeneratedFilePaths.getCodeFiles().forEach(filePath
+          -> Logger.verbose(String.format("\t%s", filePath)));
      }
   }
 }

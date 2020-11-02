@@ -1,5 +1,7 @@
 package com.nilsign.dxd.model;
 
+import com.nilsign.dxd.types.CodeType;
+import com.nilsign.dxd.types.DatabaseType;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,16 +11,22 @@ import lombok.NonNull;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public final class DxdConfig {
 
+  // Diagram default values
   public static final String DEFAULT_DATABASE_DIAGRAM_OUTPUT_PATH = "./generated";
   public static final String DEFAULT_DATABASE_DIAGRAM_TITLE = "Dabacog - Database Scheme Diagram";
   public static final boolean DEFAULT_DATABASE_DIAGRAM_PRIMARY_KEY_FIELD_PORTS = false;
   public static final boolean DEFAULT_DATABASE_DIAGRAM_FOREIGN_KEY_FIELD_PORTS = true;
 
+  // Sql default values
+  public static final DatabaseType DEFAULT_SQL_DATABASE_TYPE = DatabaseType.POSTGRESQL;
   public static final String DEFAULT_SQL_OUTPUT_PATH = "./generated";
   public static final boolean DEFAULT_SQL_GLOBAL_SEQUENCE = true;
   public static final boolean DEFAULT_SQL_DUMP_DATABASE = false;
 
-  // Diagram
+  // Code default values
+  public static final CodeType DEFAULT_CODE_DATABASE_TYPE = CodeType.JAVA;
+  public static final String DEFAULT_CODE_OUTPUT_PATH = "./generated";
+
   @NonNull
   private String diagramDatabaseOutputPath;
 
@@ -31,7 +39,10 @@ public final class DxdConfig {
   @NonNull
   private boolean diagramDatabaseForeignKeyFieldPorts;
 
-  // SQL
+  // Sql
+  @NonNull
+  private DatabaseType sqlDatabaseType;
+
   @NonNull
   private String sqlOutputPath;
 
@@ -39,7 +50,17 @@ public final class DxdConfig {
   private boolean sqlGlobalSequence;
 
   @NonNull
-  private boolean sqlDumpDatabase;
+  private boolean sqlDropSchema;
+
+  // Code
+  @NonNull
+  private CodeType codeType;
+
+  @NonNull
+  private String codeOutputPath;
+
+  @NonNull
+  private String codePackageName;
 
   public String toString(@NonNull String indentation) {
     return new StringBuffer()
@@ -70,8 +91,20 @@ public final class DxdConfig {
             sqlGlobalSequence))
         .append(String.format("%s\t%s: %s\n",
             indentation,
-            "SqlDumpDatabase",
-            sqlDumpDatabase))
+            "SqlDropSchema",
+            sqlDropSchema))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "CodeType",
+            codeType))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "CodeOutputPath",
+            codeOutputPath))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "CodePackageName",
+            codePackageName))
         .toString();
   }
 

@@ -41,7 +41,7 @@ public final class PostgreSqlGenerator extends Generator {
     File outputFile = super.createOutputFile();
     try (FileWriter writer = new FileWriter(outputFile)) {
       writer.write(new StringBuffer()
-          .append(Generator.buildGeneratedByComment())
+          .append(PostgreSqlSchemaBuilder.buildGeneratedByComment())
           .append(PostgreSqlSchemaBuilder.buildSettings(super.model))
           .append(PostgreSqlSchemaBuilder.buildDropSchema(super.model))
           .append(PostgreSqlSchemaBuilder.buildGlobalSequence(super.model))

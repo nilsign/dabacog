@@ -11,17 +11,24 @@ import org.simpleframework.xml.Element;
 public class XmlSqlConfig {
 
   @Attribute(required = false)
+  private String sqlDatabaseType = DxdConfig.DEFAULT_SQL_DATABASE_TYPE.toString();
+
+  @Attribute(required = false)
   private String sqlOutputPath = DxdConfig.DEFAULT_SQL_OUTPUT_PATH;
 
   @Attribute(required = false)
   private boolean sqlGlobalSequence = DxdConfig.DEFAULT_SQL_GLOBAL_SEQUENCE;
 
   @Attribute(required = false)
-  private boolean sqlDumpDatabase = DxdConfig.DEFAULT_SQL_DUMP_DATABASE;
+  private boolean sqlDropSchema = DxdConfig.DEFAULT_SQL_DUMP_DATABASE;
 
   public String toString(@NonNull String indentation) {
     return new StringBuffer()
         .append(String.format("%s%s\n", indentation, XmlSqlConfig.class.getSimpleName()))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "SqlDatabaseType",
+            sqlDatabaseType))
         .append(String.format("%s\t%s: %s\n",
             indentation,
             "SqlOutputPath",
@@ -32,8 +39,8 @@ public class XmlSqlConfig {
             sqlGlobalSequence))
         .append(String.format("%s\t%s: %s\n",
             indentation,
-            "SqlDumpDatabase",
-            sqlDumpDatabase))
+            "SqlDropSchema",
+            sqlDropSchema))
         .toString();
   }
 
