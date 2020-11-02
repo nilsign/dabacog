@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Java {
 
-  public static String buildJavaFileName(String name) {
+  public static String buildJavaFileName(@NonNull String name) {
     return String.format("%s.java", normalizeClassName(name));
   }
 

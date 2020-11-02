@@ -6,7 +6,6 @@ import lombok.NonNull;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 
-
 @Data
 @Element(name = "codeConfig")
 public class XmlCodeConfig {
