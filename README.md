@@ -29,14 +29,14 @@ and comes as a command line interface (CLI).
           -V, --version           Print version information and exit.
 
 Most software projects have a data storage, and a data access layer where the access layer
-communicates with the storage layer (typically a database) to perform
+needs to communicate with the storage layer (typically a database) to perform
 [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations. These operations,
 as well as the data access layer designs, are usually simple, repetitive and can be easily derived
 from a model describing the required data structures and their relations.
-Software developers often spend up to 30% (and more) of their time in a project with tasks
+Software developers often spend up to 30% (and more) of their time within a project with tasks
 related to [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) and
-surrounding problems as testing, setting up the database, mapping database tables to entities,
-mapping entities to DTOs, and more...
+surrounding problems as testing, setting up the database schema, mapping database tables to
+entities, mapping entities to DTOs, and more...
 
 All this makes the described problem an optimal candidate to be solved by code generation. And
 exactly that is what Dabacog is intending to achieve. To stay flexible, as not all problems are
@@ -154,13 +154,11 @@ schema requirements in an application life-cycle.
     - A [graph as png](https://github.com/nilsign/dabacog/blob/develop/demo/generated-output/diagrams/DabacogDatabaseDiagram.png)
       showing all database tables including their relations.
 
-    - A graph as png showing all Java entities and their relations. [SKIPPED]
-
     - The database schema generation [Sql script](https://github.com/nilsign/dabacog/blob/develop/demo/generated-output/sql/InitializeDatabase.sql).
 
-    - A Java database connector class [UNDER DEVELOPMENT]
+    - All Java entity classes, representing all Sql tables and their fields)
 
-    - All Java entity classes, representing all Sql tables and their fields) [UNDER DEVELOPMENT]
+    - A Java database connector class [UNDER DEVELOPMENT]
 
     - All Java repositories containing all [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)
     operations of any entity class [PLANNED]
@@ -168,8 +166,7 @@ schema requirements in an application life-cycle.
 # BUILD AND EXECUTE THE DABACOG.JAR
 
 Execute the maven 'package' phase to build a Dabacog fat jar including a valid manifest. The build
-dabacog.jar file can be found in your projects 'target' folder. Note, that your 'target' folder
-might have a different name. This depends on your IDE´s Dabacog project settings.
+dabacog.jar file can be found in your projects build 'target' folder.
 
 To run the Dabacog fat jar from a command line navigate into the Dabacog project´s root folder and
 execute:
@@ -189,7 +186,7 @@ progress. Anyhow, here are the major milestones of my project visions:
 4. Generate a relational database schema dot diagram and render it with [Graphviz](https://www.graphviz.org/) [DONE]
 5. Generate an entity class (code) dot diagram and render it with [Graphviz](https://www.graphviz.org/) [SKIPPED]
 6. Generate a Postgres database schema from the Dxd model. [DONE]
-7. Generate the Java entity source code from the Dxd model. [DEV]
+7. Generate the Java entity source code from the Dxd model. [DONE]
 8. Generate the Java postgres database connector class source code for the DEV, QA and PROD environment. [PLANNED]
 8. Generate the Java code and Sql queries required for all CRUD operations on all entities [PLANNED]
 9. Generate DTO classes out of many dxd model entity classes. [PLANED]
