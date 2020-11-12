@@ -4,37 +4,39 @@
 <dxd name="Dabacog - Book Library Demo">
 
   <config>
+
     <diagramsConfig
         diagramDatabaseOutputPath="./generated"
         diagramDatabaseTitle="Dabacog - Database Diagram - Book Library Demo"
         diagramDatabasePrimaryKeyFieldPorts="false"
         diagramDatabaseForeignKeyFieldPorts="true"/>
+
     <sqlConfig
         sqlDatabaseType="postgresql"
         sqlOutputPath="./generated"
         sqlGlobalSequence="true"
         sqlDropSchema="true">
-<!-- TODO(nilsheumer): Introduce once the Java Postgresql connector is generated.
-      <sqlConnection
-        environmentName="DEV"
-        url="localhost"
-        port="5432"
-        databaseName="DabacogDemoDB"
-        user="postgres"
-        password="./passwords.txt"/>
-      <sqlConnection
-        environmentName="PROD"
-        url="10.219.20.15"
-        port="5432"
-        databaseName="DabacogDemoDB"
-        user="postgres"
-        password="./passwords.txt"/>
--->
+        <sqlConnection
+          environmentName="PROD"
+          url="localhost"
+          port="5432"
+          databaseName="DabacogDemoDB-PROD"
+          user="postgres"
+          password="./passwords.xml"/>
+        <sqlConnection
+          environmentName="DEV"
+          url="localhost"
+          port="5432"
+          databaseName="DabacogDemoDB-DEV"
+          user="postgres"
+          password="./passwords.xml"/>
     </sqlConfig>
+
     <codeConfig
         codeType="java"
         codeOutputPath="./generated"
         codePackageName="com.nilsign.dabacog.demo"/>
+
   </config>
 
   <entities>

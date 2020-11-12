@@ -10,12 +10,20 @@
     diagramDatabaseTitle CDATA #REQUIRED
     diagramDatabasePrimaryKeyFieldPorts CDATA #REQUIRED
     diagramDatabaseForeignKeyFieldPorts CDATA #REQUIRED>
-<!ELEMENT sqlConfig (#PCDATA)>
+<!ELEMENT sqlConfig (sqlConnection)*>
 <!ATTLIST sqlConfig
     sqlDatabaseType CDATA #REQUIRED
     sqlOutputPath CDATA #REQUIRED
     sqlGlobalSequence CDATA #REQUIRED
     sqlDropSchema CDATA #REQUIRED>
+    <!ELEMENT sqlConnection (#PCDATA)*>
+    <!ATTLIST sqlConnection
+        environmentName CDATA #REQUIRED
+        url CDATA #REQUIRED
+        port CDATA #REQUIRED
+        databaseName CDATA #REQUIRED
+        user CDATA #REQUIRED
+        password CDATA #REQUIRED
 <!ELEMENT codeConfig (#PCDATA)>
     <!ATTLIST codeConfig
         codeType CDATA #REQUIRED
