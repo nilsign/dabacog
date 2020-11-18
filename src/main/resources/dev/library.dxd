@@ -21,21 +21,21 @@
           url="localhost"
           port="5432"
           databaseName="DabacogDemoDB-PROD"
-          user="postgres"
-          password="./passwords.xml"/>
+          user="postgres"/>
         <sqlConnection
           environmentName="DEV"
           url="localhost"
           port="5432"
           databaseName="DabacogDemoDB-DEV"
-          user="postgres"
-          password="./passwords.xml"/>
+          user="postgres"/>
     </sqlConfig>
 
     <codeConfig
         codeType="java"
         codeOutputPath="./generated"
-        codePackageName="com.nilsign.dabacog.demo"/>
+        codePackageName="com.nilsign.dabacog.demo"
+        codePasswordsFile="./src/main/resources/dev/passwords.xml"
+        codePasswordsOutputPath="./passwords"/>
 
   </config>
 

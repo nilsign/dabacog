@@ -1,32 +1,29 @@
-package com.nilsign.reader.xml.model.config;
+package com.nilsign.dxd.model;
 
 import lombok.Data;
 import lombok.NonNull;
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
 
-@Data
-@Element(name = "sqlConnection")
-public class XmlSqlConnection {
+@Data(staticConstructor = "of")
+public class DxdSqlConnection {
 
-  @Attribute
+  @NonNull
   private String environmentName;
 
-  @Attribute
+  @NonNull
   private String url;
 
-  @Attribute
+  @NonNull
   private int port;
 
-  @Attribute
+  @NonNull
   private String databaseName;
 
-  @Attribute
+  @NonNull
   private String user;
 
   public String toString(@NonNull String indentation) {
     return new StringBuffer()
-        .append(String.format("%s%s\n", indentation, XmlSqlConnection.class.getSimpleName()))
+        .append(String.format("%s%s\n", indentation, DxdSqlConnection.class.getSimpleName()))
         .append(String.format("%s\t%s: %s\n",
             indentation,
             "EnvironmentName",
