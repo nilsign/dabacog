@@ -9,7 +9,7 @@ import org.simpleframework.xml.Root;
 
 @Data
 @Root(name="dxd")
-public final class XmlModel {
+public final class XmlDxdModel {
 
   @Attribute
   private String name = "Dabacog Xml Description Model";
@@ -23,7 +23,7 @@ public final class XmlModel {
   @Override
   public String toString() {
     return new StringBuffer()
-        .append(String.format("\t%s - Name: %s\n", XmlModel.class.getSimpleName(), name))
+        .append(String.format("\t%s - Name: %s\n", XmlDxdModel.class.getSimpleName(), name))
         .append(config.toString("\t\t"))
         .append(entities.toString("\t\t"))
         .toString();

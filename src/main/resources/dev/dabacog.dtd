@@ -23,12 +23,13 @@
         port CDATA #REQUIRED
         databaseName CDATA #REQUIRED
         user CDATA #REQUIRED
-        password CDATA #REQUIRED
 <!ELEMENT codeConfig (#PCDATA)>
     <!ATTLIST codeConfig
         codeType CDATA #REQUIRED
         codeOutputPath CDATA #REQUIRED
-        codePackageName CDATA #REQUIRED>
+        codePackageName CDATA #REQUIRED
+        codePasswordsFile CDATA #REQUIRED
+        codePasswordsOutputPath CDATA #REQUIRED>
 <!ELEMENT entities (class)*>
 <!ELEMENT class (field)*>
 <!ATTLIST class

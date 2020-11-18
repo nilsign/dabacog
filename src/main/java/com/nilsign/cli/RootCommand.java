@@ -6,15 +6,17 @@ import com.nilsign.dxd.model.DxdModel;
 import com.nilsign.generators.GeneratedFilePaths;
 import com.nilsign.generators.code.java.entities.JavaEntitiesGenerator;
 import com.nilsign.generators.database.postgresql.PostgreSqlGenerator;
-import com.nilsign.generators.diagrams.dot.renderer.GraphvizDotRenderer;
 import com.nilsign.generators.diagrams.dot.database.DotDatabaseDiagramGenerator;
+import com.nilsign.generators.diagrams.dot.renderer.GraphvizDotRenderer;
 import com.nilsign.logging.LogLevel;
 import com.nilsign.logging.Logger;
 import com.nilsign.reader.xml.XmlReader;
-import com.nilsign.reader.xml.model.XmlModel;
+import com.nilsign.reader.xml.model.XmlDxdModel;
+import com.nilsign.reader.xml.passwords.XmlPasswordsModel;
 import lombok.NonNull;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
+
 import java.io.File;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -22,7 +24,7 @@ import java.util.concurrent.Callable;
 @Command(
     description = "Example: dabacog --source ./app.dxd --targets sql code --verbose-logging\n\n"
       + "Dabacog CLI arguments:\n",
-    name="dabacog",
+    name = "dabacog",
     mixinStandardHelpOptions = true,
     version = Dabacog.DABACOG_VERSION)
 public final class RootCommand implements Callable<Integer> {
@@ -34,12 +36,14 @@ public final class RootCommand implements Callable<Integer> {
   private static final String TARGET_VALUE_CODE_SHORT = "c";
   private static final String TARGET_VALUE_CODE = "code";
 
+
   @Option(
       names = {"-s", "--source"},
       description = "Defines the description (Dxd) source file path.",
       required = true,
       arity = "1"
   )
+  @SuppressWarnings("unused")
   private File source;
 
   @Option(
@@ -52,6 +56,7 @@ public final class RootCommand implements Callable<Integer> {
           + "targets are generated.",
       arity = "1..3"
   )
+  @SuppressWarnings("unused")
   private Set<String> targets;
 
   @Option(
@@ -59,6 +64,7 @@ public final class RootCommand implements Callable<Integer> {
       description = "Disables logging to the console.",
       arity = "0"
   )
+  @SuppressWarnings("unused")
   private boolean isNoLogging;
 
   @Option(
@@ -66,10 +72,13 @@ public final class RootCommand implements Callable<Integer> {
       description = "Enables verbose logging. Overrides the no-logging option.",
       arity = "0"
   )
+  @SuppressWarnings("unused")
   private boolean isVerboseLogging;
 
   @NonNull
-  private XmlModel xmlModel;
+  private XmlDxdModel xmlDxdModel;
+
+  @NonNull XmlPasswordsModel xmlPasswordsModel;
 
   @NonNull
   private DxdModel dxdModel;
@@ -85,8 +94,10 @@ public final class RootCommand implements Callable<Integer> {
     if (Cli.isVersionRequested()) {
       return 0;
     }
-    readXmlFile();
+    readXmlDxdFile();
     buildDxdModel();
+    readPasswordsFile();
+    buildPasswordsModel();
     generateDotDatabaseDiagram();
     renderDotDatabaseDiagram();
     generateSql();
@@ -112,17 +123,37 @@ public final class RootCommand implements Callable<Integer> {
     Logger.log("");
   }
 
-  private void readXmlFile()  {
+  private void readXmlDxdFile()  {
     Logger.out(String.format("Parsing Dxd file '%s' ... ", source.getPath()));
-    xmlModel = XmlReader.run(source.getPath());
-    Logger.log(String.format("[DONE]", source.getPath()));
-    Logger.verbose(xmlModel.toString());
+    xmlDxdModel = XmlReader.run(
+        source.getPath(),
+        XmlDxdModel.class);
+    Logger.log("[DONE]");
+    Logger.verbose(xmlDxdModel.toString());
   }
 
   private void buildDxdModel() {
-    Logger.out(String.format("Preparing Dxd Model ... "));
-    dxdModel = XmlToDxdConverter.run(xmlModel);
-    Logger.log(String.format("[DONE]"));
+    Logger.out("Preparing Dxd Model ... ");
+    dxdModel = XmlToDxdConverter.run(xmlDxdModel);
+    Logger.log("[DONE]");
+    Logger.verbose(dxdModel.toString());
+  }
+
+  private void readPasswordsFile()  {
+    Logger.out(String.format(
+        "Parsing Passwords file '%s' ... ",
+        dxdModel.getConfig().getCodePasswordsFile()));
+    xmlPasswordsModel = XmlReader.run(
+        dxdModel.getConfig().getCodePasswordsFile(),
+        XmlPasswordsModel.class);
+    Logger.log("[DONE]");
+    Logger.verbose(xmlPasswordsModel.toString());
+  }
+
+  private void buildPasswordsModel() {
+    Logger.out("Preparing Passwords Model ... ");
+    dxdModel = XmlToDxdConverter.run(xmlDxdModel);
+    Logger.log("[DONE]");
     Logger.verbose(dxdModel.toString());
   }
 
@@ -134,18 +165,18 @@ public final class RootCommand implements Callable<Integer> {
 
   private void generateDotDatabaseDiagram() {
     if (hasDiagramTarget()) {
-      Logger.out(String.format("Generating database diagram description ... "));
+      Logger.out("Generating database diagram description ... ");
       DotDatabaseDiagramGenerator.run(dxdModel);
-      Logger.log(String.format("[DONE]"));
+      Logger.log("[DONE]");
       Logger.verbose(String.format("\t%s\n", GeneratedFilePaths.getDatabaseDiagramDotFile()));
     }
   }
 
   private void renderDotDatabaseDiagram() {
     if (hasDiagramTarget()) {
-      Logger.out(String.format("Rendering database diagram ... "));
+      Logger.out("Rendering database diagram ... ");
       GraphvizDotRenderer.run(dxdModel);
-      Logger.log(String.format("[DONE]"));
+      Logger.log("[DONE]");
       Logger.verbose(String.format("\t%s\n", GeneratedFilePaths.getDatabaseDiagramFile()));
     }
   }
@@ -158,9 +189,9 @@ public final class RootCommand implements Callable<Integer> {
 
   private void generateSql() {
     if (hasSqlTarget()) {
-      Logger.out(String.format("Generating Sql ... "));
+      Logger.out("Generating Sql ... ");
       PostgreSqlGenerator.run(dxdModel);
-      Logger.log(String.format("[DONE]"));
+      Logger.log("[DONE]");
       Logger.verbose(String.format("\t%s\n", GeneratedFilePaths.getSqlScriptFile()));
     }
   }
@@ -173,7 +204,7 @@ public final class RootCommand implements Callable<Integer> {
 
   private void generateCode() {
     if (hasCodeTarget()) {
-      Logger.out(String.format("Generating code ... "));
+      Logger.out("Generating code ... ");
       try {
         JavaEntitiesGenerator.run(dxdModel);
       } catch (Exception e) {
@@ -182,7 +213,7 @@ public final class RootCommand implements Callable<Integer> {
             -> Logger.verbose(String.format("\t%s", filePath)));
         throw new RuntimeException(e);
       }
-      Logger.log(String.format("[DONE]"));
+      Logger.log("[DONE]");
       GeneratedFilePaths.getCodeFiles().forEach(filePath
           -> Logger.verbose(String.format("\t%s", filePath)));
      }

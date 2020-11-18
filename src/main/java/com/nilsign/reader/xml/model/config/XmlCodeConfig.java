@@ -19,6 +19,12 @@ public class XmlCodeConfig {
   @Attribute
   private String codePackageName;
 
+  @Attribute
+  private String codePasswordsFile;
+
+  @Attribute
+  private String codePasswordsOutputPath;
+
   public String toString(@NonNull String indentation) {
     return new StringBuffer()
         .append(String.format("%s%s\n", indentation, XmlCodeConfig.class.getSimpleName()))
@@ -34,6 +40,14 @@ public class XmlCodeConfig {
             indentation,
             "CodePackageName",
             codePackageName))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "CodePasswordsFile",
+            codePasswordsFile))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "CodePasswordsOutputPath",
+            codePasswordsOutputPath))
         .toString();
   }
 

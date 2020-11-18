@@ -1,5 +1,6 @@
 package com.nilsign.dxd.model;
 
+import com.google.common.collect.ImmutableList;
 import com.nilsign.dxd.types.CodeType;
 import com.nilsign.dxd.types.DatabaseType;
 import lombok.AccessLevel;
@@ -52,6 +53,9 @@ public final class DxdConfig {
   @NonNull
   private boolean sqlDropSchema;
 
+  @NonNull
+  private ImmutableList<DxdSqlConnection> sqlConnections;
+
   // Code
   @NonNull
   private CodeType codeType;
@@ -62,8 +66,14 @@ public final class DxdConfig {
   @NonNull
   private String codePackageName;
 
+  @NonNull
+  private String codePasswordsFile;
+
+  @NonNull
+  private String codePasswordsOutputPath;
+
   public String toString(@NonNull String indentation) {
-    return new StringBuffer()
+    StringBuffer output = new StringBuffer()
         .append(String.format("%s%s\n", indentation, DxdConfig.class.getSimpleName()))
         .append(String.format("%s\t%s: %s\n",
             indentation,
@@ -92,8 +102,10 @@ public final class DxdConfig {
         .append(String.format("%s\t%s: %s\n",
             indentation,
             "SqlDropSchema",
-            sqlDropSchema))
-        .append(String.format("%s\t%s: %s\n",
+            sqlDropSchema));
+        sqlConnections.forEach(connection
+            -> output.append(connection.toString("\t\t\t")));
+        output.append(String.format("%s\t%s: %s\n",
             indentation,
             "CodeType",
             codeType))
@@ -105,7 +117,15 @@ public final class DxdConfig {
             indentation,
             "CodePackageName",
             codePackageName))
-        .toString();
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "CodePasswordsFile",
+            codePasswordsFile))
+        .append(String.format("%s\t%s: %s\n",
+            indentation,
+            "codePasswordsOutputPath",
+            codePasswordsOutputPath));
+      return output.toString();
   }
 
   @Override
