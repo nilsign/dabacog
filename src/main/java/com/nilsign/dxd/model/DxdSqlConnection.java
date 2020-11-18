@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data(staticConstructor = "of")
-public class DxdSqlConnection {
+public final class DxdSqlConnection {
 
   @NonNull
   private String environmentName;

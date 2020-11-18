@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Root(name="pxd")
-public class XmlPasswordsModel {
+public final class XmlPasswordsModel {
 
   @ElementList(inline = true, entry = "password")
   private List<XmlPassword> passwords;

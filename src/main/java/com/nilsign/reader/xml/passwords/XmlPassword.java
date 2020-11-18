@@ -7,7 +7,7 @@ import org.simpleframework.xml.Element;
 
 @Data
 @Element(name = "password")
-public class XmlPassword {
+public final class XmlPassword {
 
   @Attribute
   private String environment;
@@ -39,7 +39,7 @@ public class XmlPassword {
         .append(String.format("%s\t%s: %s\n",
             indentation,
             "Password",
-            "..."))
+            "*****"))
         .toString();
   }
 
