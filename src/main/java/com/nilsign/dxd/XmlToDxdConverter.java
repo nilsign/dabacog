@@ -84,17 +84,24 @@ public final class XmlToDxdConverter {
 
   private static ImmutableList<DxdSqlConnection> buildDxdSqlConnections(
       @NonNull XmlDxdModel xmlModel) {
-    return ImmutableList.copyOf(
-        xmlModel.getConfig().getSqlConfig().getSqlConnections()
-          .stream()
-          .map(xmlSqlConnection
-              -> DxdSqlConnection.of(
-                  xmlSqlConnection.getEnvironmentName(),
-                  xmlSqlConnection.getUrl(),
-                  xmlSqlConnection.getPort(),
-                  xmlSqlConnection.getDatabaseName(),
-                  xmlSqlConnection.getUser()))
-          .collect(Collectors.toUnmodifiableList()));
+    try {
+      return ImmutableList.copyOf(
+          xmlModel.getConfig().getSqlConfig().getSqlConnections()
+              .stream()
+              .map(xmlSqlConnection
+                  -> DxdSqlConnection.of(
+                      xmlSqlConnection.getEnvironmentName(),
+                      xmlSqlConnection.getUrl(),
+                      xmlSqlConnection.getPort(),
+                      xmlSqlConnection.getDatabaseName(),
+                      xmlSqlConnection.getUser()))
+              .collect(Collectors.toUnmodifiableList()));
+      } catch (Exception e) {
+      throw new RuntimeException(
+          "Xml <config> <sqlConfig> <sqlConnection ... </config> to Dxd config model conversion "
+              + "failed.",
+          e);
+    }
   }
 
   private static void buildDxdCodeConfig(
