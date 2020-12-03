@@ -104,7 +104,7 @@ schema requirements in an application life-cycle.
 
        <class name="Customer">
            <field type="Address" relation="1..1" nullable="true"/>
-         <field type="Contact" relation="1..1"/>
+           <field type="Contact" relation="1..1"/>
            <field type="string" name="FirstName"/>
            <field type="string" name="LastName"/>
        </class>
@@ -152,7 +152,7 @@ schema requirements in an application life-cycle.
 
         $ dabacog.jar --source [dxd-file-path] --verbose-logging
 
-    Note, that Java 14 needs to be used to execute the dabacog.jar.
+    Note, that Java 14+ needs to be used to run the dabacog.jar.
 
 3. Dabacog generates automatically
 
