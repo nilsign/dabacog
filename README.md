@@ -150,7 +150,7 @@ schema requirements in an application life-cycle.
 
 2. Use the Dabacog CLI to generate the diagram, and the code
 
-        $ dabacog.jar --source [dxd-file-path] --verbose-logging
+        java jar dabacog.jar --source [dxd-file-path] --verbose-logging
 
     Note, that Java 14+ needs to be used to run the dabacog.jar.
 
