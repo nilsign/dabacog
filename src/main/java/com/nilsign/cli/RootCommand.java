@@ -12,7 +12,6 @@ import com.nilsign.logging.LogLevel;
 import com.nilsign.logging.Logger;
 import com.nilsign.reader.xml.XmlReader;
 import com.nilsign.reader.xml.model.XmlDxdModel;
-import com.nilsign.reader.xml.passwords.XmlPasswordsModel;
 import lombok.NonNull;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -78,8 +77,6 @@ public final class RootCommand implements Callable<Integer> {
   @NonNull
   private XmlDxdModel xmlDxdModel;
 
-  @NonNull XmlPasswordsModel xmlPasswordsModel;
-
   @NonNull
   private DxdModel dxdModel;
 
@@ -96,8 +93,6 @@ public final class RootCommand implements Callable<Integer> {
     }
     readXmlDxdFile();
     buildDxdModel();
-    readPasswordsFile();
-    buildPasswordsModel();
     generateDotDatabaseDiagram();
     renderDotDatabaseDiagram();
     generateSql();
@@ -134,24 +129,6 @@ public final class RootCommand implements Callable<Integer> {
 
   private void buildDxdModel() {
     Logger.out("Preparing Dxd Model ... ");
-    dxdModel = XmlToDxdConverter.run(xmlDxdModel);
-    Logger.log("[DONE]");
-    Logger.verbose(dxdModel.toString());
-  }
-
-  private void readPasswordsFile()  {
-    Logger.out(String.format(
-        "Parsing Passwords file '%s' ... ",
-        dxdModel.getConfig().getCodePasswordsFile()));
-    xmlPasswordsModel = XmlReader.run(
-        dxdModel.getConfig().getCodePasswordsFile(),
-        XmlPasswordsModel.class);
-    Logger.log("[DONE]");
-    Logger.verbose(xmlPasswordsModel.toString());
-  }
-
-  private void buildPasswordsModel() {
-    Logger.out("Preparing Passwords Model ... ");
     dxdModel = XmlToDxdConverter.run(xmlDxdModel);
     Logger.log("[DONE]");
     Logger.verbose(dxdModel.toString());

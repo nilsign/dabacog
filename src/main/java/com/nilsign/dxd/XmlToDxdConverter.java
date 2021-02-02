@@ -7,7 +7,6 @@ import com.nilsign.dxd.model.DxdField;
 import com.nilsign.dxd.model.DxdFieldRelationType;
 import com.nilsign.dxd.model.DxdFieldType;
 import com.nilsign.dxd.model.DxdModel;
-import com.nilsign.dxd.model.DxdSqlConnection;
 import com.nilsign.dxd.types.CodeType;
 import com.nilsign.dxd.types.DatabaseType;
 import com.nilsign.misc.Wrapper;
@@ -22,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE, staticName = "of")
 public final class XmlToDxdConverter {
@@ -74,7 +72,6 @@ public final class XmlToDxdConverter {
       dxdConfig.setSqlOutputPath(sqlConfig.getSqlOutputPath());
       dxdConfig.setSqlGlobalSequence(sqlConfig.isSqlGlobalSequence());
       dxdConfig.setSqlDropSchema(sqlConfig.isSqlDropSchema());
-      dxdConfig.setSqlConnections(buildDxdSqlConnections(xmlModel));
     } catch (Exception e) {
       throw new RuntimeException(
           "Xml <config> <sqlConfig ... </config> to Dxd config model conversion failed.",
@@ -82,27 +79,6 @@ public final class XmlToDxdConverter {
     }
   }
 
-  private static ImmutableList<DxdSqlConnection> buildDxdSqlConnections(
-      @NonNull XmlDxdModel xmlModel) {
-    try {
-      return ImmutableList.copyOf(
-          xmlModel.getConfig().getSqlConfig().getSqlConnections()
-              .stream()
-              .map(xmlSqlConnection
-                  -> DxdSqlConnection.of(
-                      xmlSqlConnection.getEnvironmentName(),
-                      xmlSqlConnection.getUrl(),
-                      xmlSqlConnection.getPort(),
-                      xmlSqlConnection.getDatabaseName(),
-                      xmlSqlConnection.getUser()))
-              .collect(Collectors.toUnmodifiableList()));
-      } catch (Exception e) {
-      throw new RuntimeException(
-          "Xml <config> <sqlConfig> <sqlConnection ... </config> to Dxd config model conversion "
-              + "failed.",
-          e);
-    }
-  }
 
   private static void buildDxdCodeConfig(
       @NonNull XmlDxdModel xmlModel,
@@ -112,8 +88,6 @@ public final class XmlToDxdConverter {
       dxdConfig.setCodeType(CodeType.valueOf(codeConfig.getCodeType().toUpperCase()));
       dxdConfig.setCodeOutputPath(codeConfig.getCodeOutputPath());
       dxdConfig.setCodePackageName(codeConfig.getCodePackageName());
-      dxdConfig.setCodePasswordsFile(codeConfig.getCodePasswordsFile());
-      dxdConfig.setCodePasswordsOutputPath(codeConfig.getCodePasswordsOutputPath());
     } catch (Exception e) {
       throw new RuntimeException(
           "Xml <config> <codeConfig ... </config> to Dxd config model conversion failed.",

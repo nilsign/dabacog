@@ -5,9 +5,6 @@ import lombok.Data;
 import lombok.NonNull;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-
-import java.util.List;
 
 @Data
 @Element(name = "sqlConfig")
@@ -25,11 +22,8 @@ public class XmlSqlConfig {
   @Attribute(required = false)
   private boolean sqlDropSchema = DxdConfig.DEFAULT_SQL_DUMP_DATABASE;
 
-  @ElementList(empty = false, inline = true, entry = "sqlConnection")
-  private List<XmlSqlConnection> sqlConnections;
-
   public String toString(@NonNull String indentation) {
-    StringBuffer output = new StringBuffer()
+    return new StringBuffer()
         .append(String.format("%s%s\n", indentation, XmlSqlConfig.class.getSimpleName()))
         .append(String.format("%s\t%s: %s\n",
             indentation,
@@ -46,10 +40,8 @@ public class XmlSqlConfig {
         .append(String.format("%s\t%s: %s\n",
             indentation,
             "SqlDropSchema",
-            sqlDropSchema));
-    sqlConnections.forEach(connection
-        -> output.append(connection.toString(String.format("%s\t", indentation))));
-    return output.toString();
+            sqlDropSchema))
+        .toString();
   }
 
   @Override
