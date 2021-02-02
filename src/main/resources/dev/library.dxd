@@ -15,27 +15,12 @@
         sqlDatabaseType="postgresql"
         sqlOutputPath="./generated"
         sqlGlobalSequence="true"
-        sqlDropSchema="true">
-        <sqlConnection
-          environmentName="PROD"
-          url="localhost"
-          port="5432"
-          databaseName="DabacogDemoDB-PROD"
-          user="postgres"/>
-        <sqlConnection
-          environmentName="DEV"
-          url="localhost"
-          port="5432"
-          databaseName="DabacogDemoDB-DEV"
-          user="postgres"/>
-    </sqlConfig>
+        sqlDropSchema="true"/>
 
     <codeConfig
         codeType="java"
         codeOutputPath="./generated"
-        codePackageName="com.nilsign.dabacog.demo"
-        codePasswordsFile="./src/main/resources/dev/passwords.xml"
-        codePasswordsOutputPath="./passwords"/>
+        codePackageName="com.nilsign.dabacog.demo"/>
 
   </config>
 
