@@ -32,7 +32,8 @@ public final class JavaEntityClassBuilder {
   }
 
   private static List<FieldSpec> buildFieldSpecs(
-      @NonNull DxdModel model, @NonNull List<DxdField> fields) {
+      @NonNull DxdModel model,
+      @NonNull List<DxdField> fields) {
     List<FieldSpec> methodSpecs = Lists.newArrayList(buildPrimaryKeyFieldSpec());
     fields.forEach(field -> methodSpecs.add(buildFieldSpec(model, field)));
     return methodSpecs;
@@ -64,7 +65,8 @@ public final class JavaEntityClassBuilder {
   }
 
   private static List<MethodSpec> buildMethodSpecs(
-      @NonNull DxdModel model, @NonNull List<DxdField> fields) {
+      @NonNull DxdModel model,
+      @NonNull List<DxdField> fields) {
     List<MethodSpec> methodSpecs =
         Lists.newArrayList(buildPrimaryKeyGetterMethodSpec(), buildPrimaryKeySetterMethodSpec());
     fields.forEach(field
@@ -104,7 +106,8 @@ public final class JavaEntityClassBuilder {
   }
 
   private static MethodSpec buildGetterMethodSpec(
-      @NonNull DxdModel model, @NonNull DxdField field) {
+      @NonNull DxdModel model,
+      @NonNull DxdField field) {
     try {
       String fieldName = getJavaFieldName(field);
       return MethodSpec
@@ -120,7 +123,8 @@ public final class JavaEntityClassBuilder {
   }
 
   private static MethodSpec buildSetterMethodSpec(
-      @NonNull DxdModel model, @NonNull DxdField field) {
+      @NonNull DxdModel model,
+      @NonNull DxdField field) {
     try {
       String fieldName = getJavaFieldName(field);
       return MethodSpec
