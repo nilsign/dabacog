@@ -10,6 +10,7 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import lombok.NonNull;
@@ -22,8 +23,8 @@ public final class JavaEntityClassBuilder {
 
   public static String buildEntityClass(@NonNull DxdModel model, @NonNull DxdClass aClass) {
     TypeSpec javaClass = TypeSpec.classBuilder(Java.normalizeClassName(aClass.getName()))
-        .addFields(buildFieldSpecs(aClass.getFields()))
-        .addMethods(buildMethodSpecs(aClass.getFields()))
+        .addFields(buildFieldSpecs(model, aClass.getFields()))
+        .addMethods(buildMethodSpecs(model, aClass.getFields()))
         .build();
     return JavaFile
         .builder(model.getConfig().getCodePackageName(), javaClass)
@@ -31,11 +32,13 @@ public final class JavaEntityClassBuilder {
         .toString();
   }
 
-  private static List<FieldSpec> buildFieldSpecs(@NonNull List<DxdField> fields) {
+  private static List<FieldSpec> buildFieldSpecs(
+      @NonNull DxdModel model,
+      @NonNull List<DxdField> fields) {
     List<FieldSpec> methodSpecs = Lists.newArrayList(
         buildPrimaryKeyFieldSpec());
     fields.forEach(field -> methodSpecs.add(
-        buildFieldSpec(field)));
+        buildFieldSpec(model, field)));
     return methodSpecs;
 
   }
@@ -53,14 +56,11 @@ public final class JavaEntityClassBuilder {
       }
     }
 
-    private static FieldSpec buildFieldSpec(@NonNull DxdField field) {
+  private static FieldSpec buildFieldSpec(@NonNull DxdModel model, @NonNull DxdField field) {
     try {
-
       return FieldSpec
           .builder(
-              field.getType().isObject()
-                  ? ClassName.get("com.nilsign.dabacog.demo", field.getType().getObjectName())
-                  : getJavaTypeName(field),
+              getJavaTypeName(model, field),
               Java.normalizeFieldName(field.getName()),
               Modifier.PRIVATE)
           .build();
@@ -73,13 +73,15 @@ public final class JavaEntityClassBuilder {
     }
   }
 
-  private static List<MethodSpec> buildMethodSpecs(@NonNull List<DxdField> fields) {
+  private static List<MethodSpec> buildMethodSpecs(
+      @NonNull DxdModel model,
+      @NonNull List<DxdField> fields) {
     List<MethodSpec> methodSpecs = Lists.newArrayList(
         buildPrimaryKeyGetterMethodSpec(),
         buildPrimaryKeySetterMethodSpec());
     fields.forEach(field -> methodSpecs.addAll(List.of(
-        buildGetterMethodSpec(field),
-        buildSetterMethodSpec(field))));
+        buildGetterMethodSpec(model, field),
+        buildSetterMethodSpec(model, field))));
     return methodSpecs;
   }
 
@@ -88,7 +90,8 @@ public final class JavaEntityClassBuilder {
       return MethodSpec
           .methodBuilder(String.format("get%s", Java.startUpperCased(Sql.SQL_PRIMARY_KEY_NAME)))
           .addModifiers(Modifier.PUBLIC)
-          .addStatement(String.format("return %s", Java.normalizeFieldName(Sql.SQL_PRIMARY_KEY_NAME)))
+          .addStatement(
+              String.format("return %s", Java.normalizeFieldName(Sql.SQL_PRIMARY_KEY_NAME)))
           .returns(TypeName.LONG)
           .build();
     }  catch (Exception e) {
@@ -110,12 +113,14 @@ public final class JavaEntityClassBuilder {
     }
   }
 
-  private static MethodSpec buildGetterMethodSpec(@NonNull DxdField field) {
+  private static MethodSpec buildGetterMethodSpec(
+      @NonNull DxdModel model,
+      @NonNull DxdField field) {
     try {
       return MethodSpec.methodBuilder(String.format("get%s", field.getName()))
           .addModifiers(Modifier.PUBLIC)
           .addStatement(String.format("return %s", Java.normalizeFieldName(field.getName())))
-          .returns(getJavaTypeName(field))
+          .returns(getJavaTypeName(model, field))
           .build();
       } catch (Exception e) {
       throw new RuntimeException(
@@ -126,12 +131,14 @@ public final class JavaEntityClassBuilder {
     }
   }
 
-  private static MethodSpec buildSetterMethodSpec(@NonNull DxdField field) {
+  private static MethodSpec buildSetterMethodSpec(
+      @NonNull DxdModel model,
+      @NonNull DxdField field) {
     try {
       String fieldName = Java.normalizeFieldName(field.getName());
       return MethodSpec.methodBuilder(String.format("set%s", field.getName()))
           .addModifiers(Modifier.PUBLIC)
-          .addParameter(getJavaTypeName(field), fieldName)
+          .addParameter(getJavaTypeName(model, field), fieldName)
           .addStatement(String.format("this.%s = %s", field.getName(), field.getName()))
           .build();
     } catch (Exception e) {
@@ -143,11 +150,17 @@ public final class JavaEntityClassBuilder {
       }
   }
 
-  private static TypeName getJavaTypeName(@NonNull DxdField field) {
+  private static TypeName getJavaTypeName(@NonNull DxdModel model, @NonNull DxdField field) {
     if (field.getType().isObject()) {
-      return ClassName.get(
-          "com.nilsign.dabacog.demo",
-          field.getType().getObjectName());
+      return field.getRelationType().isManyToMany() || field.getRelationType().isManyToOne()
+          ? ParameterizedTypeName.get(
+              ClassName.get(List.class),
+              ClassName.get(
+                  model.getConfig().getCodePackageName(),
+                  Java.normalizeClassName(field.getName())))
+          : ClassName.get(
+              model.getConfig().getCodePackageName(),
+              field.getType().getObjectName());
     }
     if (field.getType().isLong()) {
       return TypeName.LONG;
