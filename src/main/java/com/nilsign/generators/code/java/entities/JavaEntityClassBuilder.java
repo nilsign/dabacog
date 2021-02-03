@@ -135,46 +135,54 @@ public final class JavaEntityClassBuilder {
   }
 
   private static TypeName getJavaTypeName(@NonNull DxdModel model, @NonNull DxdField field) {
-    if (field.getType().isObject()) {
-      return field.getRelationType().isManyToMany() || field.getRelationType().isManyToOne()
-          ? ParameterizedTypeName.get(
-              ClassName.get(List.class),
-              ClassName.get(
-                  model.getConfig().getCodePackageName(), Java.normalizeClassName(field.getName())))
-          : ClassName.get(model.getConfig().getCodePackageName(), field.getType().getObjectName());
+    try {
+      if (field.getType().isObject()) {
+        return field.getRelationType().isManyToMany() || field.getRelationType().isManyToOne()
+            ? ParameterizedTypeName.get(
+                ClassName.get(List.class),
+                ClassName.get(
+                    model.getConfig().getCodePackageName(), Java.normalizeClassName(field.getName())))
+            : ClassName.get(model.getConfig().getCodePackageName(), field.getType().getObjectName());
+      }
+      if (field.getType().isLong()) {
+        return TypeName.LONG;
+      }
+      if (field.getType().isDouble()) {
+        return TypeName.DOUBLE;
+      }
+      if (field.getType().isInt()) {
+        return TypeName.INT;
+      }
+      if (field.getType().isFloat()) {
+        return TypeName.FLOAT;
+      }
+      if (field.getType().isString()) {
+        return TypeName.get(String.class);
+      }
+      if (field.getType().isBoolean()) {
+        return TypeName.BOOLEAN;
+      }
+      if (field.getType().isDate()) {
+        return TypeName.get(Date.class);
+      }
+      if (field.getType().isBlob()) {
+        return TypeName.get(byte[].class);
+      }
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to map Dxd field type to Java type.", e);
     }
-    if (field.getType().isLong()) {
-      return TypeName.LONG;
-    }
-    if (field.getType().isDouble()) {
-      return TypeName.DOUBLE;
-    }
-    if (field.getType().isInt()) {
-      return TypeName.INT;
-    }
-    if (field.getType().isFloat()) {
-      return TypeName.FLOAT;
-    }
-    if (field.getType().isString()) {
-      return TypeName.get(String.class);
-    }
-    if (field.getType().isBoolean()) {
-      return TypeName.BOOLEAN;
-    }
-    if (field.getType().isDate()) {
-      return TypeName.get(Date.class);
-    }
-    if (field.getType().isBlob()) {
-      return TypeName.get(byte[].class);
-    }
-    throw new RuntimeException("Unable to map Dxd field type to Java type.");
+    throw new RuntimeException("Unknown Dxd field type.");
   }
 
   private static String getJavaFieldName(@NonNull DxdField field) {
-    boolean isList = field.hasRelation()
-        && (field.getRelationType().isManyToMany() || field.getRelationType().isManyToOne());
-    return Java.normalizeFieldName(isList
-        ? String.format("%sList", field.getName())
-        : field.getName());
+    try {
+      boolean isList = field.hasRelation()
+          && (field.getRelationType().isManyToMany() || field.getRelationType().isManyToOne());
+      return Java.normalizeFieldName(isList
+          ? String.format("%sList", field.getName())
+          : field.getName());
+    } catch (Exception e) {
+      throw new RuntimeException("Failed to determine Java field name.", e);
     }
+  }
 }
