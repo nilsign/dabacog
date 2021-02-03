@@ -26,6 +26,7 @@ public final class JavaEntityClassBuilder {
         .classBuilder(Java.normalizeClassName(aClass.getName()))
         .addFields(buildFieldSpecs(model, aClass.getFields()))
         .addMethods(buildMethodSpecs(model, aClass.getFields()))
+        .addModifiers(Modifier.PUBLIC)
         .build();
     return JavaFile.builder(model.getConfig().getCodePackageName(), javaClass).build().toString();
   }
