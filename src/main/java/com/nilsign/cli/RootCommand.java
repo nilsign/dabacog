@@ -4,7 +4,7 @@ import com.nilsign.Dabacog;
 import com.nilsign.dxd.XmlToDxdConverter;
 import com.nilsign.dxd.model.DxdModel;
 import com.nilsign.generators.GeneratedFilePaths;
-import com.nilsign.generators.code.java.entities.JavaEntitiesGenerator;
+import com.nilsign.generators.code.java.entities.JavaGenerator;
 import com.nilsign.generators.database.postgresql.PostgreSqlGenerator;
 import com.nilsign.generators.diagrams.dot.database.DotDatabaseDiagramGenerator;
 import com.nilsign.generators.diagrams.dot.renderer.GraphvizDotRenderer;
@@ -183,7 +183,7 @@ public final class RootCommand implements Callable<Integer> {
     if (hasCodeTarget()) {
       Logger.out("Generating code ... ");
       try {
-        JavaEntitiesGenerator.run(dxdModel);
+        JavaGenerator.run(dxdModel);
       } catch (Exception e) {
         Logger.verbose("");
         GeneratedFilePaths.getCodeFiles().forEach(filePath
