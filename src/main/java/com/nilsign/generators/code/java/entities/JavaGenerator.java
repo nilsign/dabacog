@@ -11,23 +11,23 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class JavaEntitiesGenerator extends Generator {
+public final class JavaGenerator extends Generator {
 
   private String outputFileName;
 
-  private JavaEntitiesGenerator(@NonNull DxdModel model) {
+  private JavaGenerator(@NonNull DxdModel model) {
     super(model);
   }
 
-  private static JavaEntitiesGenerator of(@NonNull DxdModel model) {
-    return new JavaEntitiesGenerator(model);
+  private static JavaGenerator of(@NonNull DxdModel model) {
+    return new JavaGenerator(model);
   }
 
   public static void run(@NonNull DxdModel model) {
     try {
-      JavaEntitiesGenerator.of(model).generate();
+      JavaGenerator.of(model).generate();
     } catch (Exception e) {
-      throw new JavaEntitiesGeneratorException(e);
+      throw new JavaGeneratorException(e);
     }
   }
 

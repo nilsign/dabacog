@@ -54,16 +54,16 @@
     </class>
 
     <class name="Customer">
-        <field type="Address" relation="1..1" nullable="true"/>
+      <field type="Address" relation="1..1" nullable="true"/>
       <field type="Contact" relation="1..1"/>
-        <field type="string" name="FirstName"/>
-        <field type="string" name="LastName"/>
+      <field type="string" name="FirstName"/>
+      <field type="string" name="LastName"/>
     </class>
 
     <class name="Address">
-        <field type="string" name="Street"/>
-        <field type="string" name="Zipcode"/>
-        <field type="string" name="City"/>
+      <field type="string" name="Street"/>
+      <field type="string" name="ZipCode"/>
+      <field type="string" name="City"/>
     </class>
 
     <class name="Location">
