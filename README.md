@@ -41,7 +41,7 @@ entities, mapping entities to DTOs, and more...
 All this makes the described problem an optimal candidate to be solved by code generation. And
 exactly that is what Dabacog is intending to achieve. To stay flexible, as not all problems are
 generic enough for a code generation approach, there will be an easy option to override or extend
-the generated code, both in order to use custom code for custom non problems.
+the generated code, both in order to use custom code for custom problems.
 
 In the long term the vision is to support all major databases (with different SQL dialects) and all
 major programming languages, as well as database migration strategies to regard evolving database
@@ -192,7 +192,7 @@ progress. Anyhow, here are the major milestones of my project visions:
 5. Generate an entity class (code) dot diagram and render it with [Graphviz](https://www.graphviz.org/) [SKIPPED]
 6. Generate a Postgres database schema from the Dxd model. [DONE]
 7. Generate the Java entity source code from the Dxd model. [DONE]
-8. Generate the Java postgres database connector class source code for the DEV, QA and PROD environment. [PLANNED]
+8. Generate the Java postgres database connector class source code for the DEV, QA and PROD environment. [IN PROGRESS]
 8. Generate the Java code and Sql queries required for all CRUD operations on all entities [PLANNED]
 9. Generate DTO classes out of many dxd model entity classes. [PLANED]
 10. Add support for database schema changes within an already running project, including support for
